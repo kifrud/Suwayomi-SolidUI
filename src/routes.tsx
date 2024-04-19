@@ -8,8 +8,8 @@ export const AppRoutes = () => {
   // TODO: lazy import each page
   return (
     <Router root={App}>
-      <Route path={RoutePaths.library} component={Library}></Route>
-      <Route path={RoutePaths.settings} component={Settings}></Route>
+      <Route path={RoutePaths.library} component={Library} />
+      <Route path={RoutePaths.settings} component={Settings} />
     </Router>
   )
 }

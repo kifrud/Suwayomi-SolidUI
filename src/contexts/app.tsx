@@ -1,4 +1,11 @@
-import { ParentComponent, createContext, createEffect, createResource, useContext } from 'solid-js'
+import {
+  ParentComponent,
+  Suspense,
+  createContext,
+  createEffect,
+  createResource,
+  useContext,
+} from 'solid-js'
 import { Flatten, Translator, flatten, resolveTemplate, translator } from '@solid-primitives/i18n'
 import { dict as en_dict } from '@/locales/en/en'
 import { makePersisted } from '@solid-primitives/storage'
@@ -53,7 +60,7 @@ function initialLocale(): Locale {
   return 'en'
 }
 
-export const AppContext = createContext<AppState>({} as AppState)
+const AppContext = createContext<AppState>({} as AppState)
 
 export const useAppContext = () => useContext(AppContext)
 
@@ -78,7 +85,7 @@ function deserializeSettings(value: string): Settings {
   }
 }
 
-export const AppProvider: ParentComponent = ({ children }) => {
+export const AppContextProvider: ParentComponent = props => {
   const [settings, set] = makePersisted(createStore(initialSettings()), {
     deserialize: value => deserializeSettings(value),
   })
@@ -102,5 +109,5 @@ export const AppProvider: ParentComponent = ({ children }) => {
     t,
   }
 
-  return <AppContext.Provider value={state}>{children}</AppContext.Provider>
+  return <AppContext.Provider value={state}>{props.children}</AppContext.Provider>
 }
