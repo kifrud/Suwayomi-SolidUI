@@ -1,0 +1,39 @@
+{
+  "name": "suwayomi-solidui",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@solid-primitives/i18n": "^2.1.1",
+    "@solid-primitives/storage": "^3.3.0",
+    "@solidjs/router": "^0.13.2",
+    "@urql/core": "^5.0.0",
+    "@urql/exchange-graphcache": "^7.0.1",
+    "gql.tada": "^1.5.2",
+    "graphql": "^16.8.1",
+    "graphql-ws": "^5.16.0",
+    "solid-js": "^1.8.15",
+    "solid-theme-provider": "^0.9.1"
+  },
+  "devDependencies": {
+    "@0no-co/graphqlsp": "^1.10.1",
+    "@iconify-json/material-symbols": "^1.1.78",
+    "@types/node": "^20.12.7",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^9.0.0",
+    "postcss": "^8.4.38",
+    "sass": "^1.75.0",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.2.2",
+    "unplugin-icons": "^0.18.5",
+    "vite": "^5.2.0",
+    "vite-plugin-solid": "^2.10.2"
+  }
+}

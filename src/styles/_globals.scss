@@ -1,0 +1,14 @@
+body,
+html {
+  background: var(--stp-background);
+  color: var(--stp-foreground);
+  font-family: var(--app-font-family);
+}
+
+* {
+  color: var(--stp-foreground);
+}
+
+.bg-foreground {
+  background: var(--stp-foreground);
+}
