@@ -1,3 +1,31 @@
 {
-  
+  "system_theme_config": {
+    "dark": "monochrome_dark",
+    "light": "warm_light"
+  },
+  "themes": {
+    "monochrome_dark": {
+      "config": {
+        "icon": "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTEzLjEgMjNxLTIuMSAwLTMuOTM3LS44dC0zLjItMi4xNjJ0LTIuMTYzLTMuMlQzIDEyLjlxMC0zLjY1IDIuMzI1LTYuNDM3VDExLjI1IDNxLS40NSAyLjQ3NS4yNzUgNC44Mzh0Mi41IDQuMTM3dDQuMTM4IDIuNVQyMyAxNC43NXEtLjY1IDMuNi0zLjQ1IDUuOTI1VDEzLjEgMjMiLz48L3N2Zz4=",
+        "browser_theme_color": "#161616"
+      },
+      "vars": {
+        "background": "#161616",
+        "foreground": "#FFFFFF"
+      }
+    },
+    "warm_light": {
+      "config": {
+        "icon": "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTEyIDVxLS40MjUgMC0uNzEyLS4yODhUMTEgNFYycTAtLjQyNS4yODgtLjcxMlQxMiAxdC43MTMuMjg4VDEzIDJ2MnEwIC40MjUtLjI4OC43MTNUMTIgNW00Ljk1IDIuMDVxLS4yNzUtLjI3NS0uMjc1LS42ODd0LjI3NS0uNzEzbDEuNC0xLjQyNXEuMy0uMy43MTItLjN0LjcxMy4zcS4yNzUuMjc1LjI3NS43dC0uMjc1LjdMMTguMzUgNy4wNXEtLjI3NS4yNzUtLjcuMjc1dC0uNy0uMjc1TTIwIDEzcS0uNDI1IDAtLjcxMy0uMjg4VDE5IDEydC4yODgtLjcxMlQyMCAxMWgycS40MjUgMCAuNzEzLjI4OFQyMyAxMnQtLjI4OC43MTNUMjIgMTN6bS04IDEwcS0uNDI1IDAtLjcxMi0uMjg4VDExIDIydi0ycTAtLjQyNS4yODgtLjcxMlQxMiAxOXQuNzEzLjI4OFQxMyAyMHYycTAgLjQyNS0uMjg4LjcxM1QxMiAyM001LjY1IDcuMDVsLTEuNDI1LTEuNHEtLjMtLjMtLjMtLjcyNXQuMy0uN3EuMjc1LS4yNzUuNy0uMjc1dC43LjI3NUw3LjA1IDUuNjVxLjI3NS4yNzUuMjc1Ljd0LS4yNzUuN3EtLjMuMjc1LS43LjI3NXQtLjctLjI3NW0xMi43IDEyLjcyNWwtMS40LTEuNDI1cS0uMjc1LS4zLS4yNzUtLjcxMnQuMjc1LS42ODh0LjY4OC0uMjc1dC43MTIuMjc1bDEuNDI1IDEuNHEuMy4yNzUuMjg4Ljd0LS4yODguNzI1cS0uMy4zLS43MjUuM3QtLjctLjNNMiAxM3EtLjQyNSAwLS43MTItLjI4OFQxIDEydC4yODgtLjcxMlQyIDExaDJxLjQyNSAwIC43MTMuMjg4VDUgMTJ0LS4yODguNzEzVDQgMTN6bTIuMjI1IDYuNzc1cS0uMjc1LS4yNzUtLjI3NS0uN3QuMjc1LS43TDUuNjUgMTYuOTVxLjI3NS0uMjc1LjY4Ny0uMjc1dC43MTMuMjc1cS4zLjMuMy43MTN0LS4zLjcxMmwtMS40IDEuNHEtLjMuMy0uNzI1LjN0LS43LS4zTTEyIDE4cS0yLjUgMC00LjI1LTEuNzVUNiAxMnQxLjc1LTQuMjVUMTIgNnQ0LjI1IDEuNzVUMTggMTJ0LTEuNzUgNC4yNVQxMiAxOG0wLTJxMS42NSAwIDIuODI1LTEuMTc1VDE2IDEydC0xLjE3NS0yLjgyNVQxMiA4VDkuMTc1IDkuMTc1VDggMTJ0MS4xNzUgMi44MjVUMTIgMTZtMC00Ii8+PC9zdmc+",
+        "browser_theme_color": "#f1efe5"
+      },
+      "vars": {
+        "background": "#fffff5",
+        "background_active": "#f1efe5",
+        "foreground": "#111100",
+        "foreground_muted": "#777755",
+        "button_radius": "0.5em"
+      }
+    }
+  }
 }

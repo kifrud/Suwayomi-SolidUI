@@ -12,3 +12,22 @@ html {
 .bg-foreground {
   background: var(--stp-foreground);
 }
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-24 {
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.icon-32 {
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+}

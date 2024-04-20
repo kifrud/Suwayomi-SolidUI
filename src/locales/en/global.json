@@ -1,8 +1,12 @@
 {
-  "nav": [
-    {
+  "nav": {
+    "library": {
       "title": "Library",
       "path": "/"
+    },
+    "settings": {
+      "title": "Settings",
+      "path": "/settings"
     }
-  ]
+  }
 }

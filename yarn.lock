@@ -703,7 +703,7 @@
     "@solid-primitives/rootless" "^1.4.5"
     "@solid-primitives/utils" "^6.2.3"
 
-"@solid-primitives/media@^2.2.5":
+"@solid-primitives/media@^2.2.5", "@solid-primitives/media@^2.2.9":
   version "2.2.9"
   resolved "https://registry.yarnpkg.com/@solid-primitives/media/-/media-2.2.9.tgz#bbe1e30b108cd3ece2e214d529e757702eb4dd34"
   integrity sha512-QUmU62D4/d9YWx/4Dvr/UZasIkIpqNXz7wosA5GLmesRW9XlPa3G5M6uOmTw73SByHNTCw0D6x8bSdtvvLgzvQ==

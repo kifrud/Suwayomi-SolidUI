@@ -1,0 +1,40 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  gap: 8px;
+  transition: all 0.15s ease-in-out;
+  margin-top: 16px;
+
+  p {
+    transition: all 0.15s ease-in-out;
+
+    opacity: 0;
+  }
+  &:hover {
+    p {
+      opacity: 1;
+    }
+  }
+}
+
+.navbar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  opacity: 0.5;
+  transition: all 0.15s ease-in-out;
+
+  &:hover {
+    opacity: 0.75;
+  }
+  &.active {
+    opacity: 1;
+  }
+}

@@ -5,18 +5,14 @@ import { Component, createEffect, createResource, createSignal, onMount } from '
 const Library: Component<{}> = props => {
   // const [categories, setCategories] = createSignal()
   const client = useGraphQLClient()
+  const [data] = createResource(async () => await client.query(getCategories, {}).toPromise())
 
   // const [categories] = createResource(async () => client.query(getCategories, {}).toPromise())
   // createEffect(() => console.log(categories))
-  createEffect(() => {
-    console.log('called')
-    console.log(client)
-
-    client
-      .query(getCategories, {})
-      .toPromise()
-      .then(res => console.log(res))
-  })
+  // createEffect(() => {
+  //   console.log('called')
+  //   console.log(data())
+  // })
 
   return <div></div>
 }
