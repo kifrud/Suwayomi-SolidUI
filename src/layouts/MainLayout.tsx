@@ -18,7 +18,7 @@ const MainLayout: ParentComponent = props => {
         <Header />
         <hr class="bg-[#3b3b3b] border-none h-[1px]" />
       </div>
-      <div class="flex px-2" classList={{ 'flex-col': !matches.md, 'gap-2': matches.md }}>
+      <div class="flex" classList={{ 'flex-col': !matches.md, 'gap-2': matches.md }}>
         <Show when={matches.md}>
           <AppNavbar />
         </Show>

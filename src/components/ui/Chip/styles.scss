@@ -1,5 +1,10 @@
 .chip {
   border-radius: 16px;
   padding: 4px;
-  background: var(--stp-foreground-alpha_quaternary);
+  &--fill {
+    background: var(--stp-foreground-alpha_quaternary);
+  }
+  &--outline {
+    border: 1px solid var(--stp-foreground-alpha_quaternary);
+  }
 }

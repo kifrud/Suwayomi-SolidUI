@@ -13,7 +13,7 @@ interface TitlesListProps {
 
 const TitlesList: Component<TitlesListProps> = props => {
   return (
-    <div class="grid grid-cols-5 gap-2">
+    <div class="grid grid-cols-7 gap-2 pr-2">
       <Show when={props.mangas()}>
         <For each={props.mangas()}>{item => <TitleCard manga={item} />}</For>
       </Show>
