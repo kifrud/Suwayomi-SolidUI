@@ -1,7 +1,7 @@
-import { Component, For, createEffect } from 'solid-js'
-import './styles.scss'
+import { Component, For } from 'solid-js'
 import { navData } from '../navData'
 import NavbarItem from './NavbarItem'
+import './styles.scss'
 
 const AppNavbar: Component = () => {
   return (

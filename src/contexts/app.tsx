@@ -1,17 +1,21 @@
 import {
+  Accessor,
+  JSXElement,
   ParentComponent,
-  Suspense,
   createContext,
   createEffect,
   createResource,
+  createSignal,
   useContext,
 } from 'solid-js'
 import { Flatten, Translator, flatten, resolveTemplate, translator } from '@solid-primitives/i18n'
 import { dict as en_dict } from '@/locales/en/en'
 import { makePersisted } from '@solid-primitives/storage'
 import { createStore } from 'solid-js/store'
+import { currentTheme, setTheme } from 'solid-theme-provider'
 
 type RawDictionary = typeof en_dict
+// NOTE: add locales to type
 export type Locale = 'en' | 'uk'
 export type Dictionary = Flatten<RawDictionary>
 const LANG_ALIASES: Partial<Record<string, Locale>> = {
@@ -34,11 +38,15 @@ async function fetchDictionary(locale: Locale): Promise<Dictionary> {
   const flat_dict = flatten(dict) as RawDictionary
   return { ...en_flat_dict, ...flat_dict }
 }
-
+// TODO: add settings object and settings setter
 interface AppState {
   get locale(): Locale
   setLocale(value: Locale): void
   t: Translator<Dictionary>
+  get theme(): string
+  setTheme(value: string): void
+  get headerData(): Accessor<JSXElement>
+  setHeaderData(value: JSXElement): void
 }
 
 const toLocale = (string: string): Locale | undefined =>
@@ -63,14 +71,16 @@ function initialLocale(): Locale {
 const AppContext = createContext<AppState>({} as AppState)
 
 export const useAppContext = () => useContext(AppContext)
-
+// TODO: gonna use settings later
 interface Settings {
   locale: Locale
+  theme: string
 }
 
 function initialSettings(): Settings {
   return {
     locale: initialLocale(),
+    theme: currentTheme(),
   }
 }
 
@@ -82,10 +92,13 @@ function deserializeSettings(value: string): Settings {
     locale:
       ('locale' in parsed && typeof parsed.locale === 'string' && toLocale(parsed.locale)) ||
       initialLocale(),
+    theme:
+      ('theme' in parsed && typeof parsed.theme === 'string' && parsed.theme) || currentTheme(),
   }
 }
 
 export const AppContextProvider: ParentComponent = props => {
+  const [headerData, setHeaderData] = createSignal<JSXElement>()
   const [settings, set] = makePersisted(createStore(initialSettings()), {
     deserialize: value => deserializeSettings(value),
   })
@@ -107,6 +120,19 @@ export const AppContextProvider: ParentComponent = props => {
       set('locale', value)
     },
     t,
+    get theme() {
+      return settings.theme
+    },
+    setTheme(value) {
+      setTheme(value)
+      set('theme', value)
+    },
+    get headerData() {
+      return headerData
+    },
+    setHeaderData(value) {
+      setHeaderData(value)
+    },
   }
 
   return <AppContext.Provider value={state}>{props.children}</AppContext.Provider>

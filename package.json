@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@kobalte/core": "^0.12.6",
     "@solid-primitives/i18n": "^2.1.1",
     "@solid-primitives/media": "^2.2.9",
     "@solid-primitives/storage": "^3.3.0",

@@ -1,4 +1,5 @@
 export enum RoutePaths {
   library = '/',
-  settings = '/settings'
+  updates = '/updates',
+  settings = '/settings',
 }

@@ -132,6 +132,9 @@ export const CategoryTypeFragment = graphql(
       includeInUpdate
       mangas {
         totalCount
+        nodes {
+          id
+        }
       }
     }
   `,

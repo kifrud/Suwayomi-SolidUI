@@ -14,13 +14,13 @@ const NavbarItem: Component<NavbarItemProps> = props => {
   const isActive = createMemo(() => location.pathname.toLowerCase() === data.href)
 
   return (
-    <A href={data.href} class="navbar-item" classList={{ active: isActive() }}>
+    <A href={data.href} class="navbar-item">
       <span class="icon-32">
         <Show when={data.icon.active && isActive()} fallback={data.icon.default}>
           {data.icon.active}
         </Show>
       </span>
-      <p>{t(`global.nav.${data.name}.title`)}</p>
+      <p class="text-sm">{t(`global.nav.${data.name}`)}</p>
     </A>
   )
 }

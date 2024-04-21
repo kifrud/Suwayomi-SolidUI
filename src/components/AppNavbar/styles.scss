@@ -2,10 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  position: sticky;
+  top: calc(var(--header-height) + 17px);
+  height: fit-content;
   gap: 8px;
   transition: all 0.15s ease-in-out;
-  margin-top: 16px;
+  // padding-top: 16px;
 
   p {
     transition: all 0.15s ease-in-out;

@@ -3,6 +3,7 @@ html {
   background: var(--stp-background);
   color: var(--stp-foreground);
   font-family: var(--app-font-family);
+  scrollbar-width: thin;
 }
 
 * {
@@ -16,6 +17,7 @@ html {
 .main-layout {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .icon-24 {

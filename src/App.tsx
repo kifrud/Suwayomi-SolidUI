@@ -1,12 +1,23 @@
-import { ParentComponent } from 'solid-js'
-import { MainLayout } from './layouts'
-import Providers from './providers'
+import { ParentComponent, Show } from 'solid-js'
+import { MainLayout, ReaderLayout } from './layouts'
+import { useLocation } from '@solidjs/router'
+import { ThemeProvider } from 'solid-theme-provider'
+import themes from '@/themes.json'
+import { useAppContext } from './contexts'
 
 const App: ParentComponent = props => {
+  const { theme } = useAppContext()
+  const location = useLocation()
   return (
-    <Providers>
-      <MainLayout>{props.children}</MainLayout>
-    </Providers>
+    <>
+      <Show
+        when={location.pathname.toLowerCase().includes('chapter')}
+        fallback={<MainLayout>{props.children}</MainLayout>}
+      >
+        <ReaderLayout>{props.children}</ReaderLayout>
+      </Show>
+      <ThemeProvider styles={{ component: 'hidden' }} themes={themes} default={theme} />
+    </>
   )
 }
 

@@ -2,12 +2,14 @@ import { JSXElement } from 'solid-js'
 import { RoutePaths } from '@/enums'
 import CollectionBookmarkOutline from '~icons/material-symbols/collections-bookmark-outline'
 import CollectionBookmark from '~icons/material-symbols/collections-bookmark'
+import AlertOutlined from '~icons/material-symbols/release-alert-outline'
+import Alert from '~icons/material-symbols/release-alert'
 import Settings from '~icons/material-symbols/settings'
 import SettingsOutline from '~icons/material-symbols/settings-outline'
 
 export interface INavData {
   href: string
-  name: 'library' | 'settings'
+  name: 'library' | 'updates' | 'settings'
   icon: {
     default: JSXElement
     active?: JSXElement // will use default if no active
@@ -22,6 +24,14 @@ export const navData: () => INavData[] = () => {
       icon: {
         default: <CollectionBookmarkOutline />,
         active: <CollectionBookmark />,
+      },
+    },
+    {
+      href: RoutePaths.updates,
+      name: 'updates',
+      icon: {
+        default: <AlertOutlined />,
+        active: <Alert />,
       },
     },
     {

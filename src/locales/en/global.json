@@ -1,12 +1,7 @@
 {
   "nav": {
-    "library": {
-      "title": "Library",
-      "path": "/"
-    },
-    "settings": {
-      "title": "Settings",
-      "path": "/settings"
-    }
+    "library": "Library",
+    "updates": "Updates",
+    "settings": "Settings"
   }
 }
