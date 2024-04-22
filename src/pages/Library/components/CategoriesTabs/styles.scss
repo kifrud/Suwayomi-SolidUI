@@ -1,17 +1,24 @@
 .tabs {
   width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
   position: sticky;
   top: calc(var(--header-height) + 1px);
   background: var(--stp-background);
   z-index: 40;
+  height: 100%;
   border-bottom: 2px solid #3b3b3b;
+  padding: 4px 0;
   &__list {
+    height: 100%;
     display: flex;
     gap: 16px;
+    padding: 0 16px;
   }
   &__indicator {
     position: absolute;
-    bottom: -1px;
+    bottom: 0;
+    left: 0;
     height: 2px;
     transition: all 0.25s ease-in-out;
     background-color: var(--stp-foreground);

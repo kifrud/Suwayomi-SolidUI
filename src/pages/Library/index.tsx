@@ -15,10 +15,12 @@ import { Chip } from '@/components'
 
 const Library: Component = () => {
   const ctx = useAppContext()
+  const client = useGraphQLClient()
+
   const [searchParams] = useSearchParams()
   const [currentTab, setCurrentTab] = createSignal(searchParams.tab ?? '1')
-  const client = useGraphQLClient()
   const [categories] = createResource(async () => await client.query(getCategories, {}).toPromise())
+
   const orderedCategories = createMemo(() =>
     categories()
       ?.data?.categories.nodes.toSorted((a, b) => (a.order > b.order ? 1 : -1))

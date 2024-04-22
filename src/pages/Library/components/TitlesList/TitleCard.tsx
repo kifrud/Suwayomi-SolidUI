@@ -9,16 +9,18 @@ interface TitleCardProps {
 
 const TitleCard: Component<TitleCardProps> = props => {
   return (
-    <A href={`/manga/${props.manga.id}`}>
+    <A href={`/manga/${props.manga.id}`} class="title-card__cover h-full">
       <div class="title-card">
         <Show when={props.manga.thumbnailUrl} fallback={<span>Failed to load cover</span>}>
           {' '}
           {/* FIXME: doesn't catch errors atm */}
-          <img
-            class="relative rounded-xl object-cover w-full h-full"
-            src={props.manga.thumbnailUrl ?? ''}
-            alt={props.manga.title}
-          />
+          <div class="relative h-full w-full">
+            <img
+              class="w-full h-full rounded-lg object-cover"
+              src={props.manga.thumbnailUrl ?? ''}
+              alt={props.manga.title}
+            />
+          </div>
         </Show>
         <div class="title-card__footer">
           <span>{props.manga.title}</span>
