@@ -2,6 +2,8 @@
   "nav": {
     "library": "Library",
     "updates": "Updates",
+    "browse": "Browse",
+    "downloads": "Downloads",
     "settings": "Settings"
   }
 }
