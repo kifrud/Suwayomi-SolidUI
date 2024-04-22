@@ -12,7 +12,9 @@ import { Flatten, Translator, flatten, resolveTemplate, translator } from '@soli
 import { dict as en_dict } from '@/locales/en/en'
 import { makePersisted } from '@solid-primitives/storage'
 import { createStore } from 'solid-js/store'
-import { currentTheme, setTheme } from 'solid-theme-provider'
+import { setTheme } from 'solid-theme-provider'
+import { initialGlobalMeta, initialSettings } from './initial'
+import { deserializeSettings } from './deserialize'
 
 type RawDictionary = typeof en_dict
 // NOTE: add locales to type
@@ -26,7 +28,7 @@ type DeepPartial<T> = T extends Record<string, unknown> ? { [K in keyof T]?: Dee
 
 const raw_dict_map: Record<Locale, () => Promise<{ dict: DeepPartial<RawDictionary> }>> = {
   en: () => null as any, // en is loaded by default
-  uk: () => import('../locales/uk/uk'),
+  uk: () => import('../../locales/uk/uk'),
 }
 
 const en_flat_dict: Dictionary = flatten(en_dict)
@@ -51,62 +53,24 @@ interface AppState {
   setGlobalMeta(key: keyof GlobalMeta, value: any): void
 }
 
-const toLocale = (string: string): Locale | undefined =>
+export const toLocale = (string: string): Locale | undefined =>
   string in raw_dict_map
     ? (string as Locale)
     : string in LANG_ALIASES
     ? (LANG_ALIASES[string] as Locale)
     : undefined
 
-function initialLocale(): Locale {
-  let locale: Locale | undefined
-
-  locale = toLocale(navigator.language.slice(0, 2))
-  if (locale) return locale
-
-  locale = toLocale(navigator.language.toLocaleLowerCase())
-  if (locale) return locale
-
-  return 'en'
-}
-
 const AppContext = createContext<AppState>({} as AppState)
 
 export const useAppContext = () => useContext(AppContext)
-// TODO: gonna use settings later
-interface Settings {
+
+export interface Settings {
   locale: Locale
   theme: string
 }
 
-function initialSettings(): Settings {
-  return {
-    locale: initialLocale(),
-    theme: currentTheme(),
-  }
-}
-
-function deserializeSettings(value: string): Settings {
-  const parsed = JSON.parse(value) as unknown
-  if (!parsed || typeof parsed !== 'object') return initialSettings()
-
-  return {
-    locale:
-      ('locale' in parsed && typeof parsed.locale === 'string' && toLocale(parsed.locale)) ||
-      initialLocale(),
-    theme:
-      ('theme' in parsed && typeof parsed.theme === 'string' && parsed.theme) || currentTheme(),
-  }
-}
-
-interface GlobalMeta {
+export interface GlobalMeta {
   updatesCount: number
-}
-
-function initialGlobalMeta(): GlobalMeta {
-  return {
-    updatesCount: 0,
-  }
 }
 
 function deserializeGlobalMeta(value: string): GlobalMeta {
