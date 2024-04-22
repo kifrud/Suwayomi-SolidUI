@@ -4,7 +4,7 @@ import CollectionBookmarkOutline from '~icons/material-symbols/collections-bookm
 import CollectionBookmark from '~icons/material-symbols/collections-bookmark'
 import AlertOutlined from '~icons/material-symbols/release-alert-outline'
 import Alert from '~icons/material-symbols/release-alert'
-import ExploreOutline from '~icons/material-symbols/explore-ouline'
+import ExploreOutline from '~icons/material-symbols/explore-outline'
 import Explore from '~icons/material-symbols/explore'
 import DownloadOutline from '~icons/material-symbols/download-2-outline'
 import Download from '~icons/material-symbols/download-2'

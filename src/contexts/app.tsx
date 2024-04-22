@@ -38,7 +38,7 @@ async function fetchDictionary(locale: Locale): Promise<Dictionary> {
   const flat_dict = flatten(dict) as RawDictionary
   return { ...en_flat_dict, ...flat_dict }
 }
-// TODO: add settings object and settings setter
+
 interface AppState {
   get locale(): Locale
   setLocale(value: Locale): void
@@ -47,6 +47,8 @@ interface AppState {
   setTheme(value: string): void
   get headerData(): Accessor<JSXElement>
   setHeaderData(value: JSXElement): void
+  get globalMeta(): GlobalMeta
+  setGlobalMeta(key: keyof GlobalMeta, value: any): void
 }
 
 const toLocale = (string: string): Locale | undefined =>
@@ -97,10 +99,36 @@ function deserializeSettings(value: string): Settings {
   }
 }
 
+interface GlobalMeta {
+  updatesCount: number
+}
+
+function initialGlobalMeta(): GlobalMeta {
+  return {
+    updatesCount: 0,
+  }
+}
+
+function deserializeGlobalMeta(value: string): GlobalMeta {
+  const parsed = JSON.parse(value) as unknown
+  if (!parsed || typeof parsed !== 'object') return initialGlobalMeta()
+
+  return {
+    updatesCount:
+      ('updatesCount' in parsed &&
+        typeof parsed.updatesCount === 'number' &&
+        parsed.updatesCount) ||
+      0,
+  }
+}
+
 export const AppContextProvider: ParentComponent = props => {
   const [headerData, setHeaderData] = createSignal<JSXElement>()
   const [settings, set] = makePersisted(createStore(initialSettings()), {
     deserialize: value => deserializeSettings(value),
+  })
+  const [globalMeta, setGlobalMeta] = makePersisted(createStore(initialGlobalMeta()), {
+    deserialize: value => deserializeGlobalMeta(value),
   })
 
   createEffect(() => {
@@ -132,6 +160,12 @@ export const AppContextProvider: ParentComponent = props => {
     },
     setHeaderData(value) {
       setHeaderData(value)
+    },
+    get globalMeta() {
+      return globalMeta
+    },
+    setGlobalMeta(key, value) {
+      setGlobalMeta(key, value)
     },
   }
 

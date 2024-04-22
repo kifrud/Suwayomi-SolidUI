@@ -14,7 +14,7 @@ const NavbarItem: Component<NavbarItemProps> = props => {
   const isActive = createMemo(() => location.pathname.toLowerCase() === data.href)
 
   return (
-    <A href={data.href} class="navbar-item">
+    <A href={data.href} class="navbar-item" classList={{active: isActive()}}>
       <span class="icon-32">
         <Show when={data.icon.active && isActive()} fallback={data.icon.default}>
           {data.icon.active}
