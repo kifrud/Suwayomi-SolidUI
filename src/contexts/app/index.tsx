@@ -1,20 +1,11 @@
-import {
-  Accessor,
-  JSXElement,
-  ParentComponent,
-  createContext,
-  createEffect,
-  createResource,
-  createSignal,
-  useContext,
-} from 'solid-js'
+import { ParentComponent, createContext, createEffect, createResource, useContext } from 'solid-js'
 import { Flatten, Translator, flatten, resolveTemplate, translator } from '@solid-primitives/i18n'
 import { dict as en_dict } from '@/locales/en/en'
 import { makePersisted } from '@solid-primitives/storage'
 import { createStore } from 'solid-js/store'
 import { setTheme } from 'solid-theme-provider'
 import { initialGlobalMeta, initialSettings } from './initial'
-import { deserializeSettings } from './deserialize'
+import { deserializeGlobalMeta, deserializeSettings } from './deserialize'
 
 type RawDictionary = typeof en_dict
 // NOTE: add locales to type
@@ -47,8 +38,6 @@ interface AppState {
   t: Translator<Dictionary>
   get theme(): string
   setTheme(value: string): void
-  get headerData(): Accessor<JSXElement>
-  setHeaderData(value: JSXElement): void
   get globalMeta(): GlobalMeta
   setGlobalMeta(key: keyof GlobalMeta, value: any): void
 }
@@ -73,21 +62,7 @@ export interface GlobalMeta {
   updatesCount: number
 }
 
-function deserializeGlobalMeta(value: string): GlobalMeta {
-  const parsed = JSON.parse(value) as unknown
-  if (!parsed || typeof parsed !== 'object') return initialGlobalMeta()
-
-  return {
-    updatesCount:
-      ('updatesCount' in parsed &&
-        typeof parsed.updatesCount === 'number' &&
-        parsed.updatesCount) ||
-      0,
-  }
-}
-
 export const AppContextProvider: ParentComponent = props => {
-  const [headerData, setHeaderData] = createSignal<JSXElement>()
   const [settings, set] = makePersisted(createStore(initialSettings()), {
     deserialize: value => deserializeSettings(value),
   })
@@ -119,12 +94,7 @@ export const AppContextProvider: ParentComponent = props => {
       setTheme(value)
       set('theme', value)
     },
-    get headerData() {
-      return headerData
-    },
-    setHeaderData(value) {
-      setHeaderData(value)
-    },
+
     get globalMeta() {
       return globalMeta
     },

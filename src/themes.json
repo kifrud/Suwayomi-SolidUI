@@ -11,7 +11,8 @@
       },
       "vars": {
         "background": "#161616",
-        "foreground": "#FFFFFF"
+        "foreground": "#FFFFFF",
+        "foreground_muted": "#717171"
       }
     },
     "warm_light": {
@@ -21,7 +22,8 @@
       },
       "vars": {
         "background": "#D3D3D3",
-        "foreground": "#111100"
+        "foreground": "#111111",
+        "foreground_muted": "#EAEAEA"
       }
     }
   }

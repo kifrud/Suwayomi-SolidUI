@@ -1,6 +1,6 @@
 import { currentTheme } from 'solid-theme-provider'
-import { Settings, toLocale } from '.'
-import { initialLocale, initialSettings } from './initial'
+import { GlobalMeta, Settings, toLocale } from '.'
+import { initialGlobalMeta, initialLocale, initialSettings } from './initial'
 
 export function deserializeSettings(value: string): Settings {
   const parsed = JSON.parse(value) as unknown
@@ -12,5 +12,18 @@ export function deserializeSettings(value: string): Settings {
       initialLocale(),
     theme:
       ('theme' in parsed && typeof parsed.theme === 'string' && parsed.theme) || currentTheme(),
+  }
+}
+
+export function deserializeGlobalMeta(value: string): GlobalMeta {
+  const parsed = JSON.parse(value) as unknown
+  if (!parsed || typeof parsed !== 'object') return initialGlobalMeta()
+
+  return {
+    updatesCount:
+      ('updatesCount' in parsed &&
+        typeof parsed.updatesCount === 'number' &&
+        parsed.updatesCount) ||
+      0,
   }
 }

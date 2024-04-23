@@ -6,14 +6,11 @@
   word-wrap: break-word;
   &__footer {
     position: absolute;
-    background: linear-gradient(transparent, #181818);
+    background: linear-gradient(transparent, var(--stp-background));
     z-index: 10;
     bottom: 0;
     padding: 8px;
     width: 100%;
     border-radius: 0 0 8px 8px;
-  }
-  &__cover {
-    aspect-ratio: 257 / 364;
   }
 }

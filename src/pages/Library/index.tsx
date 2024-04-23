@@ -1,4 +1,4 @@
-import { useAppContext, useGraphQLClient } from '@/contexts'
+import { useGraphQLClient, useHeaderContext } from '@/contexts'
 import { getCategories, getCategory } from '@/gql'
 import {
   Component,
@@ -14,7 +14,7 @@ import { useSearchParams } from '@solidjs/router'
 import { Chip } from '@/components'
 
 const Library: Component = () => {
-  const ctx = useAppContext()
+  const headerCtx = useHeaderContext()
   const client = useGraphQLClient()
 
   const [searchParams] = useSearchParams()
@@ -50,19 +50,24 @@ const Library: Component = () => {
 
   const totalMangaCountElement = <Chip>{totalMangaCount()}</Chip>
 
-  createEffect(() => ctx.setHeaderData(totalMangaCountElement))
-  onCleanup(() => ctx.setHeaderData(''))
+  createEffect(() => headerCtx.setHeaderTitleData(totalMangaCountElement))
+  onCleanup(() => headerCtx.setHeaderTitleData(''))
 
   createEffect(() => console.log(Number(currentTab()), category))
 
   return (
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 w-full">
       <Show when={!categories.loading} fallback={<span>Fetching categories...</span>}>
-        <CategoriesTabs
-          categories={orderedCategories}
-          value={currentTab}
-          updateValue={setCurrentTab}
-        />
+        <Show
+          when={categories.latest?.data || categories.error}
+          fallback={<span class='text-rose-800'>Error when fetching categories</span>}
+        >
+          <CategoriesTabs
+            categories={orderedCategories}
+            value={currentTab}
+            updateValue={setCurrentTab}
+          />
+        </Show>
       </Show>
       <Show when={!category.loading}>
         <TitlesList mangas={mangas} />

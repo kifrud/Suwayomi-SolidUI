@@ -1,6 +1,7 @@
 import { Component, Show } from 'solid-js'
 import { Mangas } from '.'
 import { A } from '@solidjs/router'
+import { Image } from '@/components'
 import './styles.scss'
 
 interface TitleCardProps {
@@ -9,14 +10,14 @@ interface TitleCardProps {
 
 const TitleCard: Component<TitleCardProps> = props => {
   return (
-    <A href={`/manga/${props.manga.id}`} class="title-card__cover h-full">
+    <A href={`/manga/${props.manga.id}`} class="aspect-cover h-full">
       <div class="title-card">
         <Show when={props.manga.thumbnailUrl} fallback={<span>Failed to load cover</span>}>
           {' '}
           {/* FIXME: doesn't catch errors atm */}
           <div class="relative h-full w-full">
-            <img
-              class="w-full h-full rounded-lg object-cover"
+            <Image
+              class="object-cover aspect-cover"
               src={props.manga.thumbnailUrl ?? ''}
               alt={props.manga.title}
             />

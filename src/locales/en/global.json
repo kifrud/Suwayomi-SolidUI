@@ -5,5 +5,6 @@
     "browse": "Browse",
     "downloads": "Downloads",
     "settings": "Settings"
-  }
+  },
+  "error": "Uncaught error."
 }
