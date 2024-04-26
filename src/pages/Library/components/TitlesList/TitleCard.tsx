@@ -13,14 +13,8 @@ const TitleCard: Component<TitleCardProps> = props => {
     <A href={`/manga/${props.manga.id}`} class="aspect-cover h-full">
       <div class="title-card">
         <Show when={props.manga.thumbnailUrl} fallback={<span>Failed to load cover</span>}>
-          {' '}
-          {/* FIXME: doesn't catch errors atm */}
           <div class="relative h-full w-full">
-            <Image
-              class="object-cover aspect-cover"
-              src={props.manga.thumbnailUrl ?? ''}
-              alt={props.manga.title}
-            />
+            <Image class="object-cover aspect-cover" src={props.manga.thumbnailUrl ?? ''} alt=" " />
           </div>
         </Show>
         <div class="title-card__footer">

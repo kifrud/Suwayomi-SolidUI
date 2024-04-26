@@ -1,6 +1,6 @@
 .tabs {
-  width: 100%;
   overflow-x: auto;
+  scrollbar-width: none;
   overflow-y: hidden;
   position: sticky;
   top: calc(var(--header-height) + 1px);
@@ -11,8 +11,7 @@
   &__list {
     height: 100%;
     display: flex;
-    gap: 16px;
-    padding: 0 16px;
+    // padding: 0 16px;
   }
   &__indicator {
     position: absolute;

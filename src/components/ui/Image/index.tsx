@@ -1,5 +1,5 @@
 import { useAppContext } from '@/contexts'
-import { Component, JSX, Match, Switch, createEffect, createMemo, createSignal } from 'solid-js'
+import { Component, JSX, Match, Switch, createMemo, createSignal } from 'solid-js'
 
 interface ImageProps extends JSX.HTMLAttributes<HTMLImageElement> {
   src: string
@@ -36,15 +36,6 @@ const Image: Component<ImageProps> = props => {
     setState(ImageState.error)
   }
 
-  createEffect(() => {
-    if (img) {
-      console.log('exist')
-      ;(img.onload = load), (img.onerror = error)
-    }
-  })
-
-  createEffect(() => console.log(state()))
-
   return (
     <div class="relative h-full w-full">
       <img
@@ -54,9 +45,9 @@ const Image: Component<ImageProps> = props => {
         onLoad={load}
         src={props.src}
         alt={props.alt}
+        loading="lazy"
       />
       <Switch>
-        {/* <Match when={state() !== ImageState.error && state() !== ImageState.loading}></Match> */}
         <Match when={state() === ImageState.error}>
           <div
             class={`top-0 absolute flex items-center justify-center text-rose-800 ${rounded()} ${imgClasses()}`}

@@ -8,16 +8,19 @@ import {
   createResource,
   createSignal,
   onCleanup,
+  onMount,
 } from 'solid-js'
 import { CategoriesTabs, TitlesList } from './components'
 import { useSearchParams } from '@solidjs/router'
-import { Chip } from '@/components'
+import { Chip, Input } from '@/components'
+import SearchIcon from '~icons/material-symbols/search'
+import { matches } from '@/helpers'
 
 const Library: Component = () => {
   const headerCtx = useHeaderContext()
   const client = useGraphQLClient()
 
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [currentTab, setCurrentTab] = createSignal(searchParams.tab ?? '1')
   const [categories] = createResource(async () => await client.query(getCategories, {}).toPromise())
 
@@ -50,17 +53,39 @@ const Library: Component = () => {
 
   const totalMangaCountElement = <Chip>{totalMangaCount()}</Chip>
 
-  createEffect(() => headerCtx.setHeaderTitleData(totalMangaCountElement))
-  onCleanup(() => headerCtx.setHeaderTitleData(''))
+  const [searchValue, setSearchValue] = createSignal('')
 
-  createEffect(() => console.log(Number(currentTab()), category))
+  const searchInput = (
+    <Show when={matches.md}>
+      <Input
+        type="search"
+        placeholder="Search"
+        class="w-full"
+        wrapperClass="lg:w-[512px] md:w-96 w-full"
+        value={searchValue}
+        onchange={e => setSearchValue(e.currentTarget.value)}
+        icon={<SearchIcon />}
+      />
+    </Show>
+  )
+
+  createEffect(() => console.log(searchValue()))
+
+  onMount(() => {
+    headerCtx.setHeaderCenter(searchInput)
+  })
+
+  createEffect(() => headerCtx.setHeaderTitleData(totalMangaCountElement))
+  onCleanup(() => headerCtx.setHeaderTitleData(null))
 
   return (
-    <div class="flex flex-col gap-2 w-full">
+    <div class="flex flex-col gap-2">
       <Show when={!categories.loading} fallback={<span>Fetching categories...</span>}>
+        {' '}
+        {/* TODO: TRANSLATE */}
         <Show
           when={categories.latest?.data || categories.error}
-          fallback={<span class='text-rose-800'>Error when fetching categories</span>}
+          fallback={<span class="text-rose-800">An error occurred when fetching categories</span>}
         >
           <CategoriesTabs
             categories={orderedCategories}

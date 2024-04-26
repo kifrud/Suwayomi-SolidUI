@@ -1,9 +1,28 @@
 .input {
-  border: 1px solid var(--stp-foreground-alpha_quaternary);
-  height: 24px;
+  border: 2px solid var(--stp-foreground-alpha_quaternary);
+  max-height: 36px;
   padding: 8px 6px;
   background: var(--stp-foreground-alpha_quaternary);
+  transition: all 0.15s;
+  &__icon {
+    position: absolute;
+    left: 6px;
+    svg {
+      transition: all 0.15s;
+      width: 24px;
+      height: 24px;
+      opacity: 0.5;
+    }
+  }
+  &:focus,
+  &:hover {
+    border: 2px solid var(--stp-foreground-alpha_tertiary);
+    outline: none;
+  }
 }
+
 .input__wrapper {
   display: flex;
+  align-items: center;
+  position: relative;
 }

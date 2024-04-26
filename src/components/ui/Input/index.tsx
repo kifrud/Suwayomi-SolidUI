@@ -8,13 +8,21 @@ interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputEleme
   required?: boolean
   showSubmit?: boolean
   onSubmit?: () => void
+  wrapperClass?: string
+  placeholder?: string
 }
 
 const Input = <T extends string>(props: InputProps<T>) => {
-  const inputClasses = createMemo(() => ['input', ...(props.class ? [props.class] : [])].join(' '))
-  const values = mergeProps(
-    { required: false, type: 'text', class: inputClasses(), showSubmit: true },
-    props
+  const wrapperClasses = createMemo(() =>
+    ['input__wrapper', ...(props.wrapperClass ? [props.wrapperClass] : [])].join(' ')
+  )
+
+  const values = mergeProps({ required: false, type: 'text', class: '', showSubmit: true }, props)
+
+  const inputClasses = createMemo(() =>
+    ['input', 'rounded-lg', values.icon && 'pl-8', ...(values.class ? [values.class] : [])].join(
+      ' '
+    )
   )
 
   const value = createMemo(() =>
@@ -22,14 +30,15 @@ const Input = <T extends string>(props: InputProps<T>) => {
   )
 
   return (
-    <div class="input__wrapper">
+    <div class={wrapperClasses()}>
       <Show when={values.icon}>
         <span class="input__icon">{values.icon}</span>
       </Show>
       <input
         {...values}
-        ref={values.ref}
-        class={values.class}
+        placeholder={values.placeholder}
+        ref={values.ref ?? undefined}
+        class={inputClasses()}
         type={values.type}
         value={value()}
         onChange={values.onChange}

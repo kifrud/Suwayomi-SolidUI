@@ -15,7 +15,9 @@ const Header: Component = () => {
 
   const defaultTitle = createMemo(() => (
     <>
-      <span class="icon-32">{routeData().icon.active ?? routeData().icon.default}</span>
+      <span class="icon-32 hidden sm:block">
+        {routeData().icon.active ?? routeData().icon.default}
+      </span>
       <div class="flex items-center gap-1">
         <h1>{t(`global.nav.${routeData().name}`)}</h1>
         {ctx.headerTitleData()}
@@ -28,9 +30,10 @@ const Header: Component = () => {
       <div class="flex items-center gap-2">
         <Show when={ctx.headerTitle()} fallback={defaultTitle()}>
           {ctx.headerTitle()}
-          {ctx.headerTitleData()}
         </Show>
       </div>
+      <div class="flex items-center gap-2 w-max">{ctx.headerCenter()}</div>
+      <div class="flex items-center gap-2">{ctx.headerEnd()}</div>
     </header>
   )
 }
