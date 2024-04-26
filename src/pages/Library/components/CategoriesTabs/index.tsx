@@ -37,8 +37,11 @@ const CategoriesTabs: Component<CategoriesTabsProps> = props => {
         <For each={props.categories()}>
           {item => (
             <Tabs.Trigger
-              class="flex items-center gap-1 px-4 py-1 pb-2 transition-all opacity-75 hover:opacity-100"
-              classList={{ 'opacity-100': props.value() === item.id.toString() }}
+              class="flex items-center gap-1 px-4 py-2 pb-2 transition-all hover:opacity-100"
+              classList={{
+                'opacity-100': props.value() === item.id.toString(),
+                'opacity-75': props.value() !== item.id.toString(),
+              }}
               value={item.id.toString()}
             >
               <span>{item.name}</span>

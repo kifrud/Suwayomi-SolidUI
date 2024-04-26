@@ -1,6 +1,6 @@
 .header {
   display: flex;
-  height: 53px;
+  height: var(--header-height);
   align-items: center;
   padding: 0 16px;
   background: var(--stp-background);

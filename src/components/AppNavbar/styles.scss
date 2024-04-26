@@ -7,7 +7,7 @@
     align-items: center;
     position: sticky;
     gap: 8px;
-    padding: 16px 8px;
+    padding-top: 16px;
     top: calc(var(--header-height) + 1px);
 
     p {
@@ -45,6 +45,7 @@
   align-items: center;
   width: 100%;
   opacity: 0.5;
+  padding: 0 8px;
   transition: all 0.15s ease-in-out;
 
   &:hover {
