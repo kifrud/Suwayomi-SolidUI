@@ -1,6 +1,5 @@
-import { currentTheme } from 'solid-theme-provider'
 import { GlobalMeta, Settings, toLocale } from '.'
-import { initialGlobalMeta, initialLocale, initialSettings } from './initial'
+import { initialGlobalMeta, initialLocale, initialSettings, initialTheme } from './initial'
 
 export function deserializeSettings(value: string): Settings {
   const parsed = JSON.parse(value) as unknown
@@ -11,7 +10,7 @@ export function deserializeSettings(value: string): Settings {
       ('locale' in parsed && typeof parsed.locale === 'string' && toLocale(parsed.locale)) ||
       initialLocale(),
     theme:
-      ('theme' in parsed && typeof parsed.theme === 'string' && parsed.theme) || currentTheme(),
+      ('theme' in parsed && typeof parsed.theme === 'string' && parsed.theme) || initialTheme(),
   }
 }
 

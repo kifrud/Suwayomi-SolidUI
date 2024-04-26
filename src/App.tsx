@@ -1,4 +1,4 @@
-import { ParentComponent, Show } from 'solid-js'
+import { ParentComponent, Show, Suspense, createEffect } from 'solid-js'
 import { MainLayout, ReaderLayout } from './layouts'
 import { useLocation } from '@solidjs/router'
 import { ThemeProvider } from 'solid-theme-provider'
@@ -9,6 +9,8 @@ import { Title } from '@solidjs/meta'
 const App: ParentComponent = props => {
   const { theme } = useAppContext()
   const location = useLocation()
+  createEffect(() => console.log(theme))
+
   return (
     <>
       <Title>Suwayomi</Title>
@@ -18,7 +20,9 @@ const App: ParentComponent = props => {
       >
         <ReaderLayout>{props.children}</ReaderLayout>
       </Show>
-      <ThemeProvider styles={{ component: 'hidden' }} themes={themes} default={theme} />
+      <Suspense>
+        <ThemeProvider styles={{ component: 'hidden' }} themes={themes} default={theme} />
+      </Suspense>
     </>
   )
 }

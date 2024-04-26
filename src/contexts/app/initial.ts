@@ -19,9 +19,19 @@ export function initialGlobalMeta(): GlobalMeta {
   }
 }
 
+export function initialTheme(): string {
+  if (currentTheme() && currentTheme() !== 'initializing') return currentTheme() // TODO: for god's sake make better theme solution
+
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'monochrome_dark'
+  }
+
+  return 'monochrome_light'
+}
+
 export function initialSettings(): Settings {
   return {
     locale: initialLocale(),
-    theme: currentTheme(),
+    theme: initialTheme(),
   }
 }

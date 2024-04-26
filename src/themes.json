@@ -21,9 +21,9 @@
         "browser_theme_color": "#f1efe5"
       },
       "vars": {
-        "background": "#BFBFBF",
+        "background": "#EFEFEF",
         "foreground": "#111111",
-        "foreground_muted": "#EAEAEA"
+        "foreground_muted": "#E1E1E1"
       }
     }
   }
