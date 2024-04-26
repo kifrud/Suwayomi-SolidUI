@@ -3,6 +3,7 @@ import { Component, Show, createMemo } from 'solid-js'
 import { navData } from '../navData'
 import { useAppContext, useHeaderContext } from '@/contexts'
 import './styles.scss'
+import { Title } from '@solidjs/meta'
 
 const Header: Component = () => {
   const { t } = useAppContext()
@@ -27,6 +28,7 @@ const Header: Component = () => {
 
   return (
     <header class="header">
+      <Title>{t(`global.nav.${routeData().name}`)}</Title>
       <div class="flex items-center gap-2">
         <Show when={ctx.headerTitle()} fallback={defaultTitle()}>
           {ctx.headerTitle()}

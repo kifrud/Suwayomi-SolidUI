@@ -10,6 +10,7 @@ interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputEleme
   onSubmit?: () => void
   wrapperClass?: string
   placeholder?: string
+  
 }
 
 const Input = <T extends string>(props: InputProps<T>) => {

@@ -38,6 +38,21 @@ const Library: Component = () => {
   const mangas = createMemo(() =>
     category()?.data?.category.mangas.nodes.filter(item => {
       if (!item.inLibrary) return false
+      if (
+        searchParams.query !== '' &&
+        searchParams.query !== null &&
+        searchParams.query !== undefined &&
+        item.title.toLowerCase().includes(searchParams.query.toLowerCase())
+      )
+        return true
+
+      if (
+        searchParams.query !== '' &&
+        searchParams.query !== null &&
+        searchParams.query !== undefined &&
+        !item.title.toLowerCase().includes(searchParams.query.toLowerCase())
+      )
+        return false
       return true
     })
   )
@@ -55,24 +70,33 @@ const Library: Component = () => {
 
   const [searchValue, setSearchValue] = createSignal('')
 
+  const mobileSearch = (
+    <div>
+      <span>
+        <SearchIcon />
+      </span>
+    </div>
+  )
+
   const searchInput = (
-    <Show when={matches.md}>
-      <Input
-        type="search"
-        placeholder="Search"
-        class="w-full"
-        wrapperClass="lg:w-[512px] md:w-96 w-full"
-        value={searchValue}
-        onchange={e => setSearchValue(e.currentTarget.value)}
-        icon={<SearchIcon />}
-      />
-    </Show>
+    <Input
+      type="search"
+      placeholder="Search"
+      class="w-full"
+      wrapperClass="lg:w-[512px] md:w-96 w-full"
+      value={searchValue}
+      onchange={e => setSearchValue(e.currentTarget.value)}
+      icon={<SearchIcon />}
+      onSubmit={() => setSearchParams({ q: searchValue() })}
+    />
   )
 
   createEffect(() => console.log(searchValue()))
 
   onMount(() => {
-    headerCtx.setHeaderCenter(searchInput)
+    // could've wrapped it inside createEffect or use Show tag in each element but nah
+    headerCtx.setHeaderCenter(matches.md && searchInput)
+    headerCtx.setHeaderEnd(!matches.md && mobileSearch)
   })
 
   createEffect(() => headerCtx.setHeaderTitleData(totalMangaCountElement))
