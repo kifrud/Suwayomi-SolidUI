@@ -1,21 +1,23 @@
-import {
-  Accessor,
-  JSXElement,
-  ParentComponent,
-  createContext,
-  createSignal,
-  useContext,
-} from 'solid-js'
+import { JSXElement, ParentComponent, createContext, useContext } from 'solid-js'
+import { createStore } from 'solid-js/store'
 
 interface HeaderState {
-  get headerTitle(): Accessor<JSXElement>
+  get headerTitle(): JSXElement
   setHeaderTitle(value: JSXElement | null): void
-  get headerTitleData(): Accessor<JSXElement>
+  get headerTitleData(): JSXElement
   setHeaderTitleData(value: JSXElement): void
-  get headerCenter(): Accessor<JSXElement>
+  get headerCenter(): JSXElement
   setHeaderCenter(value: JSXElement | null): void
-  get headerEnd(): Accessor<JSXElement>
+  get headerEnd(): JSXElement
   setHeaderEnd(value: JSXElement | null): void
+  clear(): void
+}
+
+interface HeaderStore {
+  titleData: JSXElement
+  title: JSXElement
+  center: JSXElement
+  end: JSXElement
 }
 
 const HeaderContext = createContext<HeaderState>({} as HeaderState)
@@ -23,35 +25,43 @@ const HeaderContext = createContext<HeaderState>({} as HeaderState)
 export const useHeaderContext = () => useContext(HeaderContext)
 
 export const HeaderContextProvider: ParentComponent = props => {
-  const [headerTitleData, setHeaderTitleData] = createSignal<JSXElement>()
-  const [headerTitle, setHeaderTitle] = createSignal<JSXElement>(null)
-  const [headerCenter, setHeaderCenter] = createSignal<JSXElement>(null)
-  const [headerEnd, setHeaderEnd] = createSignal<JSXElement>(null)
+  const [header, setHeader] = createStore<HeaderStore>({
+    titleData: null,
+    title: null,
+    center: null,
+    end: null,
+  })
 
   const state: HeaderState = {
     get headerTitleData() {
-      return headerTitleData
+      return header.titleData
     },
     setHeaderTitleData(value) {
-      setHeaderTitleData(value)
+      setHeader('titleData', value)
     },
     get headerTitle() {
-      return headerTitle
+      return header.title
     },
     setHeaderTitle(value) {
-      setHeaderTitle(value)
+      setHeader('title', value)
     },
     get headerCenter() {
-      return headerCenter
+      return header.center
     },
     setHeaderCenter(value) {
-      setHeaderCenter(value)
+      setHeader('center', value)
     },
     get headerEnd() {
-      return headerEnd
+      return header.end
     },
     setHeaderEnd(value) {
-      setHeaderEnd(value)
+      setHeader('end', value)
+    },
+    clear() {
+      setHeader('titleData', null)
+      setHeader('title', null)
+      setHeader('center', null)
+      setHeader('end', null)
     },
   }
 

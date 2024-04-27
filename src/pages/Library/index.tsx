@@ -100,7 +100,7 @@ const Library: Component = () => {
   })
 
   createEffect(() => headerCtx.setHeaderTitleData(totalMangaCountElement))
-  onCleanup(() => headerCtx.setHeaderTitleData(null))
+  onCleanup(() => headerCtx.clear())
 
   return (
     <div class="flex flex-col gap-2">
