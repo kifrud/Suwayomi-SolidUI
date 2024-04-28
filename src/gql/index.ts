@@ -1,6 +1,2 @@
 export * from './graphql'
 export * from './graphqlClient'
-export * from './Fragments'
-export * from './Mutations'
-export * from './Queries'
-export * from './Subscriptions'

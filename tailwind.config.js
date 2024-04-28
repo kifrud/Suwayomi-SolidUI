@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import { breakpoints } from './src/helpers'
+import { breakpoints } from './src/helpers/breakpoints'
 
 export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],

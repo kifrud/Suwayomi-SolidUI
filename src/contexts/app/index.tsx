@@ -4,8 +4,8 @@ import { dict as en_dict } from '@/locales/en/en'
 import { makePersisted } from '@solid-primitives/storage'
 import { createStore } from 'solid-js/store'
 import { setTheme } from 'solid-theme-provider'
-import { initialGlobalMeta, initialSettings } from './initial'
-import { deserializeGlobalMeta, deserializeSettings } from './deserialize'
+import { initialSettings } from './initial'
+import { deserializeSettings } from './deserialize'
 
 type RawDictionary = typeof en_dict
 // NOTE: add locales to type
@@ -38,8 +38,6 @@ interface AppState {
   t: Translator<Dictionary>
   get theme(): string
   setTheme(value: string): void
-  get globalMeta(): GlobalMeta
-  setGlobalMeta(key: keyof GlobalMeta, value: any): void
 }
 
 export const toLocale = (string: string): Locale | undefined =>
@@ -58,16 +56,9 @@ export interface Settings {
   theme: string
 }
 
-export interface GlobalMeta {
-  updatesCount: number
-}
-
 export const AppContextProvider: ParentComponent = props => {
   const [settings, set] = makePersisted(createStore(initialSettings()), {
     deserialize: value => deserializeSettings(value),
-  })
-  const [globalMeta, setGlobalMeta] = makePersisted(createStore(initialGlobalMeta()), {
-    deserialize: value => deserializeGlobalMeta(value),
   })
 
   createEffect(() => {
@@ -93,13 +84,6 @@ export const AppContextProvider: ParentComponent = props => {
     setTheme(value) {
       setTheme(value)
       set('theme', value)
-    },
-
-    get globalMeta() {
-      return globalMeta
-    },
-    setGlobalMeta(key, value) {
-      setGlobalMeta(key, value)
     },
   }
 

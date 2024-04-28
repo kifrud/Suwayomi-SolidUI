@@ -1,5 +1,5 @@
 import { useGraphQLClient, useHeaderContext } from '@/contexts'
-import { getCategories, getCategory } from '@/gql'
+import { getCategories, getCategory } from '@/gql/Queries'
 import {
   Component,
   Show,
@@ -91,8 +91,6 @@ const Library: Component = () => {
     />
   )
 
-  createEffect(() => console.log(searchValue()))
-
   onMount(() => {
     // could've wrapped it inside createEffect or use Show tag in each element but nah
     headerCtx.setHeaderCenter(matches.md && searchInput)
@@ -105,10 +103,9 @@ const Library: Component = () => {
   return (
     <div class="flex flex-col gap-2">
       <Show when={!categories.loading} fallback={<span>Fetching categories...</span>}>
-        {' '}
         {/* TODO: TRANSLATE */}
         <Show
-          when={categories.latest?.data || categories.error}
+          when={categories.latest?.data}
           fallback={<span class="text-rose-800">An error occurred when fetching categories</span>}
         >
           <CategoriesTabs
@@ -118,9 +115,7 @@ const Library: Component = () => {
           />
         </Show>
       </Show>
-      <Show when={!category.loading}>
-        <TitlesList mangas={mangas} />
-      </Show>
+      <TitlesList mangas={mangas} />
     </div>
   )
 }

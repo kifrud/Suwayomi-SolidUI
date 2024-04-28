@@ -10,6 +10,7 @@ export const AppRoutes = () => {
   const Browse = lazy(() => import('./pages/Browse'))
   const Downloads = lazy(() => import('./pages/Downloads'))
   const Settings = lazy(() => import('./pages/Settings'))
+  const Manga = lazy(() => import('./pages/manga'))
 
   return (
     <Router
@@ -24,6 +25,7 @@ export const AppRoutes = () => {
       <Route path={RoutePaths.browse} component={Browse} />
       <Route path={RoutePaths.downloads} component={Downloads} />
       <Route path={RoutePaths.settings} component={Settings} />
+      <Route path={`${RoutePaths.manga}/:id`} component={Manga} />
     </Router>
   )
 }

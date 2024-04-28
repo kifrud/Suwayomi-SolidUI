@@ -1,5 +1,5 @@
 import { currentTheme } from 'solid-theme-provider'
-import { GlobalMeta, Locale, Settings, toLocale } from '.'
+import { Locale, Settings, toLocale } from '.'
 
 export function initialLocale(): Locale {
   let locale: Locale | undefined
@@ -11,12 +11,6 @@ export function initialLocale(): Locale {
   if (locale) return locale
 
   return 'en'
-}
-
-export function initialGlobalMeta(): GlobalMeta {
-  return {
-    updatesCount: 0,
-  }
 }
 
 export function initialTheme(): string {

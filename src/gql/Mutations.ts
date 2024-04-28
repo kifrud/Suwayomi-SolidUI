@@ -1,7 +1,7 @@
 import {
+	ExtensionTypeFragment,
 	CategoryTypeFragment,
 	ChapterTypeFragment,
-	ExtensionTypeFragment,
 	MangaTypeFragment,
 	SourceTypeFragment,
 	TrackerTypeFragment,

@@ -1,4 +1,5 @@
 import { Accessor, JSX, JSXElement, Show, createMemo, mergeProps } from 'solid-js'
+import ArrowRight from '~icons/material-symbols/arrow-right-alt-rounded'
 import './styles.scss'
 
 interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputElement> {
@@ -10,7 +11,6 @@ interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputEleme
   onSubmit?: () => void
   wrapperClass?: string
   placeholder?: string
-  
 }
 
 const Input = <T extends string>(props: InputProps<T>) => {
@@ -46,7 +46,9 @@ const Input = <T extends string>(props: InputProps<T>) => {
         required={values.required}
       />
       <Show when={value() && values.showSubmit}>
-        <span class="input__submit" onClick={values.onSubmit}></span>
+        <span class="input__submit" onClick={values.onSubmit}>
+          <ArrowRight />
+        </span>
       </Show>
     </div>
   )

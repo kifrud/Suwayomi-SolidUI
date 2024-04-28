@@ -4,4 +4,5 @@ export enum RoutePaths {
   browse = '/browse',
   downloads = '/downloads',
   settings = '/settings',
+  manga = '/manga',
 }

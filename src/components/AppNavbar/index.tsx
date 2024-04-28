@@ -1,13 +1,13 @@
 import { Component, For, Show, createMemo } from 'solid-js'
 import { navData } from '../navData'
 import NavbarItem from './NavbarItem'
-import { useAppContext } from '@/contexts'
+import { useGlobalMeta } from '@/contexts'
 import { Badge } from '../ui'
 import './styles.scss'
 import { matches } from '@/helpers'
 
 const AppNavbar: Component = () => {
-  const { globalMeta } = useAppContext()
+  const { globalMeta } = useGlobalMeta()
   const navbarType = createMemo(() => (matches.md ? 'desktop' : 'mobile'))
 
   return (
@@ -15,10 +15,14 @@ const AppNavbar: Component = () => {
       <For each={navData()}>
         {item => (
           <Show
-            when={item.name === 'updates' && globalMeta.updatesCount > 0}
+            when={
+              item.name === 'updates' &&
+              typeof globalMeta.downloadsBadge === 'number' &&
+              globalMeta.downloadsBadge > 0
+            }
             fallback={<NavbarItem data={item} />}
           >
-            <Badge count={globalMeta.updatesCount}>
+            <Badge count={Number(globalMeta.downloadsBadge)}>
               <NavbarItem data={item} />
             </Badge>
           </Show>
