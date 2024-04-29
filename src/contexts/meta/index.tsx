@@ -27,9 +27,12 @@ export const useGlobalMeta = () => useContext(GlobalMetaContext)
 export const GlobalMetaProvider: ParentComponent = props => {
   const Meta = client.query(metas, {})
 
-  const [globalMetaStore, setGlobalMetaStore] = makePersisted<GlobalMeta>(createStore(defaults), {
-    name: 'globalMeta',
-  })
+  const [globalMetaStore, setGlobalMetaStore] = makePersisted<GlobalMeta>(
+    createStore({} as GlobalMeta),
+    {
+      name: 'globalMeta',
+    }
+  )
 
   function extractGlobalMeta(
     value: GlobalMeta,
@@ -65,6 +68,7 @@ export const GlobalMetaProvider: ParentComponent = props => {
             setGlobalMetaStore(prev => ({ ...prev, [key]: val }))
 
             const vars = { key: metaKey, value: stringVal }
+
             if (stringVal !== JSON.stringify(defaults[key])) {
               await client.mutation(setGlobalMeta, vars).toPromise()
             } else if (existingVal !== undefined) {
