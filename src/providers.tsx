@@ -7,16 +7,20 @@ import {
 } from './contexts'
 import { client } from './gql/graphqlClient'
 import { MetaProvider } from '@solidjs/meta'
+import { ThemeProvider } from '@kifrud/solid-theme-provider'
+import themes from './themes.json'
 
 const Providers: ParentComponent = props => {
   return (
     <MetaProvider>
       <GlobalMetaProvider>
-        <AppContextProvider>
-          <HeaderContextProvider>
-            <GraphQLProvider client={client}>{props.children}</GraphQLProvider>
-          </HeaderContextProvider>
-        </AppContextProvider>
+        <ThemeProvider themes={themes}>
+          <AppContextProvider>
+            <HeaderContextProvider>
+              <GraphQLProvider client={client}>{props.children}</GraphQLProvider>
+            </HeaderContextProvider>
+          </AppContextProvider>
+        </ThemeProvider>
       </GlobalMetaProvider>
     </MetaProvider>
   )

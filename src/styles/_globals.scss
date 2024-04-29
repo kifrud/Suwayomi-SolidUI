@@ -14,6 +14,15 @@ html {
   background: var(--stp-foreground);
 }
 
+.bg-foreground-muted {
+  background: var(--stp-foreground_muted);
+}
+
+.placeholder {
+  background: var(--stp-foreground-alpha_quaternary);
+}
+
+
 .main-layout {
   display: flex;
   flex-direction: column;

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@kifrud/solid-theme-provider": "^0.9.7",
     "@kobalte/core": "^0.12.6",
     "@solid-primitives/i18n": "^2.1.1",
     "@solid-primitives/media": "^2.2.9",
@@ -20,8 +21,7 @@
     "gql.tada": "^1.5.2",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.16.0",
-    "solid-js": "^1.8.15",
-    "solid-theme-provider": "^0.9.1"
+    "solid-js": "^1.8.15"
   },
   "devDependencies": {
     "@0no-co/graphqlsp": "^1.10.1",

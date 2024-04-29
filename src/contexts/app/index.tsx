@@ -3,7 +3,6 @@ import { Flatten, Translator, flatten, resolveTemplate, translator } from '@soli
 import { dict as en_dict } from '@/locales/en/en'
 import { makePersisted } from '@solid-primitives/storage'
 import { createStore } from 'solid-js/store'
-import { setTheme } from 'solid-theme-provider'
 import { initialSettings } from './initial'
 import { deserializeSettings } from './deserialize'
 
@@ -36,8 +35,6 @@ interface AppState {
   get locale(): Locale
   setLocale(value: Locale): void
   t: Translator<Dictionary>
-  get theme(): string
-  setTheme(value: string): void
 }
 
 export const toLocale = (string: string): Locale | undefined =>
@@ -53,7 +50,6 @@ export const useAppContext = () => useContext(AppContext)
 
 export interface Settings {
   locale: Locale
-  theme: string
 }
 
 export const AppContextProvider: ParentComponent = props => {
@@ -78,13 +74,6 @@ export const AppContextProvider: ParentComponent = props => {
       set('locale', value)
     },
     t,
-    get theme() {
-      return settings.theme
-    },
-    setTheme(value) {
-      setTheme(value)
-      set('theme', value)
-    },
   }
 
   return <AppContext.Provider value={state}>{props.children}</AppContext.Provider>

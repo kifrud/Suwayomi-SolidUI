@@ -1,4 +1,3 @@
-import { currentTheme } from 'solid-theme-provider'
 import { Locale, Settings, toLocale } from '.'
 
 export function initialLocale(): Locale {
@@ -13,19 +12,8 @@ export function initialLocale(): Locale {
   return 'en'
 }
 
-export function initialTheme(): string {
-  if (currentTheme() && currentTheme() !== 'initializing') return currentTheme() // TODO: for god's sake make better theme solution
-
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'monochrome_dark'
-  }
-
-  return 'monochrome_light'
-}
-
 export function initialSettings(): Settings {
   return {
     locale: initialLocale(),
-    theme: initialTheme(),
   }
 }

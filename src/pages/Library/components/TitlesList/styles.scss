@@ -1,6 +1,7 @@
 .title {
   &-list {
     margin-top: calc(var(--categories-tabs-height) + 8px);
+    width: 100%;
   }
   &-card {
     position: relative;

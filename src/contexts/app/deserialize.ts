@@ -1,5 +1,5 @@
 import { Settings, toLocale } from '.'
-import { initialLocale, initialSettings, initialTheme } from './initial'
+import { initialLocale, initialSettings } from './initial'
 
 export function deserializeSettings(value: string): Settings {
   const parsed = JSON.parse(value) as unknown
@@ -9,7 +9,5 @@ export function deserializeSettings(value: string): Settings {
     locale:
       ('locale' in parsed && typeof parsed.locale === 'string' && toLocale(parsed.locale)) ||
       initialLocale(),
-    theme:
-      ('theme' in parsed && typeof parsed.theme === 'string' && parsed.theme) || initialTheme(),
   }
 }

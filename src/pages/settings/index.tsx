@@ -1,9 +1,12 @@
 import { useAppContext } from '@/contexts'
-import { Component } from 'solid-js'
+import { useThemeContext } from '@kifrud/solid-theme-provider'
+import { Component, Show, createSignal } from 'solid-js'
 
 const Settings: Component = () => {
   const ctx = useAppContext()
-  return <div onclick={() => ctx.setTheme('monochrome_light')}>light</div>
+  const themeCtx = useThemeContext()
+
+  return <div onclick={() => themeCtx.setTheme('monochrome_light')}>light</div>
 }
 
 export default Settings

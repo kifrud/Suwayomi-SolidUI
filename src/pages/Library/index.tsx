@@ -2,6 +2,7 @@ import { useGraphQLClient, useHeaderContext } from '@/contexts'
 import { getCategories, getCategory } from '@/gql/Queries'
 import {
   Component,
+  For,
   Show,
   createEffect,
   createMemo,
@@ -12,7 +13,7 @@ import {
 } from 'solid-js'
 import { CategoriesTabs, TitlesList } from './components'
 import { useSearchParams } from '@solidjs/router'
-import { Chip, Input } from '@/components'
+import { Chip, Input, Skeleton } from '@/components'
 import SearchIcon from '~icons/material-symbols/search'
 import { matches } from '@/helpers'
 
@@ -100,9 +101,19 @@ const Library: Component = () => {
   createEffect(() => headerCtx.setHeaderTitleData(totalMangaCountElement))
   onCleanup(() => headerCtx.clear())
 
+  const tabsPlaceholder = (
+    <div class="flex gap-2 items-center h-[40px] fixed w-full py-2">
+      <For each={new Array(5)}>
+        {() => (
+          <Skeleton rounded="lg" class="flex items-center gap-1 px-4 py-2 pb-2 h-[32px] w-[75px]" />
+        )}
+      </For>
+    </div>
+  )
+
   return (
-    <div class="flex flex-col gap-2">
-      <Show when={!categories.loading} fallback={<span>Fetching categories...</span>}>
+    <div class="flex flex-col gap-2 w-full">
+      <Show when={!categories.loading} fallback={tabsPlaceholder}>
         {/* TODO: TRANSLATE */}
         <Show
           when={categories.latest?.data}
