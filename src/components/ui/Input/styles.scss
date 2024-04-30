@@ -19,6 +19,20 @@
     border: 2px solid var(--stp-foreground-alpha_tertiary);
     outline: none;
   }
+  &__submit {
+    position: absolute;
+    right: -2px;
+    svg {
+      opacity: 0.5;
+      transition: all 0.15s;
+    }
+
+    &:hover {
+      svg {
+        opacity: 0.75;
+      }
+    }
+  }
 }
 
 .input__wrapper {

@@ -30,6 +30,13 @@ const Input = <T extends string>(props: InputProps<T>) => {
     typeof values.value === 'function' ? values.value() : values.value
   )
 
+  const onKeyDown: JSX.EventHandler<HTMLInputElement, KeyboardEvent> = e => {
+    if (['Enter', 'Space'].includes(e.code)) {
+      e.preventDefault()
+      if (values.onSubmit) values.onSubmit()
+    }
+  }
+
   return (
     <div class={wrapperClasses()}>
       <Show when={values.icon}>
@@ -44,6 +51,7 @@ const Input = <T extends string>(props: InputProps<T>) => {
         value={value()}
         onChange={values.onChange}
         required={values.required}
+        onKeyDown={onKeyDown}
       />
       <Show when={value() && values.showSubmit}>
         <span class="input__submit" onClick={values.onSubmit}>

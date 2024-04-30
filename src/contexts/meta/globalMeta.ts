@@ -1,5 +1,4 @@
-import { display, sort } from '@/enums'
-import { TriState } from '@/types'
+import { TriState, display, sort } from '@/enums'
 
 export const defaults = {
   nsfw: true,
@@ -7,9 +6,9 @@ export const defaults = {
   Display: display.Compact,
   Sort: sort.ID,
   Asc: true,
-  Unread: 0 as TriState,
-  Downloaded: 0 as TriState,
-  Tracked: 0 as TriState,
+  Unread: TriState.IGNORE,
+  Downloaded: TriState.IGNORE,
+  Tracked: TriState.IGNORE,
   // mangaMetaDefaults,
   downloadsBadge: true,
   unreadBadge: true,

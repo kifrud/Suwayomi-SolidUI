@@ -1,5 +1,6 @@
 {
   "library": {
-    "cover": "Failed to load cover"
+    "cover": "Failed to load cover",
+    "emptyCategory": "No manga found"
   }
 }

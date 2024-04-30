@@ -40,18 +40,18 @@ const Library: Component = () => {
     category()?.data?.category.mangas.nodes.filter(item => {
       if (!item.inLibrary) return false
       if (
-        searchParams.query !== '' &&
-        searchParams.query !== null &&
-        searchParams.query !== undefined &&
-        item.title.toLowerCase().includes(searchParams.query.toLowerCase())
+        searchParams.q !== '' &&
+        searchParams.q !== null &&
+        searchParams.q !== undefined &&
+        item.title.toLowerCase().includes(searchParams.q.toLowerCase())
       )
         return true
 
       if (
-        searchParams.query !== '' &&
-        searchParams.query !== null &&
-        searchParams.query !== undefined &&
-        !item.title.toLowerCase().includes(searchParams.query.toLowerCase())
+        searchParams.q !== '' &&
+        searchParams.q !== null &&
+        searchParams.q !== undefined &&
+        !item.title.toLowerCase().includes(searchParams.q.toLowerCase())
       )
         return false
       return true
@@ -111,6 +111,8 @@ const Library: Component = () => {
     </div>
   )
 
+  createEffect(() => console.log(category.loading))
+
   return (
     <div class="flex flex-col gap-2 w-full">
       <Show when={!categories.loading} fallback={tabsPlaceholder}>
@@ -126,7 +128,7 @@ const Library: Component = () => {
           />
         </Show>
       </Show>
-      <TitlesList mangas={mangas} />
+      <TitlesList mangas={mangas} isLoading={category.loading} />
     </div>
   )
 }

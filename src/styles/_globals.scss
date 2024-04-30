@@ -22,11 +22,10 @@ html {
   background: var(--stp-foreground-alpha_quaternary);
 }
 
-
 .main-layout {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100vh;
 }
 
 .icon-24 {
