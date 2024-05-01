@@ -20,8 +20,9 @@
     outline: none;
   }
   &__submit {
+    cursor: pointer;
     position: absolute;
-    right: -2px;
+    right:6px;
     svg {
       opacity: 0.5;
       transition: all 0.15s;

@@ -1,4 +1,11 @@
-import { Accessor, JSX, JSXElement, Show, createMemo, mergeProps } from 'solid-js'
+import {
+  Accessor,
+  JSX,
+  JSXElement,
+  Show,
+  createMemo,
+  mergeProps,
+} from 'solid-js'
 import ArrowRight from '~icons/material-symbols/arrow-right-alt-rounded'
 import './styles.scss'
 
@@ -18,7 +25,10 @@ const Input = <T extends string>(props: InputProps<T>) => {
     ['input__wrapper', ...(props.wrapperClass ? [props.wrapperClass] : [])].join(' ')
   )
 
-  const values = mergeProps({ required: false, type: 'text', class: '', showSubmit: true }, props)
+  const values = mergeProps(
+    { required: false, type: 'text', class: '', showSubmit: true, placeholder: '' },
+    props
+  )
 
   const inputClasses = createMemo(() =>
     ['input', 'rounded-lg', values.icon && 'pl-8', ...(values.class ? [values.class] : [])].join(
@@ -31,9 +41,12 @@ const Input = <T extends string>(props: InputProps<T>) => {
   )
 
   const onKeyDown: JSX.EventHandler<HTMLInputElement, KeyboardEvent> = e => {
-    if (['Enter', 'Space'].includes(e.code)) {
+    if (e.code === 'Enter') {
       e.preventDefault()
-      if (values.onSubmit) values.onSubmit()
+
+      if (values.onSubmit) {
+        values.onSubmit()
+      }
     }
   }
 

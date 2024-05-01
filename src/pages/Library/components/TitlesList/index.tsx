@@ -34,8 +34,6 @@ const TitlesList: Component<TitlesListProps> = props => {
     [
       'title-list',
       'grid',
-      'h-full',
-      !props.isLoading && props.mangas()?.length! === 0 ? '!grid-cols-1' : '',
       'xs:grid-cols-2',
       'sm:grid-cols-3',
       'md:grid-cols-4',
@@ -45,6 +43,7 @@ const TitlesList: Component<TitlesListProps> = props => {
       '3xl:grid-cols-10',
       'gap-2',
       'px-2',
+      !props.isLoading && props.mangas()?.length! === 0 ? '!grid-cols-1 h-full' : '',
     ].join(' ')
   )
 

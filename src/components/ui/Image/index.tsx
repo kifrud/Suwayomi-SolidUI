@@ -1,5 +1,5 @@
-import { useAppContext } from '@/contexts'
 import { Component, JSX, Match, Switch, createMemo, createSignal } from 'solid-js'
+import FailedIcon from '~icons/material-symbols/broken-image'
 
 interface ImageProps extends JSX.HTMLAttributes<HTMLImageElement> {
   src: string
@@ -15,8 +15,6 @@ const Image: Component<ImageProps> = props => {
   }
 
   let img: HTMLImageElement | undefined
-
-  const { t } = useAppContext()
 
   const rounded = createMemo(() => (props.rounded ? `rounded-${props.rounded}` : 'rounded-lg'))
 
@@ -50,9 +48,9 @@ const Image: Component<ImageProps> = props => {
       <Switch>
         <Match when={state() === ImageState.error}>
           <div
-            class={`top-0 absolute flex items-center justify-center text-rose-800 ${rounded()} ${imgClasses()}`}
+            class={`icon-32 top-0 absolute flex items-center justify-center text-rose-800 ${rounded()} ${imgClasses()}`}
           >
-            {t('exceptions.library.cover')}
+            <FailedIcon />
           </div>
         </Match>
         <Match when={state() === ImageState.loading}>

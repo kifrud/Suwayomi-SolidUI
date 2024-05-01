@@ -69,7 +69,7 @@ const Library: Component = () => {
 
   const totalMangaCountElement = <Chip>{totalMangaCount()}</Chip>
 
-  const [searchValue, setSearchValue] = createSignal('')
+  const [searchValue, setSearchValue] = createSignal(searchParams.q ?? '')
 
   const mobileSearch = (
     <div>
@@ -79,6 +79,8 @@ const Library: Component = () => {
     </div>
   )
 
+  const handleSubmit = () => setSearchParams({ q: searchValue() })
+
   const searchInput = (
     <Input
       type="search"
@@ -86,9 +88,9 @@ const Library: Component = () => {
       class="w-full"
       wrapperClass="lg:w-[512px] md:w-96 w-full"
       value={searchValue}
-      onchange={e => setSearchValue(e.currentTarget.value)}
+      onInput={e => setSearchValue(e.currentTarget.value)} // since onKeyDown don't receive e.currentTarget
       icon={<SearchIcon />}
-      onSubmit={() => setSearchParams({ q: searchValue() })}
+      onSubmit={handleSubmit}
     />
   )
 
@@ -111,8 +113,6 @@ const Library: Component = () => {
     </div>
   )
 
-  createEffect(() => console.log(category.loading))
-
   return (
     <>
       <div class="flex flex-col gap-2 w-full">
@@ -131,7 +131,6 @@ const Library: Component = () => {
         </Show>
         <TitlesList mangas={mangas} isLoading={category.loading} />
       </div>
-      
     </>
   )
 }
