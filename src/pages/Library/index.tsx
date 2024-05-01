@@ -114,22 +114,25 @@ const Library: Component = () => {
   createEffect(() => console.log(category.loading))
 
   return (
-    <div class="flex flex-col gap-2 w-full">
-      <Show when={!categories.loading} fallback={tabsPlaceholder}>
-        {/* TODO: TRANSLATE */}
-        <Show
-          when={categories.latest?.data}
-          fallback={<span class="text-rose-800">An error occurred when fetching categories</span>}
-        >
-          <CategoriesTabs
-            categories={orderedCategories}
-            value={currentTab}
-            updateValue={setCurrentTab}
-          />
+    <>
+      <div class="flex flex-col gap-2 w-full">
+        <Show when={!categories.loading} fallback={tabsPlaceholder}>
+          {/* TODO: TRANSLATE */}
+          <Show
+            when={categories.latest?.data}
+            fallback={<span class="text-rose-800">An error occurred when fetching categories</span>}
+          >
+            <CategoriesTabs
+              categories={orderedCategories}
+              value={currentTab}
+              updateValue={setCurrentTab}
+            />
+          </Show>
         </Show>
-      </Show>
-      <TitlesList mangas={mangas} isLoading={category.loading} />
-    </div>
+        <TitlesList mangas={mangas} isLoading={category.loading} />
+      </div>
+      
+    </>
   )
 }
 
