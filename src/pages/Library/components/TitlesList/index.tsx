@@ -4,7 +4,7 @@ import TitleCard from './TitleCard'
 import { Skeleton } from '@/components'
 import InfoIcon from '~icons/material-symbols/info-outline'
 import './styles.scss'
-import { useAppContext } from '@/contexts'
+import { useAppContext, useGlobalMeta } from '@/contexts'
 
 export type Mangas =
   | ReturnType<NonNullable<typeof getCategory.__apiType>>['category']['mangas']['nodes']
@@ -16,6 +16,7 @@ interface TitlesListProps {
 }
 
 const TitlesList: Component<TitlesListProps> = props => {
+  const { globalMeta } = useGlobalMeta()
   const { t } = useAppContext()
   const placeholder = (
     <For each={new Array(30)}>
@@ -51,7 +52,15 @@ const TitlesList: Component<TitlesListProps> = props => {
     <div class={wrapperClasses()}>
       <Show when={typeof props.mangas() !== 'undefined'} fallback={placeholder}>
         <Show when={props.mangas()?.length! > 0} fallback={noFoundManga}>
-          <For each={props.mangas!()}>{item => <TitleCard manga={item} />}</For>
+          <For each={props.mangas!()}>
+            {item => (
+              <TitleCard
+                manga={item}
+                unreadBadge={globalMeta.unreadBadge}
+                downloadsBadge={globalMeta.downloadsBadge}
+              />
+            )}
+          </For>
         </Show>
       </Show>
     </div>

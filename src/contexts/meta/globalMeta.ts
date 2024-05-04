@@ -1,16 +1,18 @@
-import { TriState, display, sort } from '@/enums'
+import { TriState, Display, Sort } from '@/enums'
 
 export const defaults = {
   nsfw: true,
   ignoreFiltersWhenSearching: false,
-  Display: display.Compact,
-  Sort: sort.ID,
+  Display: Display.Compact,
+  Sort: Sort.ID,
   Asc: true,
   Unread: TriState.IGNORE,
   Downloaded: TriState.IGNORE,
   Tracked: TriState.IGNORE,
   // mangaMetaDefaults,
+  /** Show or not downloads badge */
   downloadsBadge: true,
+  /** Show or not unreads badge */
   unreadBadge: true,
   mangaUpdatesTracking: {
     enabled: false,
@@ -18,7 +20,7 @@ export const defaults = {
     password: '',
     Authorization: '',
   },
-  libraryCategoryTotalCounts: false,
+  libraryCategoryTotalCounts: true,
 }
 
 export type GlobalMeta = typeof defaults

@@ -1,11 +1,4 @@
-import {
-  Accessor,
-  JSX,
-  JSXElement,
-  Show,
-  createMemo,
-  mergeProps,
-} from 'solid-js'
+import { Accessor, JSX, JSXElement, Show, createMemo, mergeProps } from 'solid-js'
 import ArrowRight from '~icons/material-symbols/arrow-right-alt-rounded'
 import './styles.scss'
 
@@ -13,6 +6,7 @@ interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputEleme
   icon?: JSXElement
   type?: 'text' | 'search'
   value: Accessor<T> | T
+  isDisabled?: boolean
   required?: boolean
   showSubmit?: boolean
   onSubmit?: () => void
@@ -26,7 +20,14 @@ const Input = <T extends string>(props: InputProps<T>) => {
   )
 
   const values = mergeProps(
-    { required: false, type: 'text', class: '', showSubmit: true, placeholder: '' },
+    {
+      required: false,
+      type: 'text',
+      class: '',
+      showSubmit: true,
+      placeholder: '',
+      isDisabled: false,
+    },
     props
   )
 
@@ -65,6 +66,7 @@ const Input = <T extends string>(props: InputProps<T>) => {
         onChange={values.onChange}
         required={values.required}
         onKeyDown={onKeyDown}
+        disabled={values.isDisabled}
       />
       <Show when={value() && values.showSubmit}>
         <span class="input__submit" onClick={values.onSubmit}>

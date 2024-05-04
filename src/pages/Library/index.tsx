@@ -1,4 +1,4 @@
-import { useGraphQLClient, useHeaderContext } from '@/contexts'
+import { useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { getCategories, getCategory } from '@/gql/Queries'
 import {
   Component,
@@ -11,13 +11,14 @@ import {
   onCleanup,
   onMount,
 } from 'solid-js'
-import { CategoriesTabs, TitlesList } from './components'
+import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './components'
 import { useSearchParams } from '@solidjs/router'
 import { Chip, Input, Skeleton } from '@/components'
-import SearchIcon from '~icons/material-symbols/search'
 import { matches } from '@/helpers'
+import SearchIcon from '~icons/material-symbols/search'
 
 const Library: Component = () => {
+  const { globalMeta } = useGlobalMeta()
   const headerCtx = useHeaderContext()
   const client = useGraphQLClient()
 
@@ -94,13 +95,22 @@ const Library: Component = () => {
     />
   )
 
+  const [showFilters, setShowFilters] = createSignal(false)
+
   onMount(() => {
     // could've wrapped it inside createEffect or use Show tag in each element but nah
     headerCtx.setHeaderCenter(matches.md && searchInput)
-    headerCtx.setHeaderEnd(!matches.md && mobileSearch)
+    headerCtx.setHeaderEnd(
+      <>
+        {!matches.md && mobileSearch}
+        <LibraryActions updateShowFilter={setShowFilters} />
+      </>
+    )
   })
 
-  createEffect(() => headerCtx.setHeaderTitleData(totalMangaCountElement))
+  createEffect(() =>
+    headerCtx.setHeaderTitleData(globalMeta.libraryCategoryTotalCounts && totalMangaCountElement)
+  )
   onCleanup(() => headerCtx.clear())
 
   const tabsPlaceholder = (
@@ -131,6 +141,9 @@ const Library: Component = () => {
         </Show>
         <TitlesList mangas={mangas} isLoading={category.loading} />
       </div>
+      <Show when={showFilters()}>
+        <LibraryFilter />
+      </Show>
     </>
   )
 }

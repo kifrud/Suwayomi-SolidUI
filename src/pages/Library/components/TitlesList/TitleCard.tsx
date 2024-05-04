@@ -1,11 +1,13 @@
 import { Component, Show } from 'solid-js'
 import { Mangas } from '.'
 import { A } from '@solidjs/router'
-import { Image } from '@/components'
+import { Chip, Image } from '@/components'
 import './styles.scss'
 
 interface TitleCardProps {
   manga: NonNullable<Mangas>[number]
+  downloadsBadge: boolean
+  unreadBadge: boolean
 }
 
 const TitleCard: Component<TitleCardProps> = props => {
@@ -14,6 +16,38 @@ const TitleCard: Component<TitleCardProps> = props => {
       <div class="title-card">
         <Show when={props.manga.thumbnailUrl} fallback={<span>Failed to load cover</span>}>
           <div class="relative h-full w-full">
+            <div class="absolute flex top-2 left-2 z-50 w-full">
+              <Show when={props.downloadsBadge && props.manga.downloadCount > 0}>
+                <Chip
+                  radius="none"
+                  class={`bg-background w-full h-full ${
+                    props.downloadsBadge &&
+                    props.unreadBadge &&
+                    props.manga.downloadCount > 0 &&
+                    props.manga.unreadCount > 0
+                      ? 'rounded-l'
+                      : 'rounded'
+                  }`}
+                >
+                  {props.manga.downloadCount}
+                </Chip>
+              </Show>
+              <Show when={props.unreadBadge && props.manga.unreadCount > 0}>
+                <Chip
+                  radius="none"
+                  class={`bg-active text-background h-full ${
+                    props.unreadBadge &&
+                    props.downloadsBadge &&
+                    props.manga.unreadCount > 0 &&
+                    props.manga.downloadCount > 0
+                      ? 'rounded-r'
+                      : 'rounded'
+                  }`}
+                >
+                  {props.manga.unreadCount}
+                </Chip>
+              </Show>
+            </div>
             <Image class="object-cover aspect-cover" src={props.manga.thumbnailUrl ?? ''} alt=" " />
           </div>
         </Show>

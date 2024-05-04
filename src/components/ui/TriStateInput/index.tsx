@@ -27,7 +27,7 @@ const checkboxStates = {
 }
 
 const TriStateInput: ParentComponent<TriStateProps> = props => {
-  const values = mergeProps({ hideCheckbox: false }, props)
+  const values = mergeProps({ hideCheckbox: false, isDisabled: false }, props)
 
   const state = createMemo(() => (typeof props.state === 'function' ? props.state() : props.state))
 
@@ -58,7 +58,7 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
 
   const baseClasses = createMemo(() =>
     [
-      props.isDisabled ? 'opacity-50' : 'opacity-100',
+      values.isDisabled ? 'opacity-50' : 'opacity-100',
       'transition-all',
       ...(props.classes?.base ? [props.classes.base] : []),
     ].join(' ')
@@ -77,6 +77,7 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
           value={state()}
           onChange={handleChange}
           onKeyDown={onKeyDown}
+          disabled={values.isDisabled}
           class="hidden"
         />
         <div class={`flex flex-1 select-none ${props.classes?.label}`}>{label()}</div>

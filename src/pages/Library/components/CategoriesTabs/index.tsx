@@ -1,8 +1,9 @@
-import { Accessor, Component, For, Setter } from 'solid-js'
-import { Tabs } from '@kobalte/core'
+import { Accessor, Component, For, Setter, Show } from 'solid-js'
+import { Tabs } from '@kobalte/core/tabs'
 import { useSearchParams } from '@solidjs/router'
 import { Chip } from '@/components'
 import './styles.scss'
+import { useGlobalMeta } from '@/contexts'
 
 interface CategoriesTabsProps {
   categories: Accessor<
@@ -24,6 +25,7 @@ interface CategoriesTabsProps {
 }
 
 const CategoriesTabs: Component<CategoriesTabsProps> = props => {
+  const { globalMeta } = useGlobalMeta()
   const [, setSearchParams] = useSearchParams()
 
   const onChange = (value: string) => {
@@ -32,7 +34,7 @@ const CategoriesTabs: Component<CategoriesTabsProps> = props => {
   }
 
   return (
-    <Tabs.Root value={props.value()} onChange={onChange} class="tabs">
+    <Tabs value={props.value()} onChange={onChange} class="tabs">
       <Tabs.List class="tabs__list">
         <For each={props.categories()}>
           {item => (
@@ -45,13 +47,15 @@ const CategoriesTabs: Component<CategoriesTabsProps> = props => {
               value={item.id.toString()}
             >
               <span>{item.name}</span>
-              <Chip>{item.mangas.totalCount}</Chip>
+              <Show when={globalMeta.libraryCategoryTotalCounts}>
+                <Chip>{item.mangas.totalCount}</Chip>
+              </Show>
             </Tabs.Trigger>
           )}
         </For>
         <Tabs.Indicator class="tabs__indicator" />
       </Tabs.List>
-    </Tabs.Root>
+    </Tabs>
   )
 }
 

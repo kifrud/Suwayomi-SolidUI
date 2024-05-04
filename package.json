@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@kifrud/solid-theme-provider": "^0.9.7",
-    "@kobalte/core": "^0.12.6",
+    "@kobalte/core": "^0.13.0",
     "@solid-primitives/i18n": "^2.1.1",
     "@solid-primitives/media": "^2.2.9",
     "@solid-primitives/storage": "^3.3.0",

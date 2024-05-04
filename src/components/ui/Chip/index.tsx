@@ -12,15 +12,12 @@ const Chip: ParentComponent<ChipProps> = props => {
     [
       'chip',
       `chip--${values.type}`,
-      props.radius && `rounded-${props.radius}`,
+      props.radius ? (props.radius !== 'none' ? `rounded-${props.radius}` : '') : 'rounded',
       ...(values.class ? [values.class] : []),
     ].join(' ')
   )
-  return (
-    <span class={chipClasses()} {...props}>
-      {props.children}
-    </span>
-  )
+
+  return <span class={chipClasses()}>{props.children}</span>
 }
 
 export default Chip

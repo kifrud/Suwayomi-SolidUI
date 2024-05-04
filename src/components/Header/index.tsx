@@ -10,25 +10,25 @@ const Header: Component = () => {
   const ctx = useHeaderContext()
   const location = useLocation()
 
-  const routeData = createMemo(
-    () => navData().find(item => item.href === location.pathname.toLowerCase())!
+  const routeData = createMemo(() =>
+    navData().find(item => item.href === location.pathname.toLowerCase())
   )
 
   const defaultTitle = createMemo(() => (
-    <>
+    <Show when={routeData()}>
       <span class="icon-32 hidden sm:block">
-        {routeData().icon.active ?? routeData().icon.default}
+        {routeData()!.icon.active ?? routeData()!.icon.default}
       </span>
       <div class="flex items-center gap-1">
-        <h1>{t(`global.nav.${routeData().name}`)}</h1>
+        <h1>{t(`global.nav.${routeData()!.name}`)}</h1>
         {ctx.headerTitleData}
       </div>
-    </>
+    </Show>
   ))
 
   return (
     <header class="header">
-      <Title>{t(`global.nav.${routeData().name}`)}</Title>
+      <Title>{routeData() ? t(`global.nav.${routeData()!.name}`) : 'Suwayomi'}</Title>
       <div class="flex items-center gap-2">
         <Show when={ctx.headerTitle} fallback={defaultTitle()}>
           {ctx.headerTitle}

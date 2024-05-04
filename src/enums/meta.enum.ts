@@ -1,25 +1,25 @@
-export enum sort {
-  Unread = 'Unread',
-  Alphabetical = 'Alphabetical',
-  ID = 'ID',
-  'Latest Read' = 'Latest Read',
-  'Latest Fetched' = 'Latest Fetched',
-  'Latest Uploaded' = 'Latest Uploaded',
+export enum Sort {
+  Unread = 'unread',
+  Alphabetical = 'alphabetical',
+  ID = 'id',
+  LatestRead = 'latestRead',
+  LatestFetched = 'latestFetched',
+  LatestUploaded = 'latestUploaded',
 }
 
-export enum display {
-  Compact = 'Compact',
-  // Comfortable = 'Comfortable'
-  // List = 'List'
+export enum Display {
+  Compact = 'compact',
+  Comfortable = 'comfortable',
+  List = 'list',
 }
 
 export enum ChapterTitle {
-  sourceTitle = 'sourceTitle',
-  chapterNumber = 'chapterNumber',
+  SourceTitle = 'sourceTitle',
+  ChapterNumber = 'chapterNumber',
 }
 
 export enum ChapterSort {
   Source = 'source',
-  fetchedDate = 'fetchedDate',
-  uploadDate = 'uploadDate',
+  FetchedDate = 'fetchedDate',
+  UploadDate = 'uploadDate',
 }

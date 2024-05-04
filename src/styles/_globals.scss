@@ -10,12 +10,24 @@ html {
   color: var(--stp-foreground);
 }
 
+.bg-background {
+  background: var(--stp-background);
+}
+
 .bg-foreground {
   background: var(--stp-foreground);
 }
 
 .bg-foreground-muted {
   background: var(--stp-foreground_muted);
+}
+
+.bg-active {
+  background: var(--stp-background_active);
+}
+
+.text-background {
+  color: var(--stp-background);
 }
 
 .placeholder {

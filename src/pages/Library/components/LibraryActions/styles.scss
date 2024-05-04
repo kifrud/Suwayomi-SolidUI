@@ -1,0 +1,10 @@
+.library-filters {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  // flex-grow: 1;
+  margin-top: calc(var(--categories-tabs-height) - 1px);
+  background: var(--stp-background_muted);
+  min-width: 300px;
+  max-width: 300px;
+}

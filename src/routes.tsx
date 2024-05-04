@@ -1,6 +1,6 @@
 import { Route, Router } from '@solidjs/router'
 import { RoutePaths } from './enums'
-import { lazy } from 'solid-js'
+import { ErrorBoundary, lazy } from 'solid-js'
 import App from './App'
 import Providers from './providers'
 
@@ -20,12 +20,14 @@ export const AppRoutes = () => {
         </Providers>
       )}
     >
-      <Route path={RoutePaths.library} component={Library} />
-      <Route path={RoutePaths.updates} component={Updates} />
-      <Route path={RoutePaths.browse} component={Browse} />
-      <Route path={RoutePaths.downloads} component={Downloads} />
-      <Route path={RoutePaths.settings} component={Settings} />
-      <Route path={`${RoutePaths.manga}/:id`} component={Manga} />
+      <ErrorBoundary fallback={(err, reset) => <div onClick={reset}>Error: {err.toString()}</div>}>
+        <Route path={RoutePaths.library} component={Library} />
+        <Route path={RoutePaths.updates} component={Updates} />
+        <Route path={RoutePaths.browse} component={Browse} />
+        <Route path={RoutePaths.downloads} component={Downloads} />
+        <Route path={RoutePaths.settings} component={Settings} />
+        <Route path={`${RoutePaths.manga}/:id`} component={Manga} />
+      </ErrorBoundary>
     </Router>
   )
 }

@@ -4,7 +4,7 @@ interface BadgeProps extends JSX.HTMLAttributes<HTMLDivElement> {
   count: string | number
 }
 
-const Badge: ParentComponent<BadgeProps> = props => {
+const NotifictaionBadge: ParentComponent<BadgeProps> = props => {
   return (
     <div class="relative">
       <div
@@ -20,4 +20,4 @@ const Badge: ParentComponent<BadgeProps> = props => {
   )
 }
 
-export default Badge
+export default NotifictaionBadge

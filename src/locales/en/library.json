@@ -1,0 +1,31 @@
+{
+  "filterTabs": {
+    "filters": {
+      "name": "Filters",
+      "unread": "Unread",
+      "downloaded": "Downloaded",
+      "tracked": "Tracked"
+    },
+    "sort": {
+      "name": "Sort"
+    },
+    "display": {
+      "name": "Display",
+      "modes": {
+        "name": "Display modes",
+        "compact": "Compact",
+        "comfortable": "Comfortable",
+        "list": "List"
+      },
+      "badges": {
+        "name": "Badges"
+      },
+      "tabs": {
+        "name": "Tabs"
+      },
+      "other": {
+        "name": "Other"
+      }
+    }
+  }
+}

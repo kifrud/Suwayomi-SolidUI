@@ -27,12 +27,9 @@ export const useGlobalMeta = () => useContext(GlobalMetaContext)
 export const GlobalMetaProvider: ParentComponent = props => {
   const Meta = client.query(metas, {})
 
-  const [globalMetaStore, setGlobalMetaStore] = makePersisted<GlobalMeta>(
-    createStore({} as GlobalMeta),
-    {
-      name: 'globalMeta',
-    }
-  )
+  const [globalMetaStore, setGlobalMetaStore] = makePersisted(createStore({} as GlobalMeta), {
+    name: 'globalMeta',
+  })
 
   function extractGlobalMeta(
     value: GlobalMeta,
