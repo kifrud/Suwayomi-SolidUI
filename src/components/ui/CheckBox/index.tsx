@@ -11,8 +11,8 @@ interface Classes {
 
 interface CheckBoxProps extends JSX.HTMLAttributes<HTMLInputElement> {
   label?: string
-  state: Accessor<boolean> | boolean
-  value: string | number | string[] | undefined
+  checked: Accessor<boolean> | boolean
+  value?: string | number | string[] | undefined
   updateState: (v: boolean) => void | Setter<boolean>
   classes?: Partial<Classes>
   isDisabled?: boolean
@@ -28,7 +28,7 @@ const CheckBox: Component<CheckBoxProps> = props => {
   const values = mergeProps({ hideCheckbox: false }, props)
 
   const checked = createMemo(() =>
-    typeof props.state === 'function' ? props.state() : props.state
+    typeof props.checked === 'function' ? props.checked() : props.checked
   )
 
   const checkedString = createMemo(() => String(checked()))

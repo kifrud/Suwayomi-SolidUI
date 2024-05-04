@@ -1,5 +1,14 @@
 import { TriState } from '@/enums'
-import { Accessor, JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
+import {
+  Accessor,
+  JSX,
+  ParentComponent,
+  Setter,
+  Show,
+  createEffect,
+  createMemo,
+  mergeProps,
+} from 'solid-js'
 import IncludeIcon from '~icons/material-symbols/check-box-rounded'
 import IgnoreIcon from '~icons/material-symbols/check-box-outline-blank'
 import ExcludeIcon from '~icons/material-symbols/disabled-by-default-rounded'
@@ -32,18 +41,18 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
   const state = createMemo(() => (typeof props.state === 'function' ? props.state() : props.state))
 
   const handleChange = () => {
-    if (props.onChange) props.onChange
+    // if (props.onChange) props.onChange
+
+    console.log('fire');
+    
 
     switch (state()) {
       case TriState.IGNORE:
-        props.updateState(TriState.INCLUDE)
-        break
+        return props.updateState(TriState.INCLUDE)
       case TriState.INCLUDE:
-        props.updateState(TriState.EXCLUDE)
-        break
+        return props.updateState(TriState.EXCLUDE)
       case TriState.EXCLUDE:
-        props.updateState(TriState.IGNORE)
-        break
+        return props.updateState(TriState.IGNORE)
     }
   }
 
@@ -64,12 +73,16 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
     ].join(' ')
   )
 
-  const labelClasses = createMemo(() => ['flex', 'gap-1', 'cursor-pointer'].join(' '))
+  const labelClasses = createMemo(() =>
+    ['flex', 'gap-1', 'items-center', 'cursor-pointer'].join(' ')
+  )
+
+  createEffect(() => console.log(props.label, state()))
 
   return (
     <div class={baseClasses()} onKeyDown={onKeyDown}>
       <label class={labelClasses()}>
-        <Show when={values.hideCheckbox}>
+        <Show when={!values.hideCheckbox}>
           <Dynamic component={checkboxStates[state()]} />
         </Show>
         <input

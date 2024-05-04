@@ -1,15 +1,25 @@
 import { Tabs } from '@kobalte/core/tabs'
-import { Component, For, createEffect, createMemo, createSignal } from 'solid-js'
+import { Component, For, JSX, createEffect, createMemo, createSignal } from 'solid-js'
 import { useAppContext, useGlobalMeta } from '@/contexts'
-import { Radio, TriStateInput } from '@/components'
-import { Display } from '@/enums'
+import { CheckBox, Radio, TriStateInput } from '@/components'
+import { Display, TriState } from '@/enums'
 import './styles.scss'
+import { GlobalMeta } from '@/contexts/meta/globalMeta'
 
 export const LibraryFilter: Component = () => {
   const { t } = useAppContext()
   const metaCtx = useGlobalMeta()
 
-  createEffect(() => console.log(metaCtx.globalMeta.Display))
+  createEffect(() =>
+    console.log(
+      'unread',
+      metaCtx.globalMeta.Unread,
+      'downloads',
+      metaCtx.globalMeta.Downloaded,
+      'tracked',
+      metaCtx.globalMeta.Tracked
+    )
+  )
 
   const displayModes = createMemo(() =>
     Object.fromEntries(
@@ -22,14 +32,18 @@ export const LibraryFilter: Component = () => {
           onClick={e => {
             metaCtx.set({ Display: e.currentTarget.value as Display })
           }}
-          onChange={e => {
-            metaCtx.set({ Display: e.currentTarget.value as Display })
-          }}
+          // onChange={e => {
+          //   metaCtx.set({ Display: e.currentTarget.value as Display })
+          // }}
           checked={metaCtx.globalMeta.Display === value}
         />,
       ])
     )
   )
+
+  const setFilter = (key: keyof GlobalMeta, v: TriState) => {
+    metaCtx.set({ [key]: v })
+  }
 
   const tabs = {
     filters: {
@@ -37,19 +51,21 @@ export const LibraryFilter: Component = () => {
         <TriStateInput
           label={t(`library.filterTabs.filters.unread`)}
           state={metaCtx.globalMeta.Unread}
-          updateState={v => metaCtx.set({ Unread: v })}
+          updateState={v => setFilter('Unread', v)}
         />
       ),
       downloaded: (
         <TriStateInput
+          label={t(`library.filterTabs.filters.downloaded`)}
           state={metaCtx.globalMeta.Downloaded}
-          updateState={v => metaCtx.set({ Downloaded: v })}
+          updateState={v => setFilter('Downloaded', v)}
         />
       ),
       tracked: (
         <TriStateInput
+          label={t(`library.filterTabs.filters.tracked`)}
           state={metaCtx.globalMeta.Tracked}
-          updateState={v => metaCtx.set({ Tracked: v })}
+          updateState={v => setFilter('Tracked', v)}
         />
       ),
     },
@@ -57,7 +73,12 @@ export const LibraryFilter: Component = () => {
     display: {
       modes: displayModes(),
       badges: {
-        downloads: <></>,
+        downloads: (
+          <CheckBox
+            checked={metaCtx.globalMeta.downloadsBadge}
+            updateState={v => metaCtx.set({ downloadsBadge: !v })}
+          />
+        ),
         unreads: <></>,
       },
       tabs: {
@@ -88,7 +109,7 @@ export const LibraryFilter: Component = () => {
           {([name, data]) => (
             <Tabs.Content value={name} class="flex flex-col gap-2 px-2">
               {Object.entries(data).map(([key, item]) =>
-                (item satisfies Object) ? (
+                (!item satisfies JSX.Element) && (item satisfies Object) ? (
                   <div>
                     <span class="opacity-50">
                       {/* FIXME: types issue */}
