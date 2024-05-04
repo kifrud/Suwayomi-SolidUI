@@ -41,7 +41,7 @@ export const LibraryFilter: Component = () => {
     )
   )
 
-  const setFilter = (key: keyof GlobalMeta, v: TriState) => {
+  const setFilter = (key: keyof GlobalMeta, v: TriState | boolean) => {
     metaCtx.set({ [key]: v })
   }
 
@@ -76,16 +76,31 @@ export const LibraryFilter: Component = () => {
         downloads: (
           <CheckBox
             checked={metaCtx.globalMeta.downloadsBadge}
-            updateState={v => metaCtx.set({ downloadsBadge: !v })}
+            updateState={v => setFilter('downloadsBadge', v)}
           />
         ),
-        unreads: <></>,
+        unreads: (
+          <CheckBox
+            checked={metaCtx.globalMeta.unreadsBadge}
+            updateState={v => setFilter('unreadsBadge', v)}
+          />
+        ),
       },
       tabs: {
-        showCount: <></>,
+        showCount: (
+          <CheckBox
+            checked={metaCtx.globalMeta.libraryCategoryTotalCounts}
+            updateState={v => setFilter('libraryCategoryTotalCounts', v)}
+          />
+        ),
       },
       other: {
-        resumeButton: <></>,
+        resumeButton: (
+          <CheckBox
+            checked={metaCtx.globalMeta.libraryResumeButton}
+            updateState={v => setFilter('libraryResumeButton', v)}
+          />
+        ),
       },
     },
   }

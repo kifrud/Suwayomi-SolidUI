@@ -13,7 +13,7 @@ export const defaults = {
   /** Show or not downloads badge */
   downloadsBadge: true,
   /** Show or not unreads badge */
-  unreadBadge: true,
+  unreadsBadge: true,
   mangaUpdatesTracking: {
     enabled: false,
     username: '',
@@ -21,6 +21,7 @@ export const defaults = {
     Authorization: '',
   },
   libraryCategoryTotalCounts: true,
+  libraryResumeButton: false,
 }
 
 export type GlobalMeta = typeof defaults

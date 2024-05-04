@@ -56,7 +56,7 @@ const TitlesList: Component<TitlesListProps> = props => {
             {item => (
               <TitleCard
                 manga={item}
-                unreadBadge={globalMeta.unreadBadge}
+                unreadBadge={globalMeta.unreadsBadge}
                 downloadsBadge={globalMeta.downloadsBadge}
               />
             )}
