@@ -48,7 +48,9 @@ const CategoriesTabs: Component<CategoriesTabsProps> = props => {
             >
               <span>{item.name}</span>
               <Show when={globalMeta.libraryCategoryTotalCounts}>
-                <Chip>{item.mangas.totalCount}</Chip>
+                <Chip radius="lg" class="py-1 rounded-xl px-2">
+                  {item.mangas.totalCount}
+                </Chip>
               </Show>
             </Tabs.Trigger>
           )}

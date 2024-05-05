@@ -875,6 +875,11 @@
     "@solid-primitives/rootless" "^1.4.2"
     "@solid-primitives/utils" "^6.2.1"
 
+"@solid-primitives/transition-group@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/transition-group/-/transition-group-1.0.5.tgz#f1376c4648d78cb6a22a28d4094c94ab4d902346"
+  integrity sha512-G3FuqvL13kQ55WzWPX2ewiXdZ/1iboiX53195sq7bbkDbXqP6TYKiadwEdsaDogW5rPnPYAym3+xnsNplQJRKQ==
+
 "@solid-primitives/trigger@^1.0.11":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@solid-primitives/trigger/-/trigger-1.0.11.tgz#76512de06b3bcc78cd2dbdd2e1726b889f0fe604"

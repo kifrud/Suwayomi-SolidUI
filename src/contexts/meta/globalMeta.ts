@@ -22,6 +22,7 @@ export const defaults = {
   },
   libraryCategoryTotalCounts: true,
   libraryResumeButton: false,
+  resumeButton: false,
 }
 
 export type GlobalMeta = typeof defaults

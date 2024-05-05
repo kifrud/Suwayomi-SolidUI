@@ -1,6 +1,6 @@
 import { Component } from 'solid-js'
 
-const Manga: Component<{}> = props => {
+const Manga: Component<{}> = () => {
   return <div></div>
 }
 

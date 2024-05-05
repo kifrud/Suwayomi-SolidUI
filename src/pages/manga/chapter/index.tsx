@@ -1,6 +1,6 @@
 import { Component } from 'solid-js'
 
-const Chapter: Component<{}> = props => {
+const Chapter: Component<{}> = () => {
   return <div></div>
 }
 

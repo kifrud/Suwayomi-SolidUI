@@ -40,7 +40,7 @@ const CheckBox: Component<CheckBoxProps> = props => {
   }
 
   const onKeyDown: JSX.EventHandler<HTMLInputElement | HTMLDivElement, KeyboardEvent> = e => {
-    if (['Enter', 'Space'].includes(e.code)) {
+    if (e && ['Enter', 'Space'].includes(e.code)) {
       e.preventDefault()
       handleChange()
     }

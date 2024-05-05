@@ -68,7 +68,7 @@ const Library: Component = () => {
       ).size
   )
 
-  const totalMangaCountElement = <Chip>{totalMangaCount()}</Chip>
+  const totalMangaCountElement = <Chip radius="xl" class='py-1 px-2'>{totalMangaCount()}</Chip>
 
   const [searchValue, setSearchValue] = createSignal(searchParams.q ?? '')
 
