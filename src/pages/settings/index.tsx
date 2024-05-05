@@ -1,9 +1,9 @@
-import { useAppContext } from '@/contexts'
+// import { useAppContext } from '@/contexts'
 import { useThemeContext } from '@kifrud/solid-theme-provider'
 import { Component } from 'solid-js'
 
 const Settings: Component = () => {
-  const ctx = useAppContext()
+  // const ctx = useAppContext()
   const themeCtx = useThemeContext()
 
   return (

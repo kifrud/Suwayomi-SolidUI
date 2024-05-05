@@ -2,7 +2,7 @@ import { JSX, ParentComponent, createMemo, mergeProps } from 'solid-js'
 import './styles.scss'
 
 interface ChipProps extends JSX.HTMLAttributes<HTMLSpanElement> {
-  radius?: 'sm' | 'md' | 'lg' | 'none'
+  radius?: 'sm' | 'md' | 'lg' | 'xl' | 'none'
   type?: 'outline' | 'fill'
 }
 

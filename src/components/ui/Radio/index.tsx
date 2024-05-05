@@ -45,16 +45,17 @@ const Radio: ParentComponent<RadioProps> = props => {
 
   const values = mergeProps({ hideIndicator: false, isDisabled: false }, props)
 
-  const handleChange = () => {
+  const handleChange: JSX.EventHandler<HTMLInputElement, Event> = e => {
+    e.preventDefault()
     if (props.onChange) props.onChange
 
     if (props.updateState) props.updateState(checked() ? false : true)
   }
 
   const onKeyDown: JSX.EventHandler<HTMLInputElement | HTMLDivElement, KeyboardEvent> = e => {
-    if (['Enter', 'Space'].includes(e.code)) {
+    if (e && ['Enter', 'Space'].includes(e.code)) {
       e.preventDefault()
-      handleChange()
+      handleChange(e as Event & { currentTarget: HTMLInputElement; target: Element })
     }
   }
 

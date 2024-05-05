@@ -1,15 +1,15 @@
 import { AppNavbar, Header } from '@/components'
-import { useAppContext } from '@/contexts'
+// import { useAppContext } from '@/contexts'
 import { matches } from '@/helpers'
 import { ErrorBoundary, ParentComponent } from 'solid-js'
 
 const MainLayout: ParentComponent = props => {
-  const { t } = useAppContext()
-  const error = (
-    <div class="flex items-center justify-center text-rose-800 w-full h-full">
-      {t('global.error')}
-    </div>
-  )
+  // const { t } = useAppContext()
+  // const error = (
+  //   <div class="flex items-center justify-center text-rose-800 w-full h-full">
+  //     {t('global.error')}
+  //   </div>
+  // )
 
   return (
     <div class="main-layout">
@@ -19,7 +19,7 @@ const MainLayout: ParentComponent = props => {
       </div>
       <div class="flex w-full h-full flex-grow" classList={{ 'flex-col': !matches.md, 'mb-20': !matches.md }}>
         <AppNavbar />
-        <ErrorBoundary fallback={error}>{props.children}</ErrorBoundary>
+        <ErrorBoundary fallback={(err, reset) => <div onClick={reset}>Error: {err.toString()}</div>}>{props.children}</ErrorBoundary>
       </div>
     </div>
   )

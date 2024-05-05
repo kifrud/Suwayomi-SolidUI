@@ -1,6 +1,6 @@
 import { Component } from 'solid-js'
 
-const Updates: Component<{}> = props => {
+const Updates: Component<{}> = () => {
   return <div></div>
 }
 

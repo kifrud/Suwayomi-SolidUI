@@ -1,6 +1,6 @@
 import { Component } from 'solid-js'
 
-const Browse: Component<{}> = props => {
+const Browse: Component<{}> = () => {
   return <div></div>
 }
 

@@ -5,7 +5,7 @@ import {
   ParentComponent,
   Setter,
   Show,
-  createEffect,
+  // createEffect,
   createMemo,
   mergeProps,
 } from 'solid-js'
@@ -40,7 +40,8 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
 
   const state = createMemo(() => (typeof props.state === 'function' ? props.state() : props.state))
 
-  const handleChange = () => {
+  const handleChange: JSX.EventHandler<HTMLInputElement, Event> = e => {
+    e.preventDefault()
     if (props.onChange) props.onChange
 
     switch (state()) {
@@ -54,9 +55,9 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
   }
 
   const onKeyDown: JSX.EventHandler<HTMLInputElement | HTMLDivElement, KeyboardEvent> = e => {
-    if (['Enter', 'Space'].includes(e.code)) {
+    if (e && ['Enter', 'Space'].includes(e.code)) {
       e.preventDefault()
-      handleChange()
+      handleChange(e as Event & { currentTarget: HTMLInputElement; target: Element })
     }
   }
 
@@ -74,7 +75,7 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
     ['flex', 'gap-1', 'items-center', 'cursor-pointer'].join(' ')
   )
 
-  createEffect(() => console.log(props.label, state()))
+  // createEffect(() => console.log(props.label, state()))
 
   return (
     <div class={baseClasses()} onKeyDown={onKeyDown}>

@@ -42,7 +42,7 @@ const Input = <T extends string>(props: InputProps<T>) => {
   )
 
   const onKeyDown: JSX.EventHandler<HTMLInputElement, KeyboardEvent> = e => {
-    if (e.code === 'Enter') {
+    if (e && e.code === 'Enter') {
       e.preventDefault()
 
       if (values.onSubmit) {
