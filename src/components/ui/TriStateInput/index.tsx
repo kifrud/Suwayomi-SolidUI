@@ -41,10 +41,7 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
   const state = createMemo(() => (typeof props.state === 'function' ? props.state() : props.state))
 
   const handleChange = () => {
-    // if (props.onChange) props.onChange
-
-    console.log('fire');
-    
+    if (props.onChange) props.onChange
 
     switch (state()) {
       case TriState.IGNORE:
@@ -86,6 +83,7 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
           <Dynamic component={checkboxStates[state()]} />
         </Show>
         <input
+          {...props}
           type="checkbox"
           value={state()}
           onChange={handleChange}

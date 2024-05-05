@@ -10,25 +10,26 @@ interface AscRadioProps extends JSX.HTMLAttributes<HTMLInputElement> {
   checked: boolean | Accessor<boolean>
   updateState?: (v: boolean) => void | Setter<boolean>
   name: string
+  label?: string
 }
 
 const AscRadio: Component<AscRadioProps> = props => {
-  const baseClasses = createMemo(() =>
-    ['w-full', ...(props.class ? [props.class] : [])].join(' ')
-  )
+  const baseClasses = createMemo(() => ['w-full', ...(props.class ? [props.class] : [])].join(' '))
 
   const indicatorClasses = createMemo(() =>
     ['transition-all', props.ascending ? 'rotate-[270deg]' : 'rotate-90'].join(' ')
   )
 
-  const handleClick = () => {
-    if (!props.checked) return
+  const handleClick: JSX.EventHandler<HTMLInputElement, MouseEvent> = e => {
+    if (!props.checked && props.updateState) props.updateState!(!props.checked)
+    if (props.checked) props.updateAscending(!props.ascending)
 
-    props.updateAscending(!props.ascending)
+    props.updateValue(e.currentTarget.value)
   }
 
   return (
     <Radio
+      label={props.label}
       classes={{
         base: baseClasses(),
         indicator: indicatorClasses(),

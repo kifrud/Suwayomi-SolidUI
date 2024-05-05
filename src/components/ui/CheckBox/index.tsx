@@ -67,6 +67,7 @@ const CheckBox: Component<CheckBoxProps> = props => {
           <Dynamic component={checkboxStates[checkedString()]} />
         </Show>
         <input
+          {...props}
           type="checkbox"
           checked={checked()}
           value={props.value}
