@@ -1,25 +1,14 @@
 import { Tabs } from '@kobalte/core/tabs'
-import { Component, For, JSX, createEffect, createMemo, createSignal } from 'solid-js'
+import { Component, For, Show, createEffect, createMemo, createSignal } from 'solid-js'
 import { useAppContext, useGlobalMeta } from '@/contexts'
-import { CheckBox, Radio, TriStateInput } from '@/components'
-import { Display, TriState } from '@/enums'
+import { AscRadio, CheckBox, Radio, TriStateInput } from '@/components'
+import { Display, Sort, TriState } from '@/enums'
 import './styles.scss'
 import { GlobalMeta } from '@/contexts/meta/globalMeta'
 
 export const LibraryFilter: Component = () => {
   const { t } = useAppContext()
   const metaCtx = useGlobalMeta()
-
-  createEffect(() =>
-    console.log(
-      'unread',
-      metaCtx.globalMeta.Unread,
-      'downloads',
-      metaCtx.globalMeta.Downloaded,
-      'tracked',
-      metaCtx.globalMeta.Tracked
-    )
-  )
 
   const displayModes = createMemo(() =>
     Object.fromEntries(
@@ -41,7 +30,43 @@ export const LibraryFilter: Component = () => {
     )
   )
 
-  const setFilter = (key: keyof GlobalMeta, v: TriState | boolean) => {
+  // createEffect(() =>
+  //   console.log(
+  //     metaCtx.globalMeta.Asc,
+  //     metaCtx.globalMeta.Sort,
+  //     'UnreadFilter: ',
+  //     metaCtx.globalMeta.Unread
+  //   )
+  // )
+
+  const sorts = createMemo(() =>
+    Object.fromEntries(
+      Object.entries(Sort).map(([key, value]) => {
+        console.log(key, value)
+
+        return [
+          key,
+          <AscRadio
+            label={key}
+            updateValue={v => metaCtx.set({ Sort: v as Sort })}
+            ascending={metaCtx.globalMeta.Asc}
+            // updateState={v => metaCtx.set({ Sort: v })}
+            updateAscending={v => metaCtx.set({ Asc: v })}
+            name="sort"
+            // onClick={e => metaCtx.set({ [key]: e.currentTarget.value })}
+            checked={metaCtx.globalMeta.Sort === value}
+            value={value}
+          />,
+        ]
+      })
+    )
+  )
+
+  const setTriState = (key: keyof GlobalMeta, v: TriState) => {
+    metaCtx.set({ [key]: v })
+  }
+
+  const setCheckBox = (key: keyof GlobalMeta, v: boolean) => {
     metaCtx.set({ [key]: v })
   }
 
@@ -51,38 +76,39 @@ export const LibraryFilter: Component = () => {
         <TriStateInput
           label={t(`library.filterTabs.filters.unread`)}
           state={metaCtx.globalMeta.Unread}
-          updateState={v => setFilter('Unread', v)}
+          updateState={v => setTriState('Unread', v)}
         />
       ),
       downloaded: (
         <TriStateInput
           label={t(`library.filterTabs.filters.downloaded`)}
           state={metaCtx.globalMeta.Downloaded}
-          updateState={v => setFilter('Downloaded', v)}
+          updateState={v => setTriState('Downloaded', v)}
         />
       ),
       tracked: (
         <TriStateInput
           label={t(`library.filterTabs.filters.tracked`)}
           state={metaCtx.globalMeta.Tracked}
-          updateState={v => setFilter('Tracked', v)}
+          updateState={v => setTriState('Tracked', v)}
         />
       ),
     },
-    sort: {},
+    sort: sorts(),
     display: {
       modes: displayModes(),
       badges: {
+        // TODO: translate
         downloads: (
           <CheckBox
             checked={metaCtx.globalMeta.downloadsBadge}
-            updateState={v => setFilter('downloadsBadge', v)}
+            updateState={v => setCheckBox('downloadsBadge', v)}
           />
         ),
         unreads: (
           <CheckBox
             checked={metaCtx.globalMeta.unreadsBadge}
-            updateState={v => setFilter('unreadsBadge', v)}
+            updateState={v => setCheckBox('unreadsBadge', v)}
           />
         ),
       },
@@ -90,7 +116,7 @@ export const LibraryFilter: Component = () => {
         showCount: (
           <CheckBox
             checked={metaCtx.globalMeta.libraryCategoryTotalCounts}
-            updateState={v => setFilter('libraryCategoryTotalCounts', v)}
+            updateState={v => setCheckBox('libraryCategoryTotalCounts', v)}
           />
         ),
       },
@@ -98,7 +124,7 @@ export const LibraryFilter: Component = () => {
         resumeButton: (
           <CheckBox
             checked={metaCtx.globalMeta.libraryResumeButton}
-            updateState={v => setFilter('libraryResumeButton', v)}
+            updateState={v => setCheckBox('libraryResumeButton', v)}
           />
         ),
       },
@@ -123,23 +149,23 @@ export const LibraryFilter: Component = () => {
         <For each={Object.entries(tabs)}>
           {([name, data]) => (
             <Tabs.Content value={name} class="flex flex-col gap-2 px-2">
-              {Object.entries(data).map(([key, item]) =>
-                (!item satisfies JSX.Element) && (item satisfies Object) ? (
-                  <div>
-                    <span class="opacity-50">
-                      {/* FIXME: types issue */}
-                      {t(
-                        `library.filterTabs.${name as keyof typeof tabs}.${
-                          key as keyof typeof data
-                        }.name` as any
-                      )}
-                    </span>
-                    {Object.values(item).map(subItem => subItem as Element)}
-                  </div>
-                ) : (
-                  item
-                )
-              )}
+              <For each={Object.entries(data)}>
+                {([key, item]) => (
+                  <Show when={typeof item === 'object'} fallback={item}>
+                    <div class="flex flex-col gap-1">
+                      <span class="opacity-50">
+                        {/* FIXME: types issue */}
+                        {t(
+                          `library.filterTabs.${name as keyof typeof tabs}.${
+                            key as keyof typeof data
+                          }.name` as any
+                        )}
+                      </span>
+                      <For each={Object.values(item)}>{subItem => subItem as Element}</For>
+                    </div>
+                  </Show>
+                )}
+              </For>
             </Tabs.Content>
           )}
         </For>

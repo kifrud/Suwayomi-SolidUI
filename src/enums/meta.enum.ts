@@ -1,5 +1,5 @@
 export enum Sort {
-  Unread = 'unread',
+  Unread = 'unreadSort',
   Alphabetical = 'alphabetical',
   ID = 'id',
   LatestRead = 'latestRead',
