@@ -165,6 +165,16 @@ export const LibraryFilter: Component = () => {
     },
   }
 
+  const isElement = (obj: object): obj is Element => {
+    return (
+      obj instanceof Node ||
+      Array.isArray(obj) ||
+      (typeof obj === 'string' && typeof obj !== 'boolean' && typeof obj !== 'number') ||
+      obj === null ||
+      obj === undefined
+    )
+  }
+
   const [tab, setTab] = createSignal(Object.keys(tabs)[0])
 
   return (
@@ -182,7 +192,7 @@ export const LibraryFilter: Component = () => {
         </Tabs.List>
         <For each={Object.entries(tabs)}>
           {(
-            [name, data] // FIXME: still a lot of issues
+            [name, data] // FIXME: still type issue
           ) => (
             <ErrorBoundary
               fallback={(err, reset) => <div onClick={reset}>Error: {err.toString()}</div>}
@@ -190,8 +200,7 @@ export const LibraryFilter: Component = () => {
               <Tabs.Content value={name} class="flex flex-col gap-2 px-2">
                 <For each={Object.entries(data)}>
                   {([key, item]) => (
-                    <Show when={typeof item === 'object'} fallback={item as Element}>
-                      {/* FIXME: so in dev mode it is okay, but in build we always get subItem case*/}
+                    <Show when={!isElement(item)} fallback={item as Element}>
                       <div class="flex flex-col gap-1">
                         <span class="opacity-50">
                           {/* FIXME: types issue */}
