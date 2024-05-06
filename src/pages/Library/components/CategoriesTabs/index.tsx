@@ -34,7 +34,7 @@ const CategoriesTabs: Component<CategoriesTabsProps> = props => {
   }
 
   return (
-    <Tabs value={props.value()} onChange={onChange} class="tabs">
+    <Tabs value={props.value()} onChange={onChange} class="tabs" activationMode="manual">
       <Tabs.List class="tabs__list">
         <For each={props.categories()}>
           {item => (
@@ -56,6 +56,7 @@ const CategoriesTabs: Component<CategoriesTabsProps> = props => {
           )}
         </For>
         <Tabs.Indicator class="tabs__indicator" />
+        {/* TODO: indictaor stays the same after changing libraryCategoryTotalCounts */}
       </Tabs.List>
     </Tabs>
   )
