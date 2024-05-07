@@ -1,11 +1,10 @@
-import { Client, fetchExchange } from '@urql/core'
+import { Client, fetchExchange, subscriptionExchange } from '@urql/core'
 import { cacheExchange } from '@urql/exchange-graphcache'
-// import { cacheExchange } from '@urql/exchange-graphcache'
-// import { createClient as createWSClient } from 'graphql-ws'
+import { createClient as createWSClient } from 'graphql-ws'
 
-// const wsClient = createWSClient({
-//   url: window.location.origin.replace(/^http/, 'ws') + '/api/graphql',
-// })
+const wsClient = createWSClient({
+  url: window.location.origin.replace(/^http/, 'ws') + '/api/graphql',
+})
 
 export const client = new Client({
   url: '/api/graphql',
@@ -46,5 +45,16 @@ export const client = new Client({
       },
     }),
     fetchExchange,
+    subscriptionExchange({
+      forwardSubscription(request) {
+        const input = { ...request, query: request.query || '' }
+        return {
+          subscribe(sink) {
+            const unsubscribe = wsClient.subscribe(input, sink)
+            return { unsubscribe }
+          },
+        }
+      },
+    }),
   ],
 })

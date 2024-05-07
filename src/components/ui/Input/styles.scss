@@ -22,9 +22,28 @@
   &__submit {
     cursor: pointer;
     position: absolute;
-    right:6px;
+    right: 6px;
     svg {
       opacity: 0.5;
+      width: 24px;
+      height: 24px;
+      transition: all 0.15s;
+    }
+
+    &:hover {
+      svg {
+        opacity: 0.75;
+      }
+    }
+  }
+  &__clear {
+    cursor: pointer;
+    position: absolute;
+    right: 32px;
+    svg {
+      opacity: 0.5;
+      width: 24px;
+      height: 24px;
       transition: all 0.15s;
     }
 

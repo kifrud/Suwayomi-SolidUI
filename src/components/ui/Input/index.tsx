@@ -5,7 +5,7 @@ import './styles.scss'
 
 interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputElement> {
   icon?: JSXElement
-  clearIcon?: boolean
+  clearIcon?: { state: boolean; always?: boolean }
   onClear?: () => void
   type?: 'text' | 'search'
   value: Accessor<T> | T
@@ -30,6 +30,7 @@ const Input = <T extends string>(props: InputProps<T>) => {
       showSubmit: true,
       placeholder: '',
       isDisabled: false,
+      clearIcon: { state: false, always: false },
     },
     props
   )
@@ -39,7 +40,7 @@ const Input = <T extends string>(props: InputProps<T>) => {
       'input',
       'rounded-lg',
       values.icon ? 'pl-8' : null,
-      values.clearIcon ? 'pr-8' : null,
+      values.clearIcon ? 'pr-16' : null,
       ...(values.class ? [values.class] : []),
     ].join(' ')
   )
@@ -75,16 +76,36 @@ const Input = <T extends string>(props: InputProps<T>) => {
         onKeyDown={onKeyDown}
         disabled={values.isDisabled}
       />
-      <Show when={values.clearIcon}>
-        <span class="input__icon" onClick={values.onClear}>
-          <ClearIcon />
-        </span>
+      {/* <div class='absolute right-0 flex'> */}
+      <Show when={values.clearIcon?.state}>
+        <Show
+          when={!values.clearIcon?.always && value()}
+          fallback={
+            <Show when={values.clearIcon.always}>
+              <span class="input__clear" onClick={values.onClear}>
+                <ClearIcon />
+              </span>
+            </Show>
+          }
+        >
+          <span
+            class="input__clear"
+            onClick={e => {
+              e.preventDefault()
+
+              if (values.onClear) values.onClear()
+            }}
+          >
+            <ClearIcon />
+          </span>
+        </Show>
       </Show>
       <Show when={value() && values.showSubmit}>
         <span class="input__submit" onClick={values.onSubmit}>
           <ArrowRight />
         </span>
       </Show>
+      {/* </div> */}
     </div>
   )
 }

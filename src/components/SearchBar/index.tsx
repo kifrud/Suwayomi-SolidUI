@@ -4,6 +4,7 @@ import { useSearchParams } from '@solidjs/router'
 import SearchIcon from '~icons/material-symbols/search'
 import { useHeaderContext } from '@/contexts'
 import { makeFocusListener } from '@solid-primitives/active-element'
+import { matches } from '@/helpers'
 
 const SearchBar: Component<{ mobile?: boolean }> = props => {
   const headerCtx = useHeaderContext()
@@ -31,14 +32,16 @@ const SearchBar: Component<{ mobile?: boolean }> = props => {
   )
 
   createEffect(() => {
-    makeFocusListener(inputEl, focused => setIsFocused(focused))
+    if (!matches.md) {
+      makeFocusListener(inputEl, focused => setIsFocused(focused))
 
-    if (isFocused()) {
-      headerCtx.setHeaderTitle(<div></div>)
-    }
-    if (!isFocused() && searchValue() === '') {
-      setShowInput(false)
-      headerCtx.setHeaderTitle(null)
+      if (isFocused()) {
+        headerCtx.setHeaderTitle(<div></div>)
+      }
+      if (!isFocused() && searchValue() === '') {
+        setShowInput(false)
+        headerCtx.setHeaderTitle(null)
+      }
     }
   })
 
@@ -53,6 +56,19 @@ const SearchBar: Component<{ mobile?: boolean }> = props => {
       onInput={e => setSearchValue(e.currentTarget.value)}
       onSubmit={() => setSearchParams({ q: searchValue() })}
       icon={<SearchIcon />}
+      clearIcon={{
+        state: true,
+        always: values.mobile,
+      }}
+      onClear={() => {
+        if (searchValue()) {
+          setIsFocused(true)
+          inputEl.focus()
+          setSearchValue('')
+        } else {
+          setShowInput(false)
+        }
+      }}
     />
   )
 
