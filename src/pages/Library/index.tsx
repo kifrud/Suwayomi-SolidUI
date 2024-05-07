@@ -15,14 +15,13 @@ import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './com
 import { useSearchParams } from '@solidjs/router'
 import { Chip, Input, SearchBar, Skeleton } from '@/components'
 import { matches } from '@/helpers'
-import SearchIcon from '~icons/material-symbols/search'
 
 const Library: Component = () => {
   const { globalMeta } = useGlobalMeta()
   const headerCtx = useHeaderContext()
   const client = useGraphQLClient()
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const [currentTab, setCurrentTab] = createSignal(searchParams.tab ?? '1')
   const [categories] = createResource(async () => await client.query(getCategories, {}).toPromise())
 
@@ -74,24 +73,24 @@ const Library: Component = () => {
     </Chip>
   )
 
-  const [searchValue, setSearchValue] = createSignal(searchParams.q ?? '')
+  // const [searchValue, setSearchValue] = createSignal(searchParams.q ?? '')
 
-  const handleSubmit = () => setSearchParams({ q: searchValue() })
+  // const handleSubmit = () => setSearchParams({ q: searchValue() })
 
-  const searchInput = (
-    <Show when={matches.md}>
-      <Input
-        type="search"
-        placeholder="Search"
-        class="w-full"
-        wrapperClass="lg:w-[512px] md:w-96 w-full"
-        value={searchValue}
-        onInput={e => setSearchValue(e.currentTarget.value)} // since onKeyDown don't receive e.currentTarget from onChange
-        icon={<SearchIcon />}
-        onSubmit={handleSubmit}
-      />
-    </Show>
-  )
+  // const searchInput = (
+  //   <Show when={matches.md}>
+  //     <Input
+  //       type="search"
+  //       placeholder="Search"
+  //       class="w-full"
+  //       wrapperClass="lg:w-[512px] md:w-96 w-full"
+  //       value={searchValue}
+  //       onInput={e => setSearchValue(e.currentTarget.value)} // since onKeyDown don't receive e.currentTarget from onChange
+  //       icon={<SearchIcon />}
+  //       onSubmit={handleSubmit}
+  //     />
+  //   </Show>
+  // )
 
   const [showFilters, setShowFilters] = createSignal(false)
 
