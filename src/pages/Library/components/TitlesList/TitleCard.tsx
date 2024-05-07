@@ -16,7 +16,7 @@ const TitleCard: Component<TitleCardProps> = props => {
       <div class="title-card">
         <Show when={props.manga.thumbnailUrl} fallback={<span>Failed to load cover</span>}>
           <div class="relative h-full w-full">
-            <div class="absolute flex top-2 left-2 z-50 w-full">
+            <div class="absolute flex top-2 left-2 z-30 w-full">
               <Show when={props.downloadsBadge && props.manga.downloadCount > 0}>
                 <Chip
                   radius="none"

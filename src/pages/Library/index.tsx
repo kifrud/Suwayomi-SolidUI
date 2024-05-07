@@ -13,7 +13,7 @@ import {
 } from 'solid-js'
 import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './components'
 import { useSearchParams } from '@solidjs/router'
-import { Chip, Input, Skeleton } from '@/components'
+import { Chip, Input, SearchBar, Skeleton } from '@/components'
 import { matches } from '@/helpers'
 import SearchIcon from '~icons/material-symbols/search'
 
@@ -68,44 +68,40 @@ const Library: Component = () => {
       ).size
   )
 
-  const totalMangaCountElement = <Chip radius="xl" class='py-1 px-2'>{totalMangaCount()}</Chip>
+  const totalMangaCountElement = (
+    <Chip radius="xl" class="py-1 px-2">
+      {totalMangaCount()}
+    </Chip>
+  )
 
   const [searchValue, setSearchValue] = createSignal(searchParams.q ?? '')
-
-  const mobileSearch = (
-    <div>
-      <span>
-        <SearchIcon />
-      </span>
-    </div>
-  )
 
   const handleSubmit = () => setSearchParams({ q: searchValue() })
 
   const searchInput = (
-    <Input
-      type="search"
-      placeholder="Search"
-      class="w-full"
-      wrapperClass="lg:w-[512px] md:w-96 w-full"
-      value={searchValue}
-      onInput={e => setSearchValue(e.currentTarget.value)} // since onKeyDown don't receive e.currentTarget
-      icon={<SearchIcon />}
-      onSubmit={handleSubmit}
-    />
+    <Show when={matches.md}>
+      <Input
+        type="search"
+        placeholder="Search"
+        class="w-full"
+        wrapperClass="lg:w-[512px] md:w-96 w-full"
+        value={searchValue}
+        onInput={e => setSearchValue(e.currentTarget.value)} // since onKeyDown don't receive e.currentTarget from onChange
+        icon={<SearchIcon />}
+        onSubmit={handleSubmit}
+      />
+    </Show>
   )
 
   const [showFilters, setShowFilters] = createSignal(false)
 
   onMount(() => {
-    // could've wrapped it inside createEffect or use Show tag in each element but nah
-    headerCtx.setHeaderCenter(matches.md && searchInput)
-    headerCtx.setHeaderEnd(
-      <>
-        {!matches.md && mobileSearch}
-        <LibraryActions updateShowFilter={setShowFilters} />
-      </>
+    headerCtx.setHeaderCenter(
+      <Show when={matches.md}>
+        <SearchBar />
+      </Show>
     )
+    headerCtx.setHeaderEnd(<LibraryActions updateShowFilter={setShowFilters} />)
   })
 
   createEffect(() =>
