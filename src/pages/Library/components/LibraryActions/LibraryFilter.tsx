@@ -101,7 +101,7 @@ export const LibraryFilter: Component = () => {
     metaCtx.set({ [key]: v })
   }
 
-  // TODO: still smthing weird is happening with tabs
+  // TODO: translate
   const tabs = {
     filters: {
       unread: (
