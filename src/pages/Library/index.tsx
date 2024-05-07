@@ -13,7 +13,7 @@ import {
 } from 'solid-js'
 import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './components'
 import { useSearchParams } from '@solidjs/router'
-import { Chip, Input, SearchBar, Skeleton } from '@/components'
+import { Chip, SearchBar, Skeleton } from '@/components'
 import { matches } from '@/helpers'
 
 const Library: Component = () => {
@@ -72,25 +72,6 @@ const Library: Component = () => {
       {totalMangaCount()}
     </Chip>
   )
-
-  // const [searchValue, setSearchValue] = createSignal(searchParams.q ?? '')
-
-  // const handleSubmit = () => setSearchParams({ q: searchValue() })
-
-  // const searchInput = (
-  //   <Show when={matches.md}>
-  //     <Input
-  //       type="search"
-  //       placeholder="Search"
-  //       class="w-full"
-  //       wrapperClass="lg:w-[512px] md:w-96 w-full"
-  //       value={searchValue}
-  //       onInput={e => setSearchValue(e.currentTarget.value)} // since onKeyDown don't receive e.currentTarget from onChange
-  //       icon={<SearchIcon />}
-  //       onSubmit={handleSubmit}
-  //     />
-  //   </Show>
-  // )
 
   const [showFilters, setShowFilters] = createSignal(false)
 
