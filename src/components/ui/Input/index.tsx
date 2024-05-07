@@ -1,9 +1,12 @@
 import { Accessor, JSX, JSXElement, Show, createMemo, mergeProps } from 'solid-js'
 import ArrowRight from '~icons/material-symbols/arrow-right-alt-rounded'
+import ClearIcon from '~icons/material-symbols/cancel'
 import './styles.scss'
 
 interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputElement> {
   icon?: JSXElement
+  clearIcon?: boolean
+  onClear?: () => void
   type?: 'text' | 'search'
   value: Accessor<T> | T
   isDisabled?: boolean
@@ -32,9 +35,13 @@ const Input = <T extends string>(props: InputProps<T>) => {
   )
 
   const inputClasses = createMemo(() =>
-    ['input', 'rounded-lg', values.icon && 'pl-8', ...(values.class ? [values.class] : [])].join(
-      ' '
-    )
+    [
+      'input',
+      'rounded-lg',
+      values.icon ? 'pl-8' : null,
+      values.clearIcon ? 'pr-8' : null,
+      ...(values.class ? [values.class] : []),
+    ].join(' ')
   )
 
   const value = createMemo(() =>
@@ -68,6 +75,11 @@ const Input = <T extends string>(props: InputProps<T>) => {
         onKeyDown={onKeyDown}
         disabled={values.isDisabled}
       />
+      <Show when={values.clearIcon}>
+        <span class="input__icon" onClick={values.onClear}>
+          <ClearIcon />
+        </span>
+      </Show>
       <Show when={value() && values.showSubmit}>
         <span class="input__submit" onClick={values.onSubmit}>
           <ArrowRight />

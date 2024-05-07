@@ -2,6 +2,8 @@
   display: flex;
   height: var(--header-height);
   align-items: center;
+  position: relative;
+  z-index: 1100;
   padding: 0 16px;
   background: var(--stp-background);
   justify-content: space-between;

@@ -738,6 +738,14 @@
     "@solid-primitives/styles" "^0.0.111"
     "@solid-primitives/utils" "^6.2.1"
 
+"@solid-primitives/active-element@^2.0.20":
+  version "2.0.20"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/active-element/-/active-element-2.0.20.tgz#aebb7961e9c13baaa9046faca8ef1524cbbb6d8a"
+  integrity sha512-5EEJZ7F9DwzHMqXVTsgfE9egzeN9PhUgEkb3+RCC3FPEiLqLUc6HN+OlEjPqBxWEzsB1H/q7CfYDAJUab4N1EA==
+  dependencies:
+    "@solid-primitives/event-listener" "^2.3.3"
+    "@solid-primitives/utils" "^6.2.3"
+
 "@solid-primitives/bounds@^0.0.118":
   version "0.0.118"
   resolved "https://registry.yarnpkg.com/@solid-primitives/bounds/-/bounds-0.0.118.tgz#098229e9996288e0220ec4639731f8977a90c706"
