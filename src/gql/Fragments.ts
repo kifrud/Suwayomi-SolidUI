@@ -284,3 +284,71 @@ export const FilterFragment = graphql(
   `,
   []
 )
+
+export const UpdateStatusFragment = graphql(
+  `
+    fragment UpdateStatusFragment on UpdateStatus {
+      isRunning
+      completeJobs {
+        mangas {
+          nodes {
+            ...MangaTypeFragment
+            unreadCount
+            downloadCount
+            chapters {
+              totalCount
+            }
+          }
+          totalCount
+        }
+      }
+      failedJobs {
+        mangas {
+          nodes {
+            ...MangaUpdaterTypeFragment
+          }
+          totalCount
+        }
+      }
+      pendingJobs {
+        mangas {
+          nodes {
+            ...MangaUpdaterTypeFragment
+          }
+          totalCount
+        }
+      }
+      runningJobs {
+        mangas {
+          nodes {
+            ...MangaUpdaterTypeFragment
+          }
+          totalCount
+        }
+      }
+      skippedJobs {
+        mangas {
+          nodes {
+            ...MangaUpdaterTypeFragment
+          }
+          totalCount
+        }
+      }
+      updatingCategories {
+        categories {
+          nodes {
+            ...CategoryUpdaterTypeFragment
+          }
+        }
+      }
+      skippedCategories {
+        categories {
+          nodes {
+            ...CategoryUpdaterTypeFragment
+          }
+        }
+      }
+    }
+  `,
+  [CategoryUpdaterTypeFragment, MangaUpdaterTypeFragment, MangaTypeFragment]
+)

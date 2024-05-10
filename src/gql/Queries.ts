@@ -10,6 +10,7 @@ import {
   SourceTypeFragment,
   TrackerTypeFragment,
   TrackRecordTypeFragment,
+  UpdateStatusFragment,
 } from './Fragments'
 import { graphql } from './graphql'
 
@@ -482,68 +483,9 @@ export const updateStatus = graphql(
   `
     query updateStatus {
       updateStatus {
-        isRunning
-        completeJobs {
-          mangas {
-            nodes {
-              ...MangaTypeFragment
-              unreadCount
-              downloadCount
-              chapters {
-                totalCount
-              }
-            }
-            totalCount
-          }
-        }
-        failedJobs {
-          mangas {
-            nodes {
-              ...MangaUpdaterTypeFragment
-            }
-            totalCount
-          }
-        }
-        pendingJobs {
-          mangas {
-            nodes {
-              ...MangaUpdaterTypeFragment
-            }
-            totalCount
-          }
-        }
-        runningJobs {
-          mangas {
-            nodes {
-              ...MangaUpdaterTypeFragment
-            }
-            totalCount
-          }
-        }
-        skippedJobs {
-          mangas {
-            nodes {
-              ...MangaUpdaterTypeFragment
-            }
-            totalCount
-          }
-        }
-        updatingCategories {
-          categories {
-            nodes {
-              ...CategoryUpdaterTypeFragment
-            }
-          }
-        }
-        skippedCategories {
-          categories {
-            nodes {
-              ...CategoryUpdaterTypeFragment
-            }
-          }
-        }
+        ...UpdateStatusFragment
       }
     }
   `,
-  [MangaTypeFragment, MangaUpdaterTypeFragment, CategoryUpdaterTypeFragment]
+  [UpdateStatusFragment]
 )
