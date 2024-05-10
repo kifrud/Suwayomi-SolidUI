@@ -87,6 +87,17 @@ export const MangaTypeFragment = graphql(
   [TrackRecordTypeFragment]
 )
 
+export const MangaUpdaterTypeFragment = graphql(
+  `
+    fragment MangaUpdaterTypeFragment on MangaType {
+      id
+      title
+      thumbnailUrl
+    }
+  `,
+  []
+)
+
 export const SourceTypeFragment = graphql(
   `
     fragment SourceTypeFragment on SourceType {
@@ -136,6 +147,18 @@ export const CategoryTypeFragment = graphql(
           id
         }
       }
+    }
+  `,
+  []
+)
+
+export const CategoryUpdaterTypeFragment = graphql(
+  `
+    fragment CategoryUpdaterTypeFragment on CategoryType {
+      id
+      name
+      includeInUpdate
+      includeInDownload
     }
   `,
   []

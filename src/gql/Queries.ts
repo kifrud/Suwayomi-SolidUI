@@ -1,9 +1,11 @@
 import {
   CategoryTypeFragment,
+  CategoryUpdaterTypeFragment,
   ChapterTypeFragment,
   ExtensionTypeFragment,
   FilterFragment,
   MangaTypeFragment,
+  MangaUpdaterTypeFragment,
   PreferenceFragment,
   SourceTypeFragment,
   TrackerTypeFragment,
@@ -464,4 +466,84 @@ export const serverSettings = graphql(
     }
   `,
   []
+)
+
+export const latestUpdateTimestamp = graphql(
+  `
+    query latestUpdateTimestamp {
+      lastUpdateTimestamp {
+        timestamp
+      }
+    }
+  `
+)
+
+export const updateStatus = graphql(
+  `
+    query updateStatus {
+      updateStatus {
+        isRunning
+        completeJobs {
+          mangas {
+            nodes {
+              ...MangaTypeFragment
+              unreadCount
+              downloadCount
+              chapters {
+                totalCount
+              }
+            }
+            totalCount
+          }
+        }
+        failedJobs {
+          mangas {
+            nodes {
+              ...MangaUpdaterTypeFragment
+            }
+            totalCount
+          }
+        }
+        pendingJobs {
+          mangas {
+            nodes {
+              ...MangaUpdaterTypeFragment
+            }
+            totalCount
+          }
+        }
+        runningJobs {
+          mangas {
+            nodes {
+              ...MangaUpdaterTypeFragment
+            }
+            totalCount
+          }
+        }
+        skippedJobs {
+          mangas {
+            nodes {
+              ...MangaUpdaterTypeFragment
+            }
+            totalCount
+          }
+        }
+        updatingCategories {
+          categories {
+            nodes {
+              ...CategoryUpdaterTypeFragment
+            }
+          }
+        }
+        skippedCategories {
+          categories {
+            nodes {
+              ...CategoryUpdaterTypeFragment
+            }
+          }
+        }
+      }
+    }
+  `,
+  [MangaTypeFragment, MangaUpdaterTypeFragment, CategoryUpdaterTypeFragment]
 )

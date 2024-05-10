@@ -4,11 +4,11 @@ import { useAppContext, useGlobalMeta } from '@/contexts'
 import { AscRadio, CheckBox, Radio, TriStateInput } from '@/components'
 import { Display, Sort, TriState } from '@/enums'
 import { GlobalMeta } from '@/contexts/meta/globalMeta'
-import './styles.scss'
 
 interface ITabs {
   filters: {
     unread: JSX.Element
+    // bookmarked: JSX.Element
     downloaded: JSX.Element
     tracked: JSX.Element
   }
@@ -72,24 +72,20 @@ export const LibraryFilter: Component = () => {
 
   const sorts = createMemo(() =>
     Object.fromEntries(
-      Object.entries(Sort).map(([key, value]) => {
-        console.log(key, value)
-
-        return [
-          key,
-          <AscRadio
-            label={key}
-            updateValue={v => metaCtx.set({ Sort: v as Sort })}
-            ascending={metaCtx.globalMeta.Asc}
-            // updateState={v => metaCtx.set({ Sort: v })}
-            updateAscending={v => metaCtx.set({ Asc: v })}
-            name="sort"
-            // onClick={e => metaCtx.set({ [key]: e.currentTarget.value })}
-            checked={metaCtx.globalMeta.Sort === value}
-            value={value}
-          />,
-        ]
-      })
+      Object.entries(Sort).map(([key, value]) => [
+        key,
+        <AscRadio
+          label={key}
+          updateValue={v => metaCtx.set({ Sort: v as Sort })}
+          ascending={metaCtx.globalMeta.Asc}
+          // updateState={v => metaCtx.set({ Sort: v })}
+          updateAscending={v => metaCtx.set({ Asc: v })}
+          name="sort"
+          // onClick={e => metaCtx.set({ [key]: e.currentTarget.value })}
+          checked={metaCtx.globalMeta.Sort === value}
+          value={value}
+        />,
+      ])
     )
   )
 
@@ -102,7 +98,7 @@ export const LibraryFilter: Component = () => {
   }
 
   // TODO: translate
-  const tabs = {
+  const tabs: ITabs = {
     filters: {
       unread: (
         <TriStateInput
@@ -126,9 +122,13 @@ export const LibraryFilter: Component = () => {
         />
       ),
     },
-    sort: sorts(),
+    sort: sorts() as {
+      [k in Sort]: JSX.Element
+    },
     display: {
-      modes: displayModes(),
+      modes: displayModes() as {
+        [k in Display]: JSX.Element
+      },
       badges: {
         // TODO: translate
         downloads: (
@@ -164,14 +164,12 @@ export const LibraryFilter: Component = () => {
       },
     },
   }
-
+  // FIXME: not properly checking
   const isElement = (obj: object): obj is Element => {
     return (
       obj instanceof Node ||
       Array.isArray(obj) ||
-      (typeof obj === 'string' && typeof obj !== 'boolean' && typeof obj !== 'number') ||
-      obj === null ||
-      obj === undefined
+      (typeof obj === 'string' && typeof obj !== 'boolean' && typeof obj !== 'number')
     )
   }
 
@@ -200,7 +198,7 @@ export const LibraryFilter: Component = () => {
               <Tabs.Content value={name} class="flex flex-col gap-2 px-2">
                 <For each={Object.entries(data)}>
                   {([key, item]) => (
-                    <Show when={!isElement(item)} fallback={item as Element}>
+                    <Show when={!isElement(item as object)} fallback={item as Element}>
                       <div class="flex flex-col gap-1">
                         <span class="opacity-50">
                           {/* FIXME: types issue */}
