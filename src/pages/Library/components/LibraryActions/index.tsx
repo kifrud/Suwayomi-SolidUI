@@ -1,8 +1,9 @@
 import { SearchBar } from '@/components'
 import { matches } from '@/helpers'
-import { Component, Setter, Show, createSignal } from 'solid-js'
+import { Component, Setter, Show } from 'solid-js'
 import FiltersIcon from '~icons/material-symbols/filter-list'
-import SearchIcon from '~icons/material-symbols/search'
+import UpdateCheck from './UpdateCheck'
+import './styles.scss'
 
 interface LibraryActionsProps {
   updateShowFilter: Setter<boolean>
@@ -11,15 +12,11 @@ interface LibraryActionsProps {
 export const LibraryActions: Component<LibraryActionsProps> = props => {
   return (
     <>
-      {/* <Show when={!matches.md}>
-        <button class="icon-32 flex items-center">
-          <SearchIcon />
-        </button>
-      </Show> */}
       <Show when={!matches.md}>
         <SearchBar mobile />
       </Show>
-      <button class="icon-32" onClick={() => props.updateShowFilter(prev => !prev)}>
+      <UpdateCheck />
+      <button class="icon-32 p-1 transition-all library-action" onClick={() => props.updateShowFilter(prev => !prev)}>
         <FiltersIcon />
       </button>
     </>

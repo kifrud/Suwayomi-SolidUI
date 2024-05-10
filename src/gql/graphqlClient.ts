@@ -1,6 +1,8 @@
 import { Client, fetchExchange, subscriptionExchange } from '@urql/core'
 import { cacheExchange } from '@urql/exchange-graphcache'
 import { createClient as createWSClient } from 'graphql-ws'
+import { updateLibraryMangas } from './Mutations'
+import { ResultOf } from 'gql.tada'
 
 const wsClient = createWSClient({
   url: window.location.origin.replace(/^http/, 'ws') + '/api/graphql',
@@ -42,7 +44,22 @@ export const client = new Client({
         ExtensionType: e => (e.pkgName as string) + (e.versionName as string) + e.repo,
         TrackStatusType: () => null,
         TrackerNodeList: () => null,
+        UpdateStatusCategoryType: () => null,
+        UpdateStatusType: () => null,
+        UpdateStatus: () => null,
+        LastUpdateTimestampPayload: () => null,
       },
+      // updates: {
+      //   Mutation: {
+      //     updateLibraryMangas(result, _,  cache, info) {
+      //       const res = result as ResultOf<typeof updateLibraryMangas>
+      //       const variables = nfo.variables as VariablesOf<
+      //       typeof updateMangasCategories
+      //     >;
+
+      //     }
+      //   }
+      // }
     }),
     fetchExchange,
     subscriptionExchange({

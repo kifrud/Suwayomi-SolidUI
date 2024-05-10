@@ -6,7 +6,7 @@ import './styles.scss'
 interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputElement> {
   icon?: JSXElement
   clearIcon?: { state: boolean; always?: boolean }
-  onClear?: () => void
+  onClear?: JSX.EventHandler<HTMLSpanElement, MouseEvent>
   type?: 'text' | 'search'
   value: Accessor<T> | T
   isDisabled?: boolean
@@ -93,7 +93,7 @@ const Input = <T extends string>(props: InputProps<T>) => {
             onClick={e => {
               e.preventDefault()
 
-              if (values.onClear) values.onClear()
+              if (values.onClear) values.onClear(e)
             }}
           >
             <ClearIcon />
