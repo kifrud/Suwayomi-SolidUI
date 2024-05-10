@@ -16,7 +16,7 @@ export const LibraryActions: Component<LibraryActionsProps> = props => {
         <SearchBar mobile />
       </Show>
       <UpdateCheck />
-      <button class="icon-32 p-1 transition-all library-action" onClick={() => props.updateShowFilter(prev => !prev)}>
+      <button class="icon-24 p-1 transition-all library-action" onClick={() => props.updateShowFilter(prev => !prev)}>
         <FiltersIcon />
       </button>
     </>

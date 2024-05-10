@@ -96,7 +96,7 @@ const SearchBar: Component<{ mobile?: boolean }> = props => {
         setShowInput(prev => !prev)
         inputEl.focus()
       }}
-      class="flex items-center icon-32"
+      class="flex items-center icon-24"
     >
       <SearchIcon />
     </button>
