@@ -66,7 +66,7 @@ const UpdateCheck: Component = () => {
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content class="update-check__content">
-            <span class="icon-32 text-background">
+            <span class="icon-24 text-background">
               <Show when={!latestTimestampData.loading} fallback={'-'}>
                 {latestTimestamp()}
               </Show>
