@@ -5,13 +5,14 @@ import { useGraphQLClient } from '@/contexts'
 import { latestUpdateTimestamp, updateStatus as updateStatusQuery } from '@/gql/Queries'
 import { updateLibraryMangas } from '@/gql/Mutations'
 import UpdateIcon from '~icons/material-symbols/update'
+import { client } from '@/gql'
+import { updateStatusSubscription } from '@/gql/Subscriptions'
 
 const UpdateCheck: Component = () => {
   const client = useGraphQLClient()
-  // const [updateStatus, { refetch: refetchStatus }] = createResource(
-  //   async () =>
-  //     await client.query(updateStatusQuery, {}, { requestPolicy: 'network-only' }).toPromise()
-  // )
+  // TODO: display loading
+  const [running, setRunning] = createSignal(false)
+
   const [latestTimestampData, { refetch }] = createResource(
     async () =>
       await client
@@ -19,7 +20,9 @@ const UpdateCheck: Component = () => {
         .toPromise()
   )
 
-  // const loading = createMemo(() => !!updateStatus.latest?.data?.updateStatus.isRunning)
+  client
+    .subscription(updateStatusSubscription, {}, { requestPolicy: 'network-only' })
+    .subscribe(res => setRunning(res.data?.updateStatusChanged.isRunning ?? false))
 
   const latestTimestamp = createMemo(() =>
     new Date(+latestTimestampData.latest?.data?.lastUpdateTimestamp.timestamp!).toLocaleString()
@@ -45,7 +48,6 @@ const UpdateCheck: Component = () => {
   const handleClick = async () => {
     try {
       await client.mutation(updateLibraryMangas, {}).toPromise()
-      // refetchStatus()
       refetch()
     } catch (error) {
       console.log(error)
