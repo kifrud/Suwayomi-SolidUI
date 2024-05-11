@@ -15,6 +15,7 @@ import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './com
 import { useSearchParams } from '@solidjs/router'
 import { Chip, SearchBar, Skeleton } from '@/components'
 import { matches } from '@/helpers'
+import { Sort } from '@/enums'
 
 const Library: Component = () => {
   const { globalMeta } = useGlobalMeta()
@@ -37,25 +38,68 @@ const Library: Component = () => {
   )
 
   const mangas = createMemo(() =>
-    category()?.data?.category.mangas.nodes.filter(item => {
-      if (!item.inLibrary) return false
-      if (
-        searchParams.q !== '' &&
-        searchParams.q !== null &&
-        searchParams.q !== undefined &&
-        item.title.toLowerCase().includes(searchParams.q.toLowerCase())
-      )
-        return true
+    category()
+      ?.data?.category.mangas.nodes.filter(item => {
+        if (!item.inLibrary) return false
+        if (globalMeta.ignoreFiltersWhenSearching) {
+          if (
+            searchParams.q !== '' &&
+            searchParams.q !== null &&
+            searchParams.q !== undefined &&
+            item.title.toLowerCase().includes(searchParams.q.toLowerCase())
+          )
+            return true
+        }
 
-      if (
-        searchParams.q !== '' &&
-        searchParams.q !== null &&
-        searchParams.q !== undefined &&
-        !item.title.toLowerCase().includes(searchParams.q.toLowerCase())
-      )
-        return false
-      return true
-    })
+        if (globalMeta.Downloaded === 1 && item.downloadCount === 0) return false
+        if (globalMeta.Downloaded === 2 && item.downloadCount !== 0) return false
+
+        if (globalMeta.Unread === 1 && item.unreadCount === 0) return false
+        if (globalMeta.Unread === 2 && item.unreadCount !== 0) return false
+
+        if (globalMeta.Bookmarked === 1 && item.bookmarkCount === 0) return false
+        if (globalMeta.Bookmarked === 2 && item.bookmarkCount !== 0) return false
+
+        if (
+          searchParams.q !== '' &&
+          searchParams.q !== null &&
+          searchParams.q !== undefined &&
+          !item.title.toLowerCase().includes(searchParams.q.toLowerCase())
+        )
+          return false
+        return true
+      })
+      .toSorted((a, b) => {
+        let result = true
+        switch (globalMeta.Sort) {
+          case Sort.ID:
+            result = a.id > b.id
+            break
+          case Sort.Unread:
+            result = a.unreadCount > b.unreadCount
+            break
+          case Sort.Alphabetical:
+            result = a.title > b.title
+            break
+          case Sort.LatestRead:
+            result =
+              parseInt(a.lastReadChapter?.lastReadAt ?? '0') >
+              parseInt(b.lastReadChapter?.lastReadAt ?? '0')
+            break
+          case Sort.LatestFetched:
+            result =
+              parseInt(a.latestFetchedChapter?.fetchedAt ?? '0') >
+              parseInt(b.latestFetchedChapter?.fetchedAt ?? '0')
+            break
+          case Sort.LatestUploaded:
+            result =
+              parseInt(a.latestUploadedChapter?.uploadDate ?? '0') >
+              parseInt(b.latestUploadedChapter?.uploadDate ?? '0')
+        }
+        if (globalMeta.Asc) result = !result
+
+        return result ? -1 : 1
+      })
   )
 
   const totalMangaCount = createMemo(
