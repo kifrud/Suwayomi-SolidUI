@@ -1,5 +1,5 @@
-import { Tabs } from '@kobalte/core/tabs'
 import { Component, ErrorBoundary, For, JSX, Show, createMemo, createSignal } from 'solid-js'
+import { Tabs } from '@kobalte/core/tabs'
 import { useAppContext, useGlobalMeta } from '@/contexts'
 import { AscRadio, CheckBox, Radio, TriStateInput } from '@/components'
 import { Display, Sort, TriState } from '@/enums'
@@ -8,7 +8,7 @@ import { GlobalMeta } from '@/contexts/meta/globalMeta'
 interface ITabs {
   filters: {
     unread: JSX.Element
-    // bookmarked: JSX.Element
+    bookmarked: JSX.Element
     downloaded: JSX.Element
     tracked: JSX.Element
   }
@@ -41,8 +41,6 @@ export const LibraryFilter: Component = () => {
     metaCtx.set({ Display: e.currentTarget.value as Display })
   }
 
-  // createEffect(() => console.log(metaCtx.globalMeta.Display))
-
   const displayModes = createMemo(() =>
     Object.fromEntries(
       Object.entries(Display).map(([key, value]) => [
@@ -52,23 +50,11 @@ export const LibraryFilter: Component = () => {
           name="display"
           value={value}
           onClick={setRadio}
-          // onChange={e => {
-          //   metaCtx.set({ Display: e.currentTarget.value as Display })
-          // }}
           checked={metaCtx.globalMeta.Display === value}
         />,
       ])
     )
   )
-
-  // createEffect(() =>
-  //   console.log(
-  //     metaCtx.globalMeta.Asc,
-  //     metaCtx.globalMeta.Sort,
-  //     'UnreadFilter: ',
-  //     metaCtx.globalMeta.Unread
-  //   )
-  // )
 
   const sorts = createMemo(() =>
     Object.fromEntries(
@@ -78,10 +64,8 @@ export const LibraryFilter: Component = () => {
           label={key}
           updateValue={v => metaCtx.set({ Sort: v as Sort })}
           ascending={metaCtx.globalMeta.Asc}
-          // updateState={v => metaCtx.set({ Sort: v })}
           updateAscending={v => metaCtx.set({ Asc: v })}
           name="sort"
-          // onClick={e => metaCtx.set({ [key]: e.currentTarget.value })}
           checked={metaCtx.globalMeta.Sort === value}
           value={value}
         />,
@@ -97,7 +81,6 @@ export const LibraryFilter: Component = () => {
     metaCtx.set({ [key]: v })
   }
 
-  // TODO: translate
   const tabs: ITabs = {
     filters: {
       unread: (
@@ -114,11 +97,19 @@ export const LibraryFilter: Component = () => {
           updateState={v => setTriState('Downloaded', v)}
         />
       ),
-      tracked: (
+      bookmarked: (
+        <TriStateInput
+          label={t(`library.filterTabs.filters.bookmarked`)}
+          state={metaCtx.globalMeta.Bookmarked}
+          updateState={v => setTriState('Bookmarked', v)}
+        />
+      ),
+      tracked: ( // TODO: add trackers
         <TriStateInput
           label={t(`library.filterTabs.filters.tracked`)}
           state={metaCtx.globalMeta.Tracked}
           updateState={v => setTriState('Tracked', v)}
+          isDisabled
         />
       ),
     },
@@ -164,14 +155,6 @@ export const LibraryFilter: Component = () => {
       },
     },
   }
-  // FIXME: not properly checking
-  const isElement = (obj: object): obj is Element => {
-    return (
-      obj instanceof Node ||
-      Array.isArray(obj) ||
-      (typeof obj === 'string' && typeof obj !== 'boolean' && typeof obj !== 'number')
-    )
-  }
 
   const [tab, setTab] = createSignal(Object.keys(tabs)[0])
 
@@ -198,7 +181,7 @@ export const LibraryFilter: Component = () => {
               <Tabs.Content value={name} class="flex flex-col gap-2 px-2">
                 <For each={Object.entries(data)}>
                   {([key, item]) => (
-                    <Show when={!isElement(item as object)} fallback={item as Element}>
+                    <Show when={!(typeof item === 'function')} fallback={item as Element}>
                       <div class="flex flex-col gap-1">
                         <span class="opacity-50">
                           {/* FIXME: types issue */}

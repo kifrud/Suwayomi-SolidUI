@@ -9,6 +9,7 @@ export const defaults = {
   Unread: TriState.IGNORE,
   Downloaded: TriState.IGNORE,
   Tracked: TriState.IGNORE,
+  Bookmarked: TriState.IGNORE,
   // mangaMetaDefaults,
   /** Show or not downloads badge */
   downloadsBadge: true,
