@@ -2,7 +2,6 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  // flex-grow: 1;
   margin-top: calc(var(--categories-tabs-height) - 1px);
   background: var(--stp-background_muted);
   min-width: 300px;
@@ -22,14 +21,6 @@
   &__trigger {
     display: flex;
     align-items: center;
-    // height: 100%;
-    // width: 100%;
-    // border-radius: 8px;
-    // padding: 4px;
-
-    // &:hover {
-    //   background: var(--stp-background_muted);
-    // }
   }
 
   &__content {
@@ -40,14 +31,17 @@
     animation: contentHide 250ms ease-in forwards;
     border-radius: 4px;
   }
+
   &__content[data-expanded] {
     animation: contentShow 250ms ease-out;
   }
+
   &__progress {
     width: 100vw;
     position: absolute;
     top: calc(var(--header-height) - 3px);
     left: 0;
+    z-index: 100;
     &-track {
       height: 2px;
     }
