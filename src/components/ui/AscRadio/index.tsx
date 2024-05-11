@@ -17,7 +17,7 @@ const AscRadio: Component<AscRadioProps> = props => {
   const baseClasses = createMemo(() => ['w-full', ...(props.class ? [props.class] : [])].join(' '))
 
   const indicatorClasses = createMemo(() =>
-    ['transition-all', props.ascending ? 'rotate-[270deg]' : 'rotate-90'].join(' ')
+    ['transition-all', props.ascending ? 'rotate-[-90deg]' : 'rotate-90'].join(' ')
   )
 
   const handleClick: JSX.EventHandler<HTMLInputElement, MouseEvent> = e => {

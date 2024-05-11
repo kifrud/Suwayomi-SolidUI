@@ -40,6 +40,7 @@ export const getCategory = graphql(
             thumbnailUrl
             unreadCount
             downloadCount
+            bookmarkCount
             latestFetchedChapter {
               fetchedAt
               id

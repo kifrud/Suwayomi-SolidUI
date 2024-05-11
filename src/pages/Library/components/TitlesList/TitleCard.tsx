@@ -53,7 +53,7 @@ const TitleCard: Component<TitleCardProps> = props => {
           </div>
         </Show>
         <div class="title-card__footer">
-          <span>{props.manga.title}</span>
+          <span class="overflow-hidden text-ellipsis">{props.manga.title}</span>
         </div>
       </div>
     </A>
