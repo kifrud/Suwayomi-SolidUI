@@ -563,10 +563,10 @@
     string-argv "^0.3.1"
     type-detect "^4.0.8"
 
-"@kifrud/solid-theme-provider@^0.9.7":
-  version "0.9.7"
-  resolved "https://registry.yarnpkg.com/@kifrud/solid-theme-provider/-/solid-theme-provider-0.9.7.tgz#19961636e51c8436f789fdfb0c93e39b78afe69c"
-  integrity sha512-tf6Qq41Er6sZRgMVPbVrS8UGc3Den0QQ97O2Lbl9kD0UHY2cziD4pJomGWxElWVkY6EiSNlYF+H9wK0Rkjf4Jw==
+"@kifrud/solid-theme-provider@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@kifrud/solid-theme-provider/-/solid-theme-provider-0.10.1.tgz#504aafd27ed4eb0b864e9442e8bf330d15cb2592"
+  integrity sha512-o+b9rfH7LjR6xqaVuYVpYWcZhvs498wP3c8jGfTwYJRjbrMnmoe98e7Gn2VS7VZ/Z+VvgkZmSPmdS53L3Ha2yA==
   dependencies:
     "@solid-primitives/storage" "^3.5.0"
 

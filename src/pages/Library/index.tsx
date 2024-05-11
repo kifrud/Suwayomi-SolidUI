@@ -87,6 +87,7 @@ const Library: Component = () => {
   createEffect(() =>
     headerCtx.setHeaderTitleData(globalMeta.libraryCategoryTotalCounts && totalMangaCountElement)
   )
+
   onCleanup(() => headerCtx.clear())
 
   const tabsPlaceholder = (
