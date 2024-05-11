@@ -1,17 +1,18 @@
-import { Component, Show, createEffect, createMemo, createResource, createSignal } from 'solid-js'
+import { Component, Show, createMemo, createResource } from 'solid-js'
 import { Progress } from '@kobalte/core/progress'
 import { Tooltip } from '@kobalte/core/tooltip'
 import { useGraphQLClient } from '@/contexts'
-import { latestUpdateTimestamp, updateStatus as updateStatusQuery } from '@/gql/Queries'
+import { useUpdaterSubscription } from '@/helpers'
+import { ResultOf } from '@/gql'
+import { latestUpdateTimestamp } from '@/gql/Queries'
 import { updateLibraryMangas } from '@/gql/Mutations'
-import UpdateIcon from '~icons/material-symbols/update'
-import { client } from '@/gql'
 import { updateStatusSubscription } from '@/gql/Subscriptions'
+import UpdateIcon from '~icons/material-symbols/update'
 
+// TODO: notify if found new chapters
 const UpdateCheck: Component = () => {
   const client = useGraphQLClient()
-  // TODO: display loading
-  const [running, setRunning] = createSignal(false)
+  const status = useUpdaterSubscription()
 
   const [latestTimestampData, { refetch }] = createResource(
     async () =>
@@ -20,37 +21,35 @@ const UpdateCheck: Component = () => {
         .toPromise()
   )
 
-  client
-    .subscription(updateStatusSubscription, {}, { requestPolicy: 'network-only' })
-    .subscribe(res => setRunning(res.data?.updateStatusChanged.isRunning ?? false))
+  const loading = createMemo(() => status()?.updateStatusChanged.isRunning)
 
   const latestTimestamp = createMemo(() =>
     new Date(+latestTimestampData.latest?.data?.lastUpdateTimestamp.timestamp!).toLocaleString()
   )
 
-  // const calcProgress = (status: typeof updateStatus) => {
-  //   if (!status.latest?.data?.updateStatus) return 0
+  const calcProgress = (status: ResultOf<typeof updateStatusSubscription>) => {
+    if (!status.updateStatusChanged) return 0
 
-  //   const finished =
-  //     status.latest.data.updateStatus.completeJobs.mangas.totalCount +
-  //     status.latest.data.updateStatus.failedJobs.mangas.totalCount
+    const finished =
+      status.updateStatusChanged.completeJobs.mangas.totalCount +
+      status.updateStatusChanged.failedJobs.mangas.totalCount
 
-  //   const total =
-  //     finished +
-  //     status.latest.data.updateStatus.pendingJobs.mangas.totalCount +
-  //     status.latest.data.updateStatus.runningJobs.mangas.totalCount
+    const total =
+      finished +
+      status.updateStatusChanged.pendingJobs.mangas.totalCount +
+      status.updateStatusChanged.runningJobs.mangas.totalCount
 
-  //   const progress = 100 * (finished / total)
+    const progress = 100 * (finished / total)
 
-  //   return Number.isNaN(progress) ? 0 : progress
-  // }
+    return Number.isNaN(progress) ? 0 : progress
+  }
 
   const handleClick = async () => {
     try {
       await client.mutation(updateLibraryMangas, {}).toPromise()
       refetch()
     } catch (error) {
-      console.log(error)
+      console.log(error) // TODO: better error handling
     }
   }
 
@@ -60,7 +59,7 @@ const UpdateCheck: Component = () => {
         <Tooltip.Trigger
           class="update-check__trigger transition-all icon-32 library-action cursor-pointer"
           onClick={handleClick}
-          // disabled={loading()}
+          disabled={loading()}
         >
           <UpdateIcon />
         </Tooltip.Trigger>
@@ -74,13 +73,13 @@ const UpdateCheck: Component = () => {
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip>
-      {/* <Show when={loading()}>
-        <Progress value={calcProgress(updateStatus)} class="update-check__progress">
+      <Show when={loading()}>
+        <Progress value={status() ? calcProgress(status()!) : 0} class="update-check__progress">
           <Progress.Track class="update-check__progress-track">
             <Progress.Fill class="update-check__progress-fill" />
           </Progress.Track>
         </Progress>
-      </Show> */}
+      </Show>
     </>
   )
 }
