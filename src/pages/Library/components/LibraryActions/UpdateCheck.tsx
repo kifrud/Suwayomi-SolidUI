@@ -57,7 +57,7 @@ const UpdateCheck: Component = () => {
     <>
       <Tooltip openDelay={150} closeDelay={100}>
         <Tooltip.Trigger
-          class="update-check__trigger transition-all icon-32 library-action cursor-pointer"
+          class="update-check__trigger transition-all icon-24 library-action cursor-pointer"
           onClick={handleClick}
           disabled={loading()}
         >
@@ -65,7 +65,7 @@ const UpdateCheck: Component = () => {
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content class="update-check__content">
-            <span class="icon-24 text-background">
+            <span class="text-background">
               <Show when={!latestTimestampData.loading} fallback={'-'}>
                 {latestTimestamp()}
               </Show>
