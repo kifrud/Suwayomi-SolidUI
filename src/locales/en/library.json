@@ -4,6 +4,7 @@
       "name": "Filters",
       "unread": "Unread",
       "downloaded": "Downloaded",
+      "bookmarked": "Bookmarked",
       "tracked": "Tracked"
     },
     "sort": {

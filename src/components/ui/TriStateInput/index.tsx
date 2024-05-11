@@ -86,7 +86,7 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
         <input
           {...props}
           type="checkbox"
-          value={state()}
+          value={state() ?? TriState.IGNORE}
           onChange={handleChange}
           onKeyDown={onKeyDown}
           disabled={values.isDisabled}
