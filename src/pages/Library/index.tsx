@@ -1,9 +1,10 @@
-import { useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
-import { getCategories, getCategory } from '@/gql/Queries'
 import {
   Component,
   For,
+  JSX,
+  ParentComponent,
   Show,
+  Suspense,
   createEffect,
   createMemo,
   createResource,
@@ -11,11 +12,64 @@ import {
   onCleanup,
   onMount,
 } from 'solid-js'
-import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './components'
+import { createSwitchTransition } from '@solid-primitives/transition-group'
+import { resolveFirst } from '@solid-primitives/refs'
 import { useSearchParams } from '@solidjs/router'
+import { useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
+import { getCategories, getCategory } from '@/gql/Queries'
+import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './components'
 import { Chip, SearchBar, Skeleton } from '@/components'
 import { matches } from '@/helpers'
 import { Sort } from '@/enums'
+import './styles.scss'
+
+const Transition: ParentComponent = props => {
+  const animationMap = new Map<Element, Animation>()
+
+  const el = resolveFirst(
+    () => props.children,
+    (item): item is HTMLElement => item instanceof HTMLElement
+  )
+
+  const animateIn = (el: HTMLElement, done: VoidFunction) => {
+    if (!el.isConnected) return done()
+
+    const a = el.animate([{ transform: 'translate(301px)' }, { transform: 'translate(0px)' }], {
+      duration: 150,
+    })
+    animationMap.set(el, a)
+
+    const complete = () => {
+      done()
+      animationMap.delete(el)
+    }
+
+    a.finished.then(complete).catch(complete)
+  }
+
+  const animateOut = (el: HTMLElement, done: VoidFunction) => {
+    if (!el.isConnected) return done()
+
+    animationMap.get(el)?.cancel()
+
+    el.animate([{ transform: `translate(0px)` }, { transform: 'translate(301px)' }], {
+      duration: 150,
+    })
+      .finished.then(done)
+      .catch(done)
+  }
+  const transition = createSwitchTransition(el, {
+    onEnter(el, done) {
+      queueMicrotask(() => animateIn(el, done))
+    },
+    onExit(el, done) {
+      animateOut(el, done)
+    },
+    mode: 'in-out',
+  })
+
+  return <>{transition()}</>
+}
 
 const Library: Component = () => {
   const { globalMeta } = useGlobalMeta()
@@ -144,6 +198,14 @@ const Library: Component = () => {
     </div>
   )
 
+  const handleWrapperClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = e => {
+    if (!showFilters()) return
+    e.stopPropagation()
+    e.preventDefault()
+
+    setShowFilters(false)
+  }
+
   return (
     <>
       <div class="flex flex-col gap-2 w-full">
@@ -160,11 +222,17 @@ const Library: Component = () => {
             />
           </Show>
         </Show>
-        <TitlesList mangas={mangas} isLoading={category.loading} />
+        <div classList={{ 'h-full': showFilters() }} onClick={handleWrapperClick}>
+          <TitlesList mangas={mangas} isLoading={category.loading} />
+        </div>
       </div>
-      <Show when={showFilters()}>
-        <LibraryFilter />
-      </Show>
+      <Suspense>
+        <Transition>
+          <Show when={showFilters()}>
+            <LibraryFilter />
+          </Show>
+        </Transition>
+      </Suspense>
     </>
   )
 }

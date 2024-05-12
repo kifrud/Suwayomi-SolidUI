@@ -104,7 +104,8 @@ export const LibraryFilter: Component = () => {
           updateState={v => setTriState('Bookmarked', v)}
         />
       ),
-      tracked: ( // TODO: add trackers
+      // TODO: add trackers
+      tracked: (
         <TriStateInput
           label={t(`library.filterTabs.filters.tracked`)}
           state={metaCtx.globalMeta.Tracked}
@@ -164,8 +165,8 @@ export const LibraryFilter: Component = () => {
         <Tabs.List class="flex items-center relative justify-between">
           <For each={Object.keys(tabs)}>
             {tabName => (
-              <Tabs.Trigger value={tabName} class="py-2 px-4">
-                {t(`library.filterTabs.${tabName as keyof ITabs}.name`)}
+              <Tabs.Trigger value={tabName} class="px-4 py-2">
+                <span>{t(`library.filterTabs.${tabName as keyof ITabs}.name`)}</span>
               </Tabs.Trigger>
             )}
           </For>
