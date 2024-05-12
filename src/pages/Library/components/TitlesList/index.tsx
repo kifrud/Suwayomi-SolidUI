@@ -44,14 +44,16 @@ const TitlesList: Component<TitlesListProps> = props => {
       '3xl:grid-cols-10',
       'gap-2',
       'px-2',
-      !props.isLoading && props.mangas()?.length! === 0 ? '!grid-cols-1 h-full' : '',
+      !props.isLoading && (!props.mangas() || props.mangas()?.length! === 0)
+        ? '!grid-cols-1 h-full'
+        : '',
     ].join(' ')
   )
 
   return (
     <div class={wrapperClasses()}>
       <Show when={!props.isLoading} fallback={placeholder}>
-        <Show when={props.mangas()?.length! > 0} fallback={noFoundManga}>
+        <Show when={props.mangas() && props.mangas()?.length! > 0} fallback={noFoundManga}>
           <For each={props.mangas!()}>{item => <TitleCard manga={item} />}</For>
         </Show>
       </Show>
