@@ -125,13 +125,14 @@ export const LibraryFilter: Component = () => {
         // TODO: translate
         downloads: (
           <CheckBox
+            label={t('library.filterTabs.display.badges.downloads')}
             checked={metaCtx.globalMeta.downloadsBadge}
             updateState={v => setCheckBox('downloadsBadge', v)}
           />
         ),
         unreads: (
           <CheckBox
-            label="asd"
+            label={t('library.filterTabs.display.badges.unrerads')}
             checked={metaCtx.globalMeta.unreadsBadge}
             updateState={v => setCheckBox('unreadsBadge', v)}
           />
@@ -140,6 +141,7 @@ export const LibraryFilter: Component = () => {
       tabs: {
         showCount: (
           <CheckBox
+            label={t('library.filterTabs.display.tabs.totalCounts')}
             checked={metaCtx.globalMeta.libraryCategoryTotalCounts}
             updateState={v => setCheckBox('libraryCategoryTotalCounts', v)}
           />
@@ -148,7 +150,7 @@ export const LibraryFilter: Component = () => {
       other: {
         resumeButton: (
           <CheckBox
-            label="res"
+            label={t('library.filterTabs.display.other.resumeButton')}
             checked={metaCtx.globalMeta.libraryResumeButton}
             updateState={v => setCheckBox('libraryResumeButton', v)}
           />
