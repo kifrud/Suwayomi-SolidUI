@@ -1,9 +1,28 @@
 .input {
-  border: 2px solid var(--stp-foreground-alpha_quaternary);
   max-height: 36px;
   padding: 8px 6px;
-  background: var(--stp-foreground-alpha_quaternary);
   transition: all 0.15s;
+
+  &--default {
+    border: 2px solid var(--stp-foreground-alpha_quaternary);
+    background: var(--stp-foreground-alpha_quaternary);
+    &:focus,
+    &:hover {
+      border: 2px solid var(--stp-foreground-alpha_tertiary);
+      outline: none;
+    }
+  }
+
+  &--underline {
+    border-bottom: 2px solid var(--stp-foreground-alpha_tertiary);
+    background: transparent;
+    &:focus,
+    &:hover {
+      border-bottom: 2px solid var(--stp-foreground-alpha_secondary);
+      outline: none;
+    }
+  }
+
   &__icon {
     position: absolute;
     left: 6px;
@@ -13,11 +32,6 @@
       height: 24px;
       opacity: 0.5;
     }
-  }
-  &:focus,
-  &:hover {
-    border: 2px solid var(--stp-foreground-alpha_tertiary);
-    outline: none;
   }
   &__submit {
     cursor: pointer;
