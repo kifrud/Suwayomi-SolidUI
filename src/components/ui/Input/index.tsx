@@ -3,6 +3,8 @@ import ArrowRight from '~icons/material-symbols/arrow-right-alt-rounded'
 import ClearIcon from '~icons/material-symbols/cancel'
 import './styles.scss'
 
+type Schemes = 'underline' | 'default'
+
 interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputElement> {
   icon?: JSXElement
   clearIcon?: { state: boolean; always?: boolean }
@@ -15,6 +17,8 @@ interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputEleme
   onSubmit?: () => void
   wrapperClass?: string
   placeholder?: string
+  scheme?: Schemes
+  radius?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
 const Input = <T extends string>(props: InputProps<T>) => {
@@ -31,6 +35,8 @@ const Input = <T extends string>(props: InputProps<T>) => {
       placeholder: '',
       isDisabled: false,
       clearIcon: { state: false, always: false },
+      scheme: 'default',
+      radius: 'lg',
     },
     props
   )
@@ -38,9 +44,10 @@ const Input = <T extends string>(props: InputProps<T>) => {
   const inputClasses = createMemo(() =>
     [
       'input',
-      'rounded-lg',
+      `input--${values.scheme}`,
+      values.scheme ? `rounded-${values.radius}` : null,
       values.icon ? 'pl-8' : null,
-      values.clearIcon ? 'pr-16' : null,
+      values.clearIcon.state ? 'pr-16' : null,
       ...(values.class ? [values.class] : []),
     ].join(' ')
   )
@@ -76,13 +83,19 @@ const Input = <T extends string>(props: InputProps<T>) => {
         onKeyDown={onKeyDown}
         disabled={values.isDisabled}
       />
-      {/* <div class='absolute right-0 flex'> */}
       <Show when={values.clearIcon?.state}>
         <Show
           when={!values.clearIcon?.always && value()}
           fallback={
             <Show when={values.clearIcon.always}>
-              <span class="input__clear" onClick={values.onClear}>
+              <span
+                class="input__clear"
+                onClick={e => {
+                  e.preventDefault()
+
+                  if (values.onClear) values.onClear(e)
+                }}
+              >
                 <ClearIcon />
               </span>
             </Show>
@@ -105,7 +118,6 @@ const Input = <T extends string>(props: InputProps<T>) => {
           <ArrowRight />
         </span>
       </Show>
-      {/* </div> */}
     </div>
   )
 }

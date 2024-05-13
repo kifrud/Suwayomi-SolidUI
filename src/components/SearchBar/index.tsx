@@ -11,11 +11,12 @@ import {
 import { Input } from '../ui'
 import { useSearchParams } from '@solidjs/router'
 import SearchIcon from '~icons/material-symbols/search'
-import { useHeaderContext } from '@/contexts'
+import { useAppContext, useHeaderContext } from '@/contexts'
 import { makeFocusListener } from '@solid-primitives/active-element'
 import { matches } from '@/helpers'
 
 const SearchBar: Component<{ mobile?: boolean }> = props => {
+  const { t } = useAppContext()
   const headerCtx = useHeaderContext()
   const values = mergeProps({ modile: false }, props)
 
@@ -28,16 +29,7 @@ const SearchBar: Component<{ mobile?: boolean }> = props => {
   let inputEl!: HTMLInputElement
 
   const wrapperClasses = createMemo(() =>
-    [
-      'lg:w-[512px]',
-      'md:w-96',
-      'md:relative',
-      'md:left-auto',
-      'w-full',
-      // 'absolute',
-      'z-50',
-      'left-0',
-    ].join(' ')
+    ['lg:w-[512px]', 'md:w-96', 'md:relative', 'md:left-auto', 'w-full', 'z-50', 'left-0'].join(' ')
   )
 
   onMount(() => {
@@ -66,9 +58,11 @@ const SearchBar: Component<{ mobile?: boolean }> = props => {
     <Input
       ref={inputEl}
       type="search"
-      placeholder="Search"
+      placeholder={t('global.search')}
       wrapperClass={wrapperClasses()}
       class="w-full"
+      scheme={matches.md ? 'default' : 'underline'}
+      radius={matches.md ? 'lg' : 'none'}
       value={searchValue}
       onInput={e => setSearchValue(e.currentTarget.value)}
       onSubmit={() => setSearchParams({ q: searchValue() })}
