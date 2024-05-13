@@ -1,11 +1,9 @@
 import {
   CategoryTypeFragment,
-  CategoryUpdaterTypeFragment,
   ChapterTypeFragment,
   ExtensionTypeFragment,
   FilterFragment,
   MangaTypeFragment,
-  MangaUpdaterTypeFragment,
   PreferenceFragment,
   SourceTypeFragment,
   TrackerTypeFragment,

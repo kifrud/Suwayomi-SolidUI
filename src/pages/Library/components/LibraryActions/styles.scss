@@ -1,8 +1,8 @@
 .library-filters {
-  position: absolute;
+  position: fixed;
   right: 0;
   z-index: 40;
-  height: calc(100% - var(--categories-tabs-height) - var(--header-height) - 1px);
+  height: calc(100% - var(--categories-tabs-height) - var(--header-height));
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
