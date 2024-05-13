@@ -34,13 +34,23 @@ const Transition: ParentComponent = props => {
   const animateIn = (el: HTMLElement, done: VoidFunction) => {
     if (!el.isConnected) return done()
 
-    const a = el.animate([{ transform: 'translate(301px)' }, { transform: 'translate(0px)' }], {
-      duration: 150,
-    })
+    document.body.style.overflow = 'hidden'
+
+    const a = el.animate(
+      [
+        { opacity: 0, transform: 'translate(301px)' },
+        { opacity: 1, transform: 'translate(0px)' },
+      ],
+      {
+        duration: 150,
+      }
+    )
     animationMap.set(el, a)
 
     const complete = () => {
       done()
+      document.body.style.overflow = 'auto'
+
       animationMap.delete(el)
     }
 
@@ -50,14 +60,28 @@ const Transition: ParentComponent = props => {
   const animateOut = (el: HTMLElement, done: VoidFunction) => {
     if (!el.isConnected) return done()
 
+    document.body.style.overflow = 'hidden'
+
     animationMap.get(el)?.cancel()
 
-    el.animate([{ transform: `translate(0px)` }, { transform: 'translate(301px)' }], {
-      duration: 150,
-    })
-      .finished.then(done)
-      .catch(done)
+    const complete = () => {
+      done()
+      document.body.style.overflow = 'auto'
+    }
+
+    el.animate(
+      [
+        { opacity: 1, transform: `translate(0px)` },
+        { opacity: 0, transform: 'translate(301px)' },
+      ],
+      {
+        duration: 150,
+      }
+    )
+      .finished.then(complete)
+      .catch(complete)
   }
+
   const transition = createSwitchTransition(el, {
     onEnter(el, done) {
       queueMicrotask(() => animateIn(el, done))
@@ -199,9 +223,9 @@ const Library: Component = () => {
   )
 
   const handleWrapperClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = e => {
-    if (!showFilters()) return
     e.stopPropagation()
     e.preventDefault()
+    if (!showFilters()) return
 
     setShowFilters(false)
   }
@@ -222,7 +246,11 @@ const Library: Component = () => {
             />
           </Show>
         </Show>
-        <div classList={{ 'h-full': showFilters() }} onClick={handleWrapperClick}>
+        <div
+          class="transition-all"
+          classList={{ 'h-full library--darker': showFilters() }}
+          onClick={handleWrapperClick}
+        >
           <TitlesList mangas={mangas} isLoading={category.loading} />
         </div>
       </div>

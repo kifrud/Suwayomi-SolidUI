@@ -1,8 +1,6 @@
 import { Client, fetchExchange, subscriptionExchange } from '@urql/core'
 import { cacheExchange } from '@urql/exchange-graphcache'
 import { createClient as createWSClient } from 'graphql-ws'
-import { updateLibraryMangas } from './Mutations'
-import { ResultOf } from 'gql.tada'
 
 const wsClient = createWSClient({
   url: window.location.origin.replace(/^http/, 'ws') + '/api/graphql',
