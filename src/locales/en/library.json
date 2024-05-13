@@ -19,13 +19,17 @@
         "list": "List"
       },
       "badges": {
-        "name": "Badges"
+        "name": "Badges",
+        "downloads": "Download badges",
+        "unrerads": "Unread badges"
       },
       "tabs": {
-        "name": "Tabs"
+        "name": "Tabs",
+        "totalCounts": "Show number of items"
       },
       "other": {
-        "name": "Other"
+        "name": "Other",
+        "resumeButton": "Show resume button"
       }
     }
   }
