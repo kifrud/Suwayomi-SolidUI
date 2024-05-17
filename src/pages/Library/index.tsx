@@ -12,16 +12,21 @@ import {
   onCleanup,
   onMount,
 } from 'solid-js'
+import { createStore } from 'solid-js/store'
 import { createSwitchTransition } from '@solid-primitives/transition-group'
 import { resolveFirst } from '@solid-primitives/refs'
 import { useSearchParams } from '@solidjs/router'
 import { useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { getCategories, getCategory } from '@/gql/Queries'
-import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './components'
 import { Chip, SearchBar, Skeleton } from '@/components'
 import { matches } from '@/helpers'
 import { Sort } from '@/enums'
+import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './components'
 import './styles.scss'
+
+export type Mangas =
+  | ReturnType<NonNullable<typeof getCategory.__apiType>>['category']['mangas']['nodes']
+  | undefined
 
 const Transition: ParentComponent = props => {
   const animationMap = new Map<Element, Animation>()
@@ -100,9 +105,12 @@ const Library: Component = () => {
   const headerCtx = useHeaderContext()
   const client = useGraphQLClient()
 
+  const [categories] = createResource(async () => await client.query(getCategories, {}).toPromise())
+
   const [searchParams] = useSearchParams()
   const [currentTab, setCurrentTab] = createSignal(searchParams.tab ?? '1')
-  const [categories] = createResource(async () => await client.query(getCategories, {}).toPromise())
+  const [selectMode, setSelectMode] = createSignal(false)
+  const [selected, setSelected] = createStore<number[]>([])
 
   const orderedCategories = createMemo(() =>
     categories()
@@ -251,7 +259,14 @@ const Library: Component = () => {
           classList={{ 'h-full library--darker': showFilters() }}
           onClick={handleWrapperClick}
         >
-          <TitlesList mangas={mangas} isLoading={category.loading} />
+          <TitlesList
+            selectMode={selectMode}
+            updateSelectMode={setSelectMode}
+            selected={selected}
+            updateSelected={setSelected}
+            mangas={mangas}
+            isLoading={category.loading}
+          />
         </div>
       </div>
       <Suspense>

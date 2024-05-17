@@ -9,6 +9,18 @@
     height: 100%;
     transition: all 0.15s ease-in-out;
     word-wrap: break-word;
+    &--selected {
+      img {
+        transition: all 0.15s;
+        filter: brightness(1.1);
+      }
+    }
+    &:hover {
+      img {
+        transition: all 0.15s;
+        filter: brightness(1.1);
+      }
+    }
     &__footer {
       position: absolute;
       background: linear-gradient(transparent, var(--stp-background));

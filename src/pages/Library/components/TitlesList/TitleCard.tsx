@@ -1,60 +1,106 @@
-import { Component, Show } from 'solid-js'
-import { Mangas } from '.'
+import { Accessor, Component, Setter, Show, createMemo, createSignal } from 'solid-js'
 import { A } from '@solidjs/router'
-import { Chip, Image } from '@/components'
-import './styles.scss'
+import { SetStoreFunction } from 'solid-js/store'
+import { CheckBox, Chip, Image } from '@/components'
 import { useGlobalMeta } from '@/contexts'
+import { Mangas } from '../..'
+import './styles.scss'
 
 interface TitleCardProps {
   manga: NonNullable<Mangas>[number]
+  isSelected: boolean
+  selectMode: Accessor<boolean>
+  updateSelectMode: Setter<boolean>
+  selected: number[]
+  updateSelected: SetStoreFunction<number[]>
 }
+
+type HoverPointerType = 'mouse' | 'pen'
+
+type PointerType = HoverPointerType | 'touch' | 'keyboard' | 'virtual'
 
 const TitleCard: Component<TitleCardProps> = props => {
   const { globalMeta } = useGlobalMeta()
+  const [isHovered, setIsHovered] = createSignal(false)
+
+  const cardClasses = createMemo(() =>
+    ['title-card', `title-card${props.isSelected ? '--selected' : ''}`, 'aspect-cover'].join(' ')
+  )
+
+  const handleSelect = () => {
+    if (!props.selectMode()) {
+      props.updateSelectMode(prev => !prev)
+    }
+
+    if (!props.isSelected) {
+      return props.updateSelected([...props.selected, props.manga.id])
+    }
+
+    return props.updateSelected(prev => prev.filter(id => id !== props.manga.id))
+  }
+
+  const handleHover = (e: Event, pointerType: PointerType) => {
+    if (
+      pointerType === 'touch' ||
+      isHovered() ||
+      !(e.currentTarget as HTMLElement).contains(e.target as HTMLElement)
+    ) {
+      return
+    }
+
+    setIsHovered(true)
+  }
 
   return (
-    <A href={`/manga/${props.manga.id}`} class="aspect-cover h-full">
-      <div class="title-card">
-        <Show when={props.manga.thumbnailUrl} fallback={<span>Failed to load cover</span>}>
-          <div class="relative h-full w-full">
-            <div class="absolute flex top-2 left-2 z-30 w-full">
-              <Show when={globalMeta.downloadsBadge && props.manga.downloadCount > 0}>
-                <Chip
-                  radius="none"
-                  class={`bg-background w-full h-full ${
-                    globalMeta.downloadsBadge &&
-                    globalMeta.unreadsBadge &&
-                    props.manga.downloadCount > 0 &&
-                    props.manga.unreadCount > 0
-                      ? 'rounded-l'
-                      : 'rounded'
-                  }`}
-                >
-                  {props.manga.downloadCount}
-                </Chip>
-              </Show>
-              <Show when={globalMeta.unreadsBadge && props.manga.unreadCount > 0}>
-                <Chip
-                  radius="none"
-                  class={`bg-active text-background h-full ${
-                    globalMeta.unreadsBadge &&
-                    globalMeta.downloadsBadge &&
-                    props.manga.unreadCount > 0 &&
-                    props.manga.downloadCount > 0
-                      ? 'rounded-r'
-                      : 'rounded'
-                  }`}
-                >
-                  {props.manga.unreadCount}
-                </Chip>
-              </Show>
-            </div>
-            <Image class="object-cover aspect-cover" src={props.manga.thumbnailUrl ?? ''} alt=" " />
+    <A
+      href={`/manga/${props.manga.id}`}
+      class={cardClasses()}
+      onPointerEnter={e => handleHover(e, e.pointerType as PointerType)}
+      onPointerLeave={() => setIsHovered(false)}
+      onClick={e => !props.selectMode() && e.stopPropagation()}
+    >
+      <div class="relative h-full w-full">
+        <div class="absolute flex top-2 left-2 z-30 w-full">
+          <Show when={globalMeta.downloadsBadge && props.manga.downloadCount > 0}>
+            <Chip
+              radius="none"
+              class={`bg-background w-full h-full ${
+                globalMeta.downloadsBadge &&
+                globalMeta.unreadsBadge &&
+                props.manga.downloadCount > 0 &&
+                props.manga.unreadCount > 0
+                  ? 'rounded-l'
+                  : 'rounded'
+              }`}
+            >
+              {props.manga.downloadCount}
+            </Chip>
+          </Show>
+          <Show when={globalMeta.unreadsBadge && props.manga.unreadCount > 0}>
+            <Chip
+              radius="none"
+              class={`bg-active text-background h-full ${
+                globalMeta.unreadsBadge &&
+                globalMeta.downloadsBadge &&
+                props.manga.unreadCount > 0 &&
+                props.manga.downloadCount > 0
+                  ? 'rounded-r'
+                  : 'rounded'
+              }`}
+            >
+              {props.manga.unreadCount}
+            </Chip>
+          </Show>
+        </div>
+        <Show when={props.selectMode() || isHovered()}>
+          <div class="flex items-center absolute z-40 top-2 right-2">
+            <CheckBox checked={props.isSelected} onChange={handleSelect} />
           </div>
         </Show>
-        <div class="title-card__footer">
-          <p class="text-ellipsis overflow-hidden line-clamp-2 max-h-[3rem]">{props.manga.title}</p>
-        </div>
+        <Image class="object-cover aspect-cover" src={props.manga.thumbnailUrl ?? ''} alt=" " />
+      </div>
+      <div class="title-card__footer">
+        <p class="text-ellipsis overflow-hidden line-clamp-2 max-h-[3rem]">{props.manga.title}</p>
       </div>
     </A>
   )
