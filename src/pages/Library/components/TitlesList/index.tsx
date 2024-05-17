@@ -1,18 +1,19 @@
-import { Accessor, Component, For, Show, createMemo } from 'solid-js'
-import { getCategory } from '@/gql/Queries'
-import TitleCard from './TitleCard'
+import { Accessor, Component, For, Setter, Show, createMemo } from 'solid-js'
+import { SetStoreFunction } from 'solid-js/store'
+import { Mangas } from '../..'
 import { Skeleton } from '@/components'
-import InfoIcon from '~icons/material-symbols/info-outline'
-import './styles.scss'
 import { useAppContext } from '@/contexts'
-
-export type Mangas =
-  | ReturnType<NonNullable<typeof getCategory.__apiType>>['category']['mangas']['nodes']
-  | undefined
+import InfoIcon from '~icons/material-symbols/info-outline'
+import TitleCard from './TitleCard'
+import './styles.scss'
 
 interface TitlesListProps {
   mangas: Accessor<Mangas | undefined>
   isLoading: boolean
+  selectMode: Accessor<boolean>
+  updateSelectMode: Setter<boolean>
+  selected: number[]
+  updateSelected: SetStoreFunction<number[]>
 }
 
 const TitlesList: Component<TitlesListProps> = props => {
@@ -54,7 +55,18 @@ const TitlesList: Component<TitlesListProps> = props => {
     <div class={wrapperClasses()}>
       <Show when={!props.isLoading} fallback={placeholder}>
         <Show when={props.mangas() && props.mangas()?.length! > 0} fallback={noFoundManga}>
-          <For each={props.mangas!()}>{item => <TitleCard manga={item} />}</For>
+          <For each={props.mangas!()}>
+            {item => (
+              <TitleCard
+                selectMode={props.selectMode}
+                updateSelectMode={props.updateSelectMode}
+                selected={props.selected}
+                updateSelected={props.updateSelected}
+                manga={item}
+                isSelected={props.selected.includes(item.id)}
+              />
+            )}
+          </For>
         </Show>
       </Show>
     </div>

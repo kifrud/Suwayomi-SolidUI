@@ -122,19 +122,18 @@ export const LibraryFilter: Component = () => {
         [k in Display]: JSX.Element
       },
       badges: {
-        // TODO: translate
         downloads: (
           <CheckBox
             label={t('library.filterTabs.display.badges.downloads')}
             checked={metaCtx.globalMeta.downloadsBadge}
-            updateState={v => setCheckBox('downloadsBadge', v)}
+            onChange={v => setCheckBox('downloadsBadge', v)}
           />
         ),
         unreads: (
           <CheckBox
             label={t('library.filterTabs.display.badges.unrerads')}
             checked={metaCtx.globalMeta.unreadsBadge}
-            updateState={v => setCheckBox('unreadsBadge', v)}
+            onChange={v => setCheckBox('unreadsBadge', v)}
           />
         ),
       },
@@ -143,7 +142,7 @@ export const LibraryFilter: Component = () => {
           <CheckBox
             label={t('library.filterTabs.display.tabs.totalCounts')}
             checked={metaCtx.globalMeta.libraryCategoryTotalCounts}
-            updateState={v => setCheckBox('libraryCategoryTotalCounts', v)}
+            onChange={v => setCheckBox('libraryCategoryTotalCounts', v)}
           />
         ),
       },
@@ -152,7 +151,7 @@ export const LibraryFilter: Component = () => {
           <CheckBox
             label={t('library.filterTabs.display.other.resumeButton')}
             checked={metaCtx.globalMeta.libraryResumeButton}
-            updateState={v => setCheckBox('libraryResumeButton', v)}
+            onChange={v => setCheckBox('libraryResumeButton', v)}
           />
         ),
       },
@@ -175,9 +174,7 @@ export const LibraryFilter: Component = () => {
           <Tabs.Indicator class="h-[2px] transition-all duration-[250ms] absolute bottom-0 left-0 bg-foreground" />
         </Tabs.List>
         <For each={Object.entries(tabs)}>
-          {(
-            [name, data] // FIXME: still type issue
-          ) => (
+          {([name, data]) => (
             <ErrorBoundary
               fallback={(err, reset) => <div onClick={reset}>Error: {err.toString()}</div>}
             >
