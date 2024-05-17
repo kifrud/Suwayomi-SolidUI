@@ -109,6 +109,7 @@ const Library: Component = () => {
 
   const [searchParams] = useSearchParams()
   const [currentTab, setCurrentTab] = createSignal(searchParams.tab ?? '1')
+  // TODO: context?
   const [selectMode, setSelectMode] = createSignal(false)
   const [selected, setSelected] = createStore<number[]>([])
 
@@ -211,12 +212,25 @@ const Library: Component = () => {
         <SearchBar />
       </Show>
     )
-    headerCtx.setHeaderEnd(<LibraryActions updateShowFilter={setShowFilters} />)
+    headerCtx.setHeaderEnd(
+      <LibraryActions
+        selectMode={selectMode}
+        updateSelectMode={setSelectMode}
+        selected={selected}
+        updateSelected={setSelected}
+        updateShowFilter={setShowFilters}
+        mangas={mangas()}
+      />
+    )
   })
 
   createEffect(() =>
     headerCtx.setHeaderTitleData(globalMeta.libraryCategoryTotalCounts && totalMangaCountElement)
   )
+
+  createEffect(() => {
+    if (!selected.length) setSelectMode(false)
+  })
 
   onCleanup(() => headerCtx.clear())
 

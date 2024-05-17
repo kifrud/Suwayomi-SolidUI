@@ -2,8 +2,9 @@ import { Accessor, ParentComponent, Show, createMemo, mergeProps } from 'solid-j
 import { Checkbox as CheckBoxUi } from '@kobalte/core/checkbox'
 import CheckedIcon from '~icons/material-symbols/check-box-rounded'
 import BlankIcon from '~icons/material-symbols/check-box-outline-blank'
+import IndeterminateIcon from '~icons/material-symbols/indeterminate-check-box'
 import { Dynamic } from 'solid-js/web'
-// TODO: use kobalte.dev
+
 interface Classes {
   /** Classes for label text wrapper */
   label: string
@@ -18,15 +19,17 @@ interface CheckBoxProps {
   isDisabled?: boolean
   hideCheckbox?: boolean
   onChange?: (checked: boolean) => void
+  indeterminate?: boolean
 }
 
 const checkboxStates: Record<string, typeof CheckedIcon> = {
   true: CheckedIcon,
   false: BlankIcon,
+  indeterminate: IndeterminateIcon,
 }
 
 const CheckBox: ParentComponent<CheckBoxProps> = props => {
-  const values = mergeProps({ hideCheckbox: false, isDisabled: false }, props)
+  const values = mergeProps({ hideCheckbox: false, isDisabled: false, indeterminate: false }, props)
 
   const checked = createMemo(() =>
     typeof props.checked === 'function' ? props.checked() : props.checked
@@ -50,30 +53,18 @@ const CheckBox: ParentComponent<CheckBoxProps> = props => {
   )
 
   const labelClasses = createMemo(() =>
-    ['flex', 'items-center', 'gap-1', 'cursor-pointer', ...(props.classes?.label ? [props.classes.label] : [])].join(
-      ' '
-    )
+    [
+      'flex',
+      'items-center',
+      'gap-1',
+      'cursor-pointer',
+      ...(props.classes?.label ? [props.classes.label] : []),
+    ].join(' ')
   )
 
   return (
-    // <div class={baseClasses()} onKeyDown={onKeyDown}>
-    //   <label class={labelClasses()}>
-    //     <Show when={!values.hideCheckbox}>
-    //       <Dynamic component={checkboxStates[checkedString()]} />
-    //     </Show>
-    //     <input
-    //       {...props}
-    //       type="checkbox"
-    //       checked={checked()}
-    //       value={props.value}
-    //       onChange={handleChange}
-    //       onKeyDown={onKeyDown}
-    //       class="hidden"
-    //     />
-    //     <div class={`flex flex-1 select-none ${props.classes?.label}`}>{label()}</div>
-    //   </label>
-    // </div>
     <CheckBoxUi
+      indeterminate={values.indeterminate}
       class={baseClasses()}
       checked={checked()}
       onChange={props.onChange}
@@ -83,7 +74,9 @@ const CheckBox: ParentComponent<CheckBoxProps> = props => {
       <CheckBoxUi.Input />
       <CheckBoxUi.Control>
         <Show when={!values.hideCheckbox}>
-          <Dynamic component={checkboxStates[checkedString()]} />
+          <Dynamic
+            component={checkboxStates[values.indeterminate ? 'indeterminate' : checkedString()]}
+          />
         </Show>
       </CheckBoxUi.Control>
       <CheckBoxUi.Label class={labelClasses()}>{label()}</CheckBoxUi.Label>
