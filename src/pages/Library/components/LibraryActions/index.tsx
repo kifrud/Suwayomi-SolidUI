@@ -32,13 +32,17 @@ export const LibraryActions: Component<LibraryActionsProps> = props => {
 
   return (
     <>
-      <button class="icon-24 transition-all library-action" onClick={handleSelectAll}>
-        <SelectAllIcon />
-      </button>
-      <Show when={!matches.md}>
-        <SearchBar mobile />
+      <Show when={props.selectMode()}>
+        <button class="icon-24 transition-all library-action" onClick={handleSelectAll}>
+          <SelectAllIcon />
+        </button>
       </Show>
-      <UpdateCheck />
+      <Show when={!props.selectMode()}>
+        <Show when={!matches.md}>
+          <SearchBar mobile />
+        </Show>
+        <UpdateCheck />
+      </Show>
       <button
         class="icon-24 transition-all library-action"
         onClick={() => props.updateShowFilter(prev => !prev)}

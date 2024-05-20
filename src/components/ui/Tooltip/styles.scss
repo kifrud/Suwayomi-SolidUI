@@ -1,0 +1,39 @@
+.tooltip {
+  &__trigger {
+    display: flex;
+    align-items: center;
+  }
+
+  &__content {
+    z-index: 100;
+    background: var(--stp-background_muted);
+    padding: 4px;
+    animation: contentHide 250ms ease-in forwards;
+    border-radius: 4px;
+  }
+
+  &__content[data-expanded] {
+    animation: contentShow 250ms ease-out;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}

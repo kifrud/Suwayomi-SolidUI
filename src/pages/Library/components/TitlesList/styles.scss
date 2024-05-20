@@ -12,13 +12,13 @@
     &--selected {
       img {
         transition: all 0.15s;
-        filter: brightness(1.1);
+        filter: brightness(0.9);
       }
     }
     &:hover {
       img {
         transition: all 0.15s;
-        filter: brightness(1.1);
+        filter: brightness(0.9);
       }
     }
     &__footer {
