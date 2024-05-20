@@ -228,9 +228,9 @@ const Library: Component = () => {
     headerCtx.setHeaderTitleData(globalMeta.libraryCategoryTotalCounts && totalMangaCountElement)
   )
 
-  createEffect(() => {
-    if (!selected.length) setSelectMode(false)
-  })
+  // createEffect(() => {
+  //   if (!selected.length) setSelectMode(false)
+  // })
 
   onCleanup(() => headerCtx.clear())
 

@@ -1,6 +1,5 @@
 import { Component, Show, createMemo, createResource } from 'solid-js'
 import { Progress } from '@kobalte/core/progress'
-import { Tooltip } from '@kobalte/core/tooltip'
 import { useGraphQLClient } from '@/contexts'
 import { useUpdaterSubscription } from '@/helpers'
 import { ResultOf } from '@/gql'
@@ -8,6 +7,7 @@ import { latestUpdateTimestamp } from '@/gql/Queries'
 import { updateLibraryMangas } from '@/gql/Mutations'
 import { updateStatusSubscription } from '@/gql/Subscriptions'
 import UpdateIcon from '~icons/material-symbols/update'
+import { Tooltip } from '@/components'
 
 // TODO: notify if found new chapters
 const UpdateCheck: Component = () => {
@@ -55,23 +55,19 @@ const UpdateCheck: Component = () => {
 
   return (
     <>
-      <Tooltip openDelay={150} closeDelay={100}>
-        <Tooltip.Trigger
-          class="update-check__trigger transition-all icon-24 library-action cursor-pointer"
-          onClick={handleClick}
-          disabled={loading()}
-        >
-          <UpdateIcon />
-        </Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content class="update-check__content">
-            <span class="text-background">
-              <Show when={!latestTimestampData.loading} fallback={'-'}>
-                {latestTimestamp()}
-              </Show>
-            </span>
-          </Tooltip.Content>
-        </Tooltip.Portal>
+      <Tooltip
+        openDelay={150}
+        closeDelay={100}
+        classes={{
+          trigger: 'transition-all icon-24 library-action cursor-pointer',
+        }}
+        onClick={handleClick}
+        disabled={loading()}
+        label={<UpdateIcon />}
+      >
+        <Show when={!latestTimestampData.loading} fallback={'-'}>
+          {latestTimestamp()}
+        </Show>
       </Tooltip>
       <Show when={loading()}>
         <Progress value={status() ? calcProgress(status()!) : 0} class="update-check__progress">

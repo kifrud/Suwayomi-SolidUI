@@ -93,7 +93,15 @@ const TitleCard: Component<TitleCardProps> = props => {
           </Show>
         </div>
         <Show when={props.selectMode() || isHovered()}>
-          <div class="flex items-center absolute z-40 top-2 right-2">
+          <div
+            class="flex items-center absolute z-40 top-2 right-2"
+            // onClick={e => {
+            //   if (props.selectMode()) {
+            //     e.preventDefault()
+            //     e.stopPropagation()
+            //   }
+            // }}
+          >
             <CheckBox checked={props.isSelected} onChange={handleSelect} />
           </div>
         </Show>
