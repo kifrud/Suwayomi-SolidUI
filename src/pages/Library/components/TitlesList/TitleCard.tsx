@@ -1,4 +1,4 @@
-import { Accessor, Component, Setter, Show, createMemo, createSignal } from 'solid-js'
+import { Accessor, Component, JSX, Setter, Show, createMemo, createSignal } from 'solid-js'
 import { A } from '@solidjs/router'
 import { SetStoreFunction } from 'solid-js/store'
 import { CheckBox, Chip, Image } from '@/components'
@@ -8,7 +8,7 @@ import './styles.scss'
 
 interface TitleCardProps {
   manga: NonNullable<Mangas>[number]
-  isSelected: boolean
+  // isSelected: boolean
   selectMode: Accessor<boolean>
   updateSelectMode: Setter<boolean>
   selected: number[]
@@ -23,8 +23,10 @@ const TitleCard: Component<TitleCardProps> = props => {
   const { globalMeta } = useGlobalMeta()
   const [isHovered, setIsHovered] = createSignal(false)
 
+  const isSelected = createMemo(() => props.selected.includes(props.manga.id))
+
   const cardClasses = createMemo(() =>
-    ['title-card', `title-card${props.isSelected ? '--selected' : ''}`, 'aspect-cover'].join(' ')
+    ['title-card', `title-card${isSelected() ? '--selected' : ''}`, 'aspect-cover'].join(' ')
   )
 
   const handleSelect = () => {
@@ -32,7 +34,7 @@ const TitleCard: Component<TitleCardProps> = props => {
       props.updateSelectMode(prev => !prev)
     }
 
-    if (!props.isSelected) {
+    if (!isSelected()) {
       return props.updateSelected([...props.selected, props.manga.id])
     }
 
@@ -51,13 +53,20 @@ const TitleCard: Component<TitleCardProps> = props => {
     setIsHovered(true)
   }
 
+  const handleClick: JSX.EventHandler<HTMLAnchorElement, MouseEvent> = e => {
+    if (!props.selectMode()) return e.stopPropagation()
+
+    // e.stopPropagation()
+    handleSelect()
+  }
+
   return (
     <A
       href={`/manga/${props.manga.id}`}
       class={cardClasses()}
       onPointerEnter={e => handleHover(e, e.pointerType as PointerType)}
       onPointerLeave={() => setIsHovered(false)}
-      onClick={e => !props.selectMode() && e.stopPropagation()}
+      onClick={handleClick}
     >
       <div class="relative h-full w-full">
         <div class="absolute flex top-2 left-2 z-30 w-full">
@@ -95,14 +104,14 @@ const TitleCard: Component<TitleCardProps> = props => {
         <Show when={props.selectMode() || isHovered()}>
           <div
             class="flex items-center absolute z-40 top-2 right-2"
-            // onClick={e => {
-            //   if (props.selectMode()) {
-            //     e.preventDefault()
-            //     e.stopPropagation()
-            //   }
-            // }}
+            onClick={e => {
+              e.preventDefault()
+              if (props.selectMode()) {
+                e.stopPropagation()
+              }
+            }}
           >
-            <CheckBox checked={props.isSelected} onChange={handleSelect} />
+            <CheckBox checked={isSelected()} onChange={handleSelect} />
           </div>
         </Show>
         <Image class="object-cover aspect-cover" src={props.manga.thumbnailUrl ?? ''} alt=" " />
