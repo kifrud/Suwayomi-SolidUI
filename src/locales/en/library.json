@@ -32,5 +32,8 @@
         "resumeButton": "Show resume button"
       }
     }
+  },
+  "selection": {
+    "delete": "Delete {{ count }} items"
   }
 }

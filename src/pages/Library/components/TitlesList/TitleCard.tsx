@@ -1,29 +1,28 @@
 import { Accessor, Component, JSX, Setter, Show, createMemo, createSignal } from 'solid-js'
-import { A } from '@solidjs/router'
 import { SetStoreFunction } from 'solid-js/store'
 import { CheckBox, Chip, Image } from '@/components'
 import { useGlobalMeta } from '@/contexts'
+import { longPress } from '@/helpers'
 import { Mangas } from '../..'
 import './styles.scss'
 
 interface TitleCardProps {
   manga: NonNullable<Mangas>[number]
-  // isSelected: boolean
   selectMode: Accessor<boolean>
   updateSelectMode: Setter<boolean>
-  selected: number[]
-  updateSelected: SetStoreFunction<number[]>
+  selected: NonNullable<Mangas>
+  updateSelected: SetStoreFunction<NonNullable<Mangas>>
 }
 
 type HoverPointerType = 'mouse' | 'pen'
 
 type PointerType = HoverPointerType | 'touch' | 'keyboard' | 'virtual'
-
+// TODO: make options menu
 const TitleCard: Component<TitleCardProps> = props => {
   const { globalMeta } = useGlobalMeta()
   const [isHovered, setIsHovered] = createSignal(false)
 
-  const isSelected = createMemo(() => props.selected.includes(props.manga.id))
+  const isSelected = createMemo(() => props.selected.map(item => item.id).includes(props.manga.id))
 
   const cardClasses = createMemo(() =>
     ['title-card', `title-card${isSelected() ? '--selected' : ''}`, 'aspect-cover'].join(' ')
@@ -31,14 +30,14 @@ const TitleCard: Component<TitleCardProps> = props => {
 
   const handleSelect = () => {
     if (!props.selectMode()) {
-      props.updateSelectMode(prev => !prev)
+      props.updateSelectMode(true)
     }
 
     if (!isSelected()) {
-      return props.updateSelected([...props.selected, props.manga.id])
+      return props.updateSelected([...props.selected, props.manga])
     }
 
-    return props.updateSelected(prev => prev.filter(id => id !== props.manga.id))
+    return props.updateSelected(prev => prev.filter(item => item !== props.manga))
   }
 
   const handleHover = (e: Event, pointerType: PointerType) => {
@@ -55,21 +54,21 @@ const TitleCard: Component<TitleCardProps> = props => {
 
   const handleClick: JSX.EventHandler<HTMLAnchorElement, MouseEvent> = e => {
     if (!props.selectMode()) return e.stopPropagation()
-
-    // e.stopPropagation()
     handleSelect()
   }
 
   return (
-    <A
+    <a
       href={`/manga/${props.manga.id}`}
       class={cardClasses()}
       onPointerEnter={e => handleHover(e, e.pointerType as PointerType)}
       onPointerLeave={() => setIsHovered(false)}
       onClick={handleClick}
+      use:longPress={250}
+      on:LongPressStart={() => props.updateSelectMode(true)}
     >
       <div class="relative h-full w-full">
-        <div class="absolute flex top-2 left-2 z-30 w-full">
+        <div class="absolute flex top-2 left-2 z-30">
           <Show when={globalMeta.downloadsBadge && props.manga.downloadCount > 0}>
             <Chip
               radius="none"
@@ -78,7 +77,7 @@ const TitleCard: Component<TitleCardProps> = props => {
                 globalMeta.unreadsBadge &&
                 props.manga.downloadCount > 0 &&
                 props.manga.unreadCount > 0
-                  ? 'rounded-l'
+                  ? 'rounded-r'
                   : 'rounded'
               }`}
             >
@@ -93,7 +92,7 @@ const TitleCard: Component<TitleCardProps> = props => {
                 globalMeta.downloadsBadge &&
                 props.manga.unreadCount > 0 &&
                 props.manga.downloadCount > 0
-                  ? 'rounded-r'
+                  ? 'rounded-l'
                   : 'rounded'
               }`}
             >
@@ -119,7 +118,7 @@ const TitleCard: Component<TitleCardProps> = props => {
       <div class="title-card__footer">
         <p class="text-ellipsis overflow-hidden line-clamp-2 max-h-[3rem]">{props.manga.title}</p>
       </div>
-    </A>
+    </a>
   )
 }
 

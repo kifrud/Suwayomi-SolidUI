@@ -5,7 +5,6 @@ import {
   ParentComponent,
   Setter,
   Show,
-  // createEffect,
   createMemo,
   mergeProps,
 } from 'solid-js'
@@ -74,8 +73,6 @@ const TriStateInput: ParentComponent<TriStateProps> = props => {
   const labelClasses = createMemo(() =>
     ['flex', 'gap-1', 'items-center', 'cursor-pointer'].join(' ')
   )
-
-  // createEffect(() => console.log(props.label, state()))
 
   return (
     <div class={baseClasses()} onKeyDown={onKeyDown}>

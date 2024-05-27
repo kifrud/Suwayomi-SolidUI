@@ -49,7 +49,7 @@ const UpdateCheck: Component = () => {
       await client.mutation(updateLibraryMangas, {}).toPromise()
       refetch()
     } catch (error) {
-      console.log(error) // TODO: better error handling
+      console.error(error) // TODO: better error handling
     }
   }
 

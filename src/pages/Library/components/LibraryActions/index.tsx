@@ -6,14 +6,16 @@ import UpdateCheck from './UpdateCheck'
 import { Mangas } from '../..'
 import FiltersIcon from '~icons/material-symbols/filter-list'
 import SelectAllIcon from '~icons/material-symbols/select-all-rounded'
+import DeselectAllIcon from '~icons/material-symbols/deselect-rounded'
+import Select from '~icons/material-symbols/select-rounded'
 import './styles.scss'
 
 interface LibraryActionsProps {
   updateShowFilter: Setter<boolean>
   selectMode: Accessor<boolean>
   updateSelectMode: Setter<boolean>
-  selected: number[]
-  updateSelected: SetStoreFunction<number[]>
+  selected: NonNullable<Mangas>
+  updateSelected: SetStoreFunction<NonNullable<Mangas>>
   mangas: Mangas
 }
 
@@ -24,17 +26,29 @@ export const LibraryActions: Component<LibraryActionsProps> = props => {
       props.updateSelected([])
     } else {
       const newSelected = Array.from(
-        new Set([...props.selected, ...(props.mangas ? props.mangas.map(manga => manga.id) : [])])
+        new Set([...props.selected, ...(props.mangas ? props.mangas : [])])
       )
       props.updateSelected(newSelected)
     }
+  }
+
+  const handleSelectionState = () => {
+    props.updateSelectMode(true)
+    const allIds = props.mangas ? props.mangas : []
+    const newSelected = allIds.filter(item => !props.selected.includes(item))
+    props.updateSelected(newSelected)
   }
 
   return (
     <>
       <Show when={props.selectMode()}>
         <button class="icon-24 transition-all library-action" onClick={handleSelectAll}>
-          <SelectAllIcon />
+          <Show when={props.selected.length === props.mangas?.length} fallback={<SelectAllIcon />}>
+            <DeselectAllIcon />
+          </Show>
+        </button>
+        <button class="icon-24 transition-all library-action" onClick={handleSelectionState}>
+          <Select />
         </button>
       </Show>
       <Show when={!props.selectMode()}>
@@ -54,3 +68,4 @@ export const LibraryActions: Component<LibraryActionsProps> = props => {
 }
 
 export * from './LibraryFilter'
+export * from './SelectionActions'

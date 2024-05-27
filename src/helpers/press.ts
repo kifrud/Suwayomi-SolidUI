@@ -12,7 +12,7 @@ declare module 'solid-js' {
     interface Directives {
       longPress?: number | true
     }
-    interface CustomCaptureEvents {
+    interface CustomEvents {
       LongPressStart?: () => void
       LongPressStop?: () => void
     }

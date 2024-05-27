@@ -12,8 +12,8 @@ interface TitlesListProps {
   isLoading: boolean
   selectMode: Accessor<boolean>
   updateSelectMode: Setter<boolean>
-  selected: number[]
-  updateSelected: SetStoreFunction<number[]>
+  selected: NonNullable<Mangas>
+  updateSelected: SetStoreFunction<NonNullable<Mangas>>
 }
 
 const TitlesList: Component<TitlesListProps> = props => {
@@ -45,7 +45,7 @@ const TitlesList: Component<TitlesListProps> = props => {
       '3xl:grid-cols-10',
       'gap-2',
       'px-2',
-      !props.isLoading && (!props.mangas() || props.mangas()?.length! === 0)
+      !props.isLoading && (!props.mangas() || props.mangas()?.length === 0)
         ? '!grid-cols-1 h-full'
         : '',
     ].join(' ')

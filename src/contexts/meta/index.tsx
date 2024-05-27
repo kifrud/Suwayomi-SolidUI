@@ -81,3 +81,5 @@ export const GlobalMetaProvider: ParentComponent = props => {
 
   return <GlobalMetaContext.Provider value={value}>{props.children}</GlobalMetaContext.Provider>
 }
+
+export { type GlobalMeta } from './globalMeta'
