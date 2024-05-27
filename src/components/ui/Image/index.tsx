@@ -37,6 +37,7 @@ const Image: Component<ImageProps> = props => {
   return (
     <div class="relative h-full w-full">
       <img
+        {...props}
         ref={img}
         class={`${imgClasses()} ${rounded()}`}
         onError={error}

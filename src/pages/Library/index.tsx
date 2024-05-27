@@ -2,7 +2,6 @@ import {
   Component,
   For,
   JSX,
-  ParentComponent,
   Show,
   Suspense,
   createEffect,
@@ -13,92 +12,28 @@ import {
   onMount,
 } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import { createSwitchTransition } from '@solid-primitives/transition-group'
-import { resolveFirst } from '@solid-primitives/refs'
 import { useSearchParams } from '@solidjs/router'
 import { useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
+import { OperationResult } from '@urql/core'
 import { getCategories, getCategory } from '@/gql/Queries'
+import { ResultOf } from '@/gql'
 import { Chip, SearchBar, Skeleton } from '@/components'
 import { matches } from '@/helpers'
-import { Sort } from '@/enums'
-import { CategoriesTabs, LibraryActions, LibraryFilter, TitlesList } from './components'
+import {
+  CategoriesTabs,
+  LibraryActions,
+  LibraryFilter,
+  SelectionActions,
+  TitlesList,
+  Transition,
+} from './components'
+import { filterManga, sortManga } from './helpers'
+import CloseIcon from '~icons/material-symbols/close-rounded'
 import './styles.scss'
 
 export type Mangas =
   | ReturnType<NonNullable<typeof getCategory.__apiType>>['category']['mangas']['nodes']
   | undefined
-
-const Transition: ParentComponent = props => {
-  const animationMap = new Map<Element, Animation>()
-
-  const el = resolveFirst(
-    () => props.children,
-    (item): item is HTMLElement => item instanceof HTMLElement
-  )
-
-  const animateIn = (el: HTMLElement, done: VoidFunction) => {
-    if (!el.isConnected) return done()
-
-    document.body.style.overflow = 'hidden'
-
-    const a = el.animate(
-      [
-        { opacity: 0, transform: 'translate(301px)' },
-        { opacity: 1, transform: 'translate(0px)' },
-      ],
-      {
-        duration: 150,
-      }
-    )
-    animationMap.set(el, a)
-
-    const complete = () => {
-      done()
-      document.body.style.overflow = 'auto'
-
-      animationMap.delete(el)
-    }
-
-    a.finished.then(complete).catch(complete)
-  }
-
-  const animateOut = (el: HTMLElement, done: VoidFunction) => {
-    if (!el.isConnected) return done()
-
-    document.body.style.overflow = 'hidden'
-
-    animationMap.get(el)?.cancel()
-
-    const complete = () => {
-      done()
-      document.body.style.overflow = 'auto'
-    }
-
-    el.animate(
-      [
-        { opacity: 1, transform: `translate(0px)` },
-        { opacity: 0, transform: 'translate(301px)' },
-      ],
-      {
-        duration: 150,
-      }
-    )
-      .finished.then(complete)
-      .catch(complete)
-  }
-
-  const transition = createSwitchTransition(el, {
-    onEnter(el, done) {
-      queueMicrotask(() => animateIn(el, done))
-    },
-    onExit(el, done) {
-      animateOut(el, done)
-    },
-    mode: 'in-out',
-  })
-
-  return <>{transition()}</>
-}
 
 const Library: Component = () => {
   const { globalMeta } = useGlobalMeta()
@@ -111,7 +46,7 @@ const Library: Component = () => {
   const [currentTab, setCurrentTab] = createSignal(searchParams.tab ?? '1')
   // TODO: context?
   const [selectMode, setSelectMode] = createSignal(false)
-  const [selected, setSelected] = createStore<number[]>([])
+  const [selected, setSelected] = createStore<NonNullable<Mangas>>([])
 
   const orderedCategories = createMemo(() =>
     categories()
@@ -119,74 +54,24 @@ const Library: Component = () => {
       .filter(e => e.mangas.totalCount)
   )
 
-  const [category] = createResource(
-    currentTab,
-    async () => await client.query(getCategory, { id: Number(currentTab()) }).toPromise()
-  )
+  const [category, setCategory] = createSignal<OperationResult<ResultOf<typeof getCategory>>>()
+  const [isCategoryLoading, setIsCategoryLoading] = createSignal(true)
+
+  createEffect(() => {
+    setIsCategoryLoading(true)
+    const { unsubscribe } = client
+      .query(getCategory, { id: Number(currentTab()) })
+      .subscribe(res => {
+        setCategory(res)
+        setIsCategoryLoading(false)
+      })
+    onCleanup(() => unsubscribe())
+  })
 
   const mangas = createMemo(() =>
     category()
-      ?.data?.category.mangas.nodes.filter(item => {
-        if (!item.inLibrary) return false
-        if (globalMeta.ignoreFiltersWhenSearching) {
-          if (
-            searchParams.q !== '' &&
-            searchParams.q !== null &&
-            searchParams.q !== undefined &&
-            item.title.toLowerCase().includes(searchParams.q.toLowerCase())
-          )
-            return true
-        }
-
-        if (globalMeta.Downloaded === 1 && item.downloadCount === 0) return false
-        if (globalMeta.Downloaded === 2 && item.downloadCount !== 0) return false
-
-        if (globalMeta.Unread === 1 && item.unreadCount === 0) return false
-        if (globalMeta.Unread === 2 && item.unreadCount !== 0) return false
-
-        if (globalMeta.Bookmarked === 1 && item.bookmarkCount === 0) return false
-        if (globalMeta.Bookmarked === 2 && item.bookmarkCount !== 0) return false
-
-        if (
-          searchParams.q !== '' &&
-          searchParams.q !== null &&
-          searchParams.q !== undefined &&
-          !item.title.toLowerCase().includes(searchParams.q.toLowerCase())
-        )
-          return false
-        return true
-      })
-      .toSorted((a, b) => {
-        let result = true
-        switch (globalMeta.Sort) {
-          case Sort.ID:
-            result = a.id > b.id
-            break
-          case Sort.Unread:
-            result = a.unreadCount > b.unreadCount
-            break
-          case Sort.Alphabetical:
-            result = a.title > b.title
-            break
-          case Sort.LatestRead:
-            result =
-              parseInt(a.lastReadChapter?.lastReadAt ?? '0') >
-              parseInt(b.lastReadChapter?.lastReadAt ?? '0')
-            break
-          case Sort.LatestFetched:
-            result =
-              parseInt(a.latestFetchedChapter?.fetchedAt ?? '0') >
-              parseInt(b.latestFetchedChapter?.fetchedAt ?? '0')
-            break
-          case Sort.LatestUploaded:
-            result =
-              parseInt(a.latestUploadedChapter?.uploadDate ?? '0') >
-              parseInt(b.latestUploadedChapter?.uploadDate ?? '0')
-        }
-        if (globalMeta.Asc) result = !result
-
-        return result ? -1 : 1
-      })
+      ?.data?.category.mangas.nodes.filter(item => filterManga(item, globalMeta, searchParams.q))
+      .toSorted((a, b) => sortManga(a, b, globalMeta))
   )
 
   const totalMangaCount = createMemo(
@@ -206,30 +91,58 @@ const Library: Component = () => {
 
   const [showFilters, setShowFilters] = createSignal(false)
 
-  onMount(() => {
-    headerCtx.setHeaderCenter(
-      <Show when={matches.md}>
-        <SearchBar />
-      </Show>
-    )
-    headerCtx.setHeaderEnd(
-      <LibraryActions
-        selectMode={selectMode}
-        updateSelectMode={setSelectMode}
-        selected={selected}
-        updateSelected={setSelected}
-        updateShowFilter={setShowFilters}
-        mangas={mangas()}
-      />
-    )
-  })
-
-  createEffect(() =>
-    headerCtx.setHeaderTitleData(globalMeta.libraryCategoryTotalCounts && totalMangaCountElement)
+  const searchEl = (
+    <Show when={matches.md}>
+      <SearchBar />
+    </Show>
   )
 
+  const actionsEl = (
+    <LibraryActions
+      selectMode={selectMode}
+      updateSelectMode={setSelectMode}
+      selected={selected}
+      updateSelected={setSelected}
+      updateShowFilter={setShowFilters}
+      mangas={mangas()}
+    />
+  )
+
+  const selectionTitle = (
+    <>
+      <button
+        class="icon-24 transition-all library-action"
+        on:click={() => {
+          setSelectMode(false)
+          setSelected([])
+        }}
+      >
+        <CloseIcon />
+      </button>
+      <span>{selected.length}</span>
+    </>
+  )
+
+  onMount(() => {
+    headerCtx.setHeaderCenter(searchEl)
+    headerCtx.setHeaderEnd(actionsEl)
+  })
+
   createEffect(() => {
-    if (!selected.length) setSelectMode(false)
+    if (selected.length === 0) setSelectMode(false)
+  })
+
+  createEffect(() => {
+    if (selectMode()) {
+      headerCtx.setHeaderTitle(selectionTitle)
+      headerCtx.setHeaderCenter(
+        <SelectionActions selected={selected} updateSelected={setSelected} />
+      )
+    } else {
+      headerCtx.setHeaderTitle(null)
+      headerCtx.setHeaderTitleData(totalMangaCountElement)
+      headerCtx.setHeaderCenter(searchEl)
+    }
   })
 
   onCleanup(() => headerCtx.clear())
@@ -279,7 +192,7 @@ const Library: Component = () => {
             selected={selected}
             updateSelected={setSelected}
             mangas={mangas}
-            isLoading={category.loading}
+            isLoading={isCategoryLoading()}
           />
         </div>
       </div>
