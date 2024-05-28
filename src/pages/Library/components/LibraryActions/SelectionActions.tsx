@@ -1,15 +1,16 @@
-import { Component, createMemo } from 'solid-js'
+import { Component, Show, createMemo } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
 import { Tooltip } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
 import { enqueueChapterDownloads, updateChapters, updateMangas } from '@/gql/Mutations'
+import { ConditionalChaptersOfGivenManga } from '@/gql/Queries'
+import { getDownloadable, getDownloaded, getReadMangas, getUnreadMangas } from '../../helpers'
+import { Mangas } from '../..'
 import DeleteIcon from '~icons/material-symbols/delete-forever'
 import CategoryIcon from '~icons/material-symbols/label-outline'
 import DownloadIcon from '~icons/material-symbols/download-2'
 import ReadIcon from '~icons/material-symbols/done-all'
 import UnreadIcon from '~icons/material-symbols/remove-done'
-import { ConditionalChaptersOfGivenManga } from '@/gql/Queries'
-import { Mangas } from '../..'
 
 interface SelectionActionsProps {
   selected: NonNullable<Mangas>
@@ -21,6 +22,15 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
   const { t } = useAppContext()
 
   const mangaIds = createMemo(() => props.selected.map(item => item.id))
+
+  const state = createMemo(() => {
+    return {
+      downloadableMangas: getDownloadable(props.selected),
+      downloadedMangas: getDownloaded(props.selected),
+      unreadMangas: getUnreadMangas(props.selected),
+      readMangas: getReadMangas(props.selected),
+    }
+  })
 
   const handleDelete = async () => {
     try {
@@ -75,7 +85,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       console.log(error)
     }
   }
-  // TODO: add tooltip contents & translate 'em
+
   return (
     <>
       <Tooltip
@@ -85,9 +95,8 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
             <DeleteIcon />
           </button>
         }
-      >
-        {t('library.selection.delete', { count: props.selected.length })}
-      </Tooltip>
+        content={t('library.selection.delete', { count: props.selected.length })}
+      />
       <Tooltip
         showArrow
         label={
@@ -95,32 +104,42 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
             <CategoryIcon />
           </button>
         }
-      ></Tooltip>
-      <Tooltip
-        showArrow
-        label={
-          <button class="icon-24 transition-all library-action" onClick={handleDownload}>
-            <DownloadIcon />
-          </button>
-        }
-      ></Tooltip>
-      <Tooltip
-        showArrow
-        label={
-          <button class="icon-24 transition-all library-action" onClick={handleMarkAsRead}>
-            <ReadIcon />
-          </button>
-        }
-      ></Tooltip>
-      <Tooltip
-        showArrow
-        onClick={handleMarkAsUnread}
-        label={
-          <button class="icon-24 transition-all library-action">
-            <UnreadIcon />
-          </button>
-        }
-      ></Tooltip>
+        content={t('library.selection.category')}
+      />
+      <Show when={!!state().downloadableMangas}>
+        <Tooltip
+          showArrow
+          label={
+            <button class="icon-24 transition-all library-action" onClick={handleDownload}>
+              <DownloadIcon />
+            </button>
+          }
+          content={t('library.selection.download')}
+        />
+      </Show>
+      <Show when={!!state().unreadMangas.length}>
+        <Tooltip
+          showArrow
+          label={
+            <button class="icon-24 transition-all library-action" onClick={handleMarkAsRead}>
+              <ReadIcon />
+            </button>
+          }
+          content={t('library.selection.markAsRead', { count: props.selected.length })}
+        />
+      </Show>
+      <Show when={!!state().readMangas.length}>
+        <Tooltip
+          showArrow
+          onClick={handleMarkAsUnread}
+          label={
+            <button class="icon-24 transition-all library-action">
+              <UnreadIcon />
+            </button>
+          }
+          content={t('library.selection.markAsUnread', { count: props.selected.length })}
+        />
+      </Show>
     </>
   )
 }

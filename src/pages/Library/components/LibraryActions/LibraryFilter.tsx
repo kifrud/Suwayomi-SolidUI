@@ -81,7 +81,7 @@ export const LibraryFilter: Component = () => {
     metaCtx.set({ [key]: v })
   }
 
-  const tabs: ITabs = {
+  const tabs = {
     filters: {
       unread: (
         <TriStateInput
@@ -156,7 +156,7 @@ export const LibraryFilter: Component = () => {
         ),
       },
     },
-  }
+  } satisfies ITabs
 
   const [tab, setTab] = createSignal(Object.keys(tabs)[0])
 
