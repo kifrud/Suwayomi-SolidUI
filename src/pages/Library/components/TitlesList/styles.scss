@@ -10,10 +10,13 @@
     transition: all 0.15s ease-in-out;
     word-wrap: break-word;
     &--selected {
+      border-radius: 0.5rem;
       img {
+        border-radius: 0;
         transition: all 0.15s;
-        filter: brightness(0.9);
+        filter: brightness(0.8);
       }
+      border: 4px solid var(--stp-foreground);
     }
     &:hover {
       img {

@@ -47,13 +47,6 @@ const Library: Component = () => {
   // TODO: context?
   const [selectMode, setSelectMode] = createSignal(false)
   const [selected, setSelected] = createStore<NonNullable<Mangas>>([])
-
-  const orderedCategories = createMemo(() =>
-    categories()
-      ?.data?.categories.nodes.toSorted((a, b) => (a.order > b.order ? 1 : -1))
-      .filter(e => e.mangas.totalCount)
-  )
-
   const [category, setCategory] = createSignal<OperationResult<ResultOf<typeof getCategory>>>()
   const [isCategoryLoading, setIsCategoryLoading] = createSignal(true)
 
@@ -67,6 +60,13 @@ const Library: Component = () => {
       })
     onCleanup(() => unsubscribe())
   })
+
+  const orderedCategories = createMemo(() =>
+    categories()
+      ?.data?.categories.nodes.toSorted((a, b) => (a.order > b.order ? 1 : -1))
+      .filter(e => e.mangas.totalCount)
+  )
+
 
   const mangas = createMemo(() =>
     category()

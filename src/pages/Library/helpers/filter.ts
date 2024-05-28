@@ -2,9 +2,9 @@ import { GlobalMeta } from '@/contexts'
 import { Mangas } from '..'
 import { Sort } from '@/enums'
 
-type SingleManga = NonNullable<Mangas>[number]
+type TManga = NonNullable<Mangas>[number]
 
-export function filterManga(item: SingleManga, globalMeta: GlobalMeta, query?: string) {
+export function filterManga(item: TManga, globalMeta: GlobalMeta, query?: string) {
   if (!item.inLibrary) return false
   if (globalMeta.ignoreFiltersWhenSearching) {
     if (
@@ -35,7 +35,7 @@ export function filterManga(item: SingleManga, globalMeta: GlobalMeta, query?: s
   return true
 }
 
-export function sortManga(a: SingleManga, b: SingleManga, globalMeta: GlobalMeta) {
+export function sortManga(a: TManga, b: TManga, globalMeta: GlobalMeta) {
   let result = true
   switch (globalMeta.Sort) {
     case Sort.ID:
@@ -65,4 +65,72 @@ export function sortManga(a: SingleManga, b: SingleManga, globalMeta: GlobalMeta
   if (globalMeta.Asc) result = !result
 
   return result ? -1 : 1
+}
+
+type MangaChapterCount = { chapters: Pick<TManga['chapters'], 'totalCount'> }
+type MangaUnread = Pick<TManga, 'unreadCount'> & MangaChapterCount
+type MangaDownload = Pick<TManga, 'downloadCount'> & MangaChapterCount
+
+function isFullyRead({ unreadCount }: MangaUnread) {
+  return unreadCount === 0
+}
+
+function getFullyRead(mangas: NonNullable<Mangas>) {
+  return mangas.filter(isFullyRead)
+}
+
+function isMangaUnread({ unreadCount, chapters: { totalCount } }: MangaUnread) {
+  return unreadCount === totalCount
+}
+
+function getUnread(mangas: NonNullable<Mangas>) {
+  return mangas?.filter(isMangaUnread)
+}
+
+function isPartiallyRead(manga: MangaUnread) {
+  return !isFullyRead(manga) && !isMangaUnread(manga)
+}
+
+function getPartiallyRead(mangas: NonNullable<Mangas>) {
+  return mangas?.filter(isPartiallyRead)
+}
+
+export function getUnreadMangas(mangas: NonNullable<Mangas>) {
+  return [...getUnread(mangas), ...getPartiallyRead(mangas)]
+}
+
+export function getReadMangas(mangas: NonNullable<Mangas>) {
+  return [...getFullyRead(mangas), ...getPartiallyRead(mangas)]
+}
+
+function isNotDownloaded({ downloadCount }: MangaDownload) {
+  return downloadCount === 0
+}
+
+function isFullyDownloaded({ downloadCount, chapters: { totalCount } }: MangaDownload) {
+  return downloadCount === totalCount
+}
+
+function getFullyDownloaded(mangas: NonNullable<Mangas>) {
+  return mangas.filter(isFullyDownloaded)
+}
+
+function isPartiallyDownloaded(manga: MangaDownload) {
+  return !isFullyDownloaded(manga) && !isNotDownloaded(manga)
+}
+
+function getPartiallyDownloaded(mangas: NonNullable<Mangas>) {
+  return mangas.filter(isPartiallyDownloaded)
+}
+
+function getNotDownloaded(mangas: NonNullable<Mangas>) {
+  return mangas.filter(isNotDownloaded)
+}
+
+export function getDownloadable(mangas: NonNullable<Mangas>) {
+  return [...getNotDownloaded(mangas), ...getPartiallyDownloaded(mangas)]
+}
+
+export function getDownloaded(mangas: NonNullable<Mangas>) {
+  return [...getFullyDownloaded(mangas), ...getPartiallyDownloaded(mangas)]
 }

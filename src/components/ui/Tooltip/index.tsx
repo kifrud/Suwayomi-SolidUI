@@ -1,4 +1,4 @@
-import { JSX, ParentComponent, Show, splitProps } from 'solid-js'
+import { JSX, ParentComponent, Show, createMemo, splitProps } from 'solid-js'
 import { TooltipRootProps, Tooltip as TooltipUi } from '@kobalte/core/tooltip'
 import './styles.scss'
 
@@ -13,6 +13,7 @@ interface TooltipProps extends TooltipRootProps {
   disabled: boolean
   onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent>
   classes: Partial<Classes>
+  content: JSX.Element
 }
 
 const Tooltip: ParentComponent<Partial<TooltipProps>> = props => {
@@ -21,6 +22,8 @@ const Tooltip: ParentComponent<Partial<TooltipProps>> = props => {
     ['onClick', 'classes', 'disabled', 'label'],
     ['showArrow', 'classes']
   )
+
+  const tooltipContent = createMemo(() => (props.children ? props.children : rest.content))
 
   return (
     <TooltipUi {...rest}>
@@ -36,7 +39,7 @@ const Tooltip: ParentComponent<Partial<TooltipProps>> = props => {
           <Show when={content.showArrow}>
             <TooltipUi.Arrow />
           </Show>
-          {rest.children}
+          {tooltipContent()}
         </TooltipUi.Content>
       </TooltipUi.Portal>
     </TooltipUi>
