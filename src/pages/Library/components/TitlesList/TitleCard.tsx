@@ -2,12 +2,12 @@ import { Accessor, Component, JSX, Setter, Show, createMemo, createSignal } from
 import { SetStoreFunction } from 'solid-js/store'
 import { CheckBox, Chip, Image } from '@/components'
 import { useGlobalMeta } from '@/contexts'
+import { Mangas, TManga } from '@/types'
 import { longPress } from '@/helpers'
-import { Mangas } from '../..'
 import './styles.scss'
 
 interface TitleCardProps {
-  manga: NonNullable<Mangas>[number]
+  manga: Accessor<TManga>
   selectMode: Accessor<boolean>
   updateSelectMode: Setter<boolean>
   selected: NonNullable<Mangas>
@@ -22,7 +22,9 @@ const TitleCard: Component<TitleCardProps> = props => {
   const { globalMeta } = useGlobalMeta()
   const [isHovered, setIsHovered] = createSignal(false)
 
-  const isSelected = createMemo(() => props.selected.map(item => item.id).includes(props.manga.id))
+  const isSelected = createMemo(() =>
+    props.selected.map(item => item.id).includes(props.manga().id)
+  )
 
   const cardClasses = createMemo(() =>
     ['title-card', `title-card${isSelected() ? '--selected' : ''}`, 'aspect-cover'].join(' ')
@@ -34,10 +36,10 @@ const TitleCard: Component<TitleCardProps> = props => {
     }
 
     if (!isSelected()) {
-      return props.updateSelected([...props.selected, props.manga])
+      return props.updateSelected([...props.selected, props.manga()])
     }
 
-    return props.updateSelected(prev => prev.filter(item => item !== props.manga))
+    return props.updateSelected(prev => prev.filter(item => item !== props.manga()))
   }
 
   const handleHover = (e: Event, pointerType: PointerType) => {
@@ -59,7 +61,7 @@ const TitleCard: Component<TitleCardProps> = props => {
 
   return (
     <a
-      href={`/manga/${props.manga.id}`}
+      href={`/manga/${props.manga().id}`}
       class={cardClasses()}
       onPointerEnter={e => handleHover(e, e.pointerType as PointerType)}
       onPointerLeave={() => setIsHovered(false)}
@@ -69,34 +71,34 @@ const TitleCard: Component<TitleCardProps> = props => {
     >
       <div class="relative h-full w-full">
         <div class="absolute flex top-2 left-2 z-30">
-          <Show when={globalMeta.downloadsBadge && props.manga.downloadCount > 0}>
+          <Show when={globalMeta.downloadsBadge && props.manga().downloadCount > 0}>
             <Chip
               radius="none"
               class={`bg-background w-full h-full ${
                 globalMeta.downloadsBadge &&
                 globalMeta.unreadsBadge &&
-                props.manga.downloadCount > 0 &&
-                props.manga.unreadCount > 0
+                props.manga().downloadCount > 0 &&
+                props.manga().unreadCount > 0
                   ? 'rounded-r'
                   : 'rounded'
               }`}
             >
-              {props.manga.downloadCount}
+              {props.manga().downloadCount}
             </Chip>
           </Show>
-          <Show when={globalMeta.unreadsBadge && props.manga.unreadCount > 0}>
+          <Show when={globalMeta.unreadsBadge && props.manga().unreadCount > 0}>
             <Chip
               radius="none"
               class={`bg-active text-background h-full ${
                 globalMeta.unreadsBadge &&
                 globalMeta.downloadsBadge &&
-                props.manga.unreadCount > 0 &&
-                props.manga.downloadCount > 0
+                props.manga().unreadCount > 0 &&
+                props.manga().downloadCount > 0
                   ? 'rounded-l'
                   : 'rounded'
               }`}
             >
-              {props.manga.unreadCount}
+              {props.manga().unreadCount}
             </Chip>
           </Show>
         </div>
@@ -113,10 +115,10 @@ const TitleCard: Component<TitleCardProps> = props => {
             <CheckBox checked={isSelected()} onChange={handleSelect} />
           </div>
         </Show>
-        <Image class="object-cover aspect-cover" src={props.manga.thumbnailUrl ?? ''} alt=" " />
+        <Image class="object-cover aspect-cover" src={props.manga().thumbnailUrl ?? ''} alt=" " />
       </div>
       <div class="title-card__footer">
-        <p class="text-ellipsis overflow-hidden line-clamp-2 max-h-[3rem]">{props.manga.title}</p>
+        <p class="text-ellipsis overflow-hidden line-clamp-2 max-h-[3rem]">{props.manga().title}</p>
       </div>
     </a>
   )

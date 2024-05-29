@@ -23,7 +23,6 @@ const AscRadio: Component<AscRadioProps> = props => {
   const handleClick: JSX.EventHandler<HTMLInputElement, MouseEvent> = e => {
     e.preventDefault()
 
-    // if (!props.checked && props.updateState) props.updateState(!props.checked)
     if (props.checked) props.updateAscending(!props.ascending)
 
     props.updateValue(e.currentTarget.value)

@@ -18,7 +18,8 @@ import { OperationResult } from '@urql/core'
 import { getCategories, getCategory } from '@/gql/Queries'
 import { ResultOf } from '@/gql'
 import { Chip, SearchBar, Skeleton } from '@/components'
-import { matches } from '@/helpers'
+import { filterManga, matches, sortManga } from '@/helpers'
+import { Mangas } from '@/types'
 import {
   CategoriesTabs,
   LibraryActions,
@@ -27,13 +28,8 @@ import {
   TitlesList,
   Transition,
 } from './components'
-import { filterManga, sortManga } from './helpers'
 import CloseIcon from '~icons/material-symbols/close-rounded'
 import './styles.scss'
-
-export type Mangas =
-  | ReturnType<NonNullable<typeof getCategory.__apiType>>['category']['mangas']['nodes']
-  | undefined
 
 const Library: Component = () => {
   const { globalMeta } = useGlobalMeta()
@@ -49,11 +45,11 @@ const Library: Component = () => {
   const [selected, setSelected] = createStore<NonNullable<Mangas>>([])
   const [category, setCategory] = createSignal<OperationResult<ResultOf<typeof getCategory>>>()
   const [isCategoryLoading, setIsCategoryLoading] = createSignal(true)
-
+  // FIXME: doesn't update after action such as markAsRead performed
   createEffect(() => {
     setIsCategoryLoading(true)
     const { unsubscribe } = client
-      .query(getCategory, { id: Number(currentTab()) })
+      .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
       .subscribe(res => {
         setCategory(res)
         setIsCategoryLoading(false)
@@ -66,7 +62,6 @@ const Library: Component = () => {
       ?.data?.categories.nodes.toSorted((a, b) => (a.order > b.order ? 1 : -1))
       .filter(e => e.mangas.totalCount)
   )
-
 
   const mangas = createMemo(() =>
     category()

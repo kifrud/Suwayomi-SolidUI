@@ -1,8 +1,8 @@
-import { Accessor, Component, For, Setter, Show, createMemo } from 'solid-js'
+import { Accessor, Component, For, Index, Setter, Show, createMemo } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
-import { Mangas } from '../..'
 import { Skeleton } from '@/components'
 import { useAppContext } from '@/contexts'
+import { Mangas } from '@/types'
 import InfoIcon from '~icons/material-symbols/info-outline'
 import TitleCard from './TitleCard'
 import './styles.scss'
@@ -55,7 +55,7 @@ const TitlesList: Component<TitlesListProps> = props => {
     <div class={wrapperClasses()}>
       <Show when={!props.isLoading} fallback={placeholder}>
         <Show when={props.mangas() && props.mangas()?.length! > 0} fallback={noFoundManga}>
-          <For each={props.mangas!()}>
+          <Index each={props.mangas!()}>
             {item => (
               <TitleCard
                 selectMode={props.selectMode}
@@ -66,7 +66,7 @@ const TitlesList: Component<TitlesListProps> = props => {
                 // isSelected={props.selected.includes(item.id)}
               />
             )}
-          </For>
+          </Index>
         </Show>
       </Show>
     </div>

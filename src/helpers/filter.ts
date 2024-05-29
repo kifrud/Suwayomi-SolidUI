@@ -1,8 +1,6 @@
 import { GlobalMeta } from '@/contexts'
-import { Mangas } from '..'
 import { Sort } from '@/enums'
-
-type TManga = NonNullable<Mangas>[number]
+import { Mangas, TManga } from '@/types'
 
 export function filterManga(item: TManga, globalMeta: GlobalMeta, query?: string) {
   if (!item.inLibrary) return false
@@ -103,10 +101,6 @@ export function getReadMangas(mangas: NonNullable<Mangas>) {
   return [...getFullyRead(mangas), ...getPartiallyRead(mangas)]
 }
 
-function isNotDownloaded({ downloadCount }: MangaDownload) {
-  return downloadCount === 0
-}
-
 function isFullyDownloaded({ downloadCount, chapters: { totalCount } }: MangaDownload) {
   return downloadCount === totalCount
 }
@@ -115,16 +109,20 @@ function getFullyDownloaded(mangas: NonNullable<Mangas>) {
   return mangas.filter(isFullyDownloaded)
 }
 
+function isNotDownloaded({ downloadCount }: MangaDownload) {
+  return downloadCount === 0
+}
+
+function getNotDownloaded(mangas: NonNullable<Mangas>) {
+  return mangas.filter(isNotDownloaded)
+}
+
 function isPartiallyDownloaded(manga: MangaDownload) {
   return !isFullyDownloaded(manga) && !isNotDownloaded(manga)
 }
 
 function getPartiallyDownloaded(mangas: NonNullable<Mangas>) {
   return mangas.filter(isPartiallyDownloaded)
-}
-
-function getNotDownloaded(mangas: NonNullable<Mangas>) {
-  return mangas.filter(isNotDownloaded)
 }
 
 export function getDownloadable(mangas: NonNullable<Mangas>) {
