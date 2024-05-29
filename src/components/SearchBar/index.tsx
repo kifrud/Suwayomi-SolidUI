@@ -8,12 +8,12 @@ import {
   mergeProps,
   onMount,
 } from 'solid-js'
-import { Input } from '../ui'
 import { useSearchParams } from '@solidjs/router'
-import SearchIcon from '~icons/material-symbols/search'
 import { useAppContext, useHeaderContext } from '@/contexts'
 import { makeFocusListener } from '@solid-primitives/active-element'
 import { matches } from '@/helpers'
+import { Input } from '../ui'
+import SearchIcon from '~icons/material-symbols/search'
 
 const SearchBar: Component<{ mobile?: boolean }> = props => {
   const { t } = useAppContext()
@@ -102,7 +102,6 @@ const SearchBar: Component<{ mobile?: boolean }> = props => {
     </Show>
   )
 
-  // TODO: translate
   return (
     <Show when={!values.mobile} fallback={mobileSearch}>
       {input}
