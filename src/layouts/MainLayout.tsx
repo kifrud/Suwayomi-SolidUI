@@ -17,9 +17,16 @@ const MainLayout: ParentComponent = props => {
         <Header />
         <hr class="bg-[#3b3b3b] border-none h-[1px]" />
       </div>
-      <div class="flex w-full h-full flex-grow" classList={{ 'flex-col': !matches.md, 'mb-20': !matches.md }}>
+      <div
+        class="flex w-full h-full flex-grow"
+        classList={{ 'flex-col': !matches.md, 'mb-20': !matches.md }}
+      >
         <AppNavbar />
-        <ErrorBoundary fallback={(err, reset) => <div onClick={reset}>Error: {err.toString()}</div>}>{props.children}</ErrorBoundary>
+        <ErrorBoundary
+          fallback={(err, reset) => <div onClick={reset}>Error: {err.toString()}</div>}
+        >
+          {props.children}
+        </ErrorBoundary>
       </div>
     </div>
   )

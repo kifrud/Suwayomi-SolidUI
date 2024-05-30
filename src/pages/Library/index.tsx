@@ -41,8 +41,10 @@ const Library: Component = () => {
   const [searchParams] = useSearchParams()
   const [currentTab, setCurrentTab] = createSignal(searchParams.tab ?? '1')
   // TODO: context?
-  const [selectMode, setSelectMode] = createSignal(false)
   const [selected, setSelected] = createStore<NonNullable<Mangas>>([])
+
+  const [selectMode, setSelectMode] = createSignal(false)
+  const [showFilters, setShowFilters] = createSignal(false)
   const [category, setCategory] = createSignal<OperationResult<ResultOf<typeof getCategory>>>()
   const [isCategoryLoading, setIsCategoryLoading] = createSignal(true)
   // FIXME: doesn't update after action such as markAsRead performed
@@ -83,8 +85,6 @@ const Library: Component = () => {
       {totalMangaCount()}
     </Chip>
   )
-
-  const [showFilters, setShowFilters] = createSignal(false)
 
   const searchEl = (
     <Show when={matches.md}>

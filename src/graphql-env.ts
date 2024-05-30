@@ -15245,4 +15245,4 @@ const introspection = {
   }
 } as const;
 
-export { introspection };
+export { introspection }

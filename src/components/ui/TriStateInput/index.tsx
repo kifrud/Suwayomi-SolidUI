@@ -1,13 +1,5 @@
 import { TriState } from '@/enums'
-import {
-  Accessor,
-  JSX,
-  ParentComponent,
-  Setter,
-  Show,
-  createMemo,
-  mergeProps,
-} from 'solid-js'
+import { Accessor, JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
 import IncludeIcon from '~icons/material-symbols/check-box-rounded'
 import IgnoreIcon from '~icons/material-symbols/check-box-outline-blank'
 import ExcludeIcon from '~icons/material-symbols/disabled-by-default-rounded'

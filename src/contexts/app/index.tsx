@@ -41,8 +41,8 @@ export const toLocale = (string: string): Locale | undefined =>
   string in raw_dict_map
     ? (string as Locale)
     : string in LANG_ALIASES
-    ? (LANG_ALIASES[string] as Locale)
-    : undefined
+      ? (LANG_ALIASES[string] as Locale)
+      : undefined
 
 const AppContext = createContext<AppState>({} as AppState)
 
