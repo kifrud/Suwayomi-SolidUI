@@ -1,6 +1,10 @@
-"""Exposes a URL that specifies the behaviour of this scalar."""
+"""
+Exposes a URL that specifies the behaviour of this scalar.
+"""
 directive @specifiedBy(
-  """The URL that specifies the behaviour of this scalar."""
+  """
+  The URL that specifies the behaviour of this scalar.
+  """
   url: String!
 ) on SCALAR
 
@@ -284,7 +288,9 @@ type CreateCategoryPayload {
   clientMutationId: String
 }
 
-"""A location in a connection that can be used for resuming pagination."""
+"""
+A location in a connection that can be used for resuming pagination.
+"""
 scalar Cursor
 
 input DeleteCategoryInput {
@@ -448,10 +454,14 @@ type DownloadType {
 }
 
 interface Edge {
-  """A cursor for use in pagination."""
+  """
+  A cursor for use in pagination.
+  """
   cursor: Cursor!
 
-  """The [T] at the end of the edge."""
+  """
+  The [T] at the end of the edge.
+  """
   node: Node!
 }
 
@@ -625,7 +635,15 @@ type FetchTrackPayload {
   trackRecord: TrackRecordType!
 }
 
-union Filter = CheckBoxFilter | GroupFilter | HeaderFilter | SelectFilter | SeparatorFilter | SortFilter | TextFilter | TriStateFilter
+union Filter =
+  | CheckBoxFilter
+  | GroupFilter
+  | HeaderFilter
+  | SelectFilter
+  | SeparatorFilter
+  | SortFilter
+  | TextFilter
+  | TriStateFilter
 
 input FilterChangeInput {
   checkBoxState: Boolean
@@ -772,7 +790,9 @@ input LongFilterInput {
   notIn: [LongString!]
 }
 
-"""A 64-bit signed integer as a String"""
+"""
+A 64-bit signed integer as a String
+"""
 scalar LongString
 
 input MangaConditionInput {
@@ -1012,7 +1032,22 @@ type Mutation {
   updateStop(input: UpdateStopInput!): UpdateStopPayload!
 }
 
-union Node = CategoryMetaType | CategoryType | ChapterMetaType | ChapterType | DownloadType | ExtensionType | GlobalMetaType | MangaMetaType | MangaType | PartialSettingsType | SettingsType | SourceMetaType | SourceType | TrackRecordType | TrackerType
+union Node =
+  | CategoryMetaType
+  | CategoryType
+  | ChapterMetaType
+  | ChapterType
+  | DownloadType
+  | ExtensionType
+  | GlobalMetaType
+  | MangaMetaType
+  | MangaType
+  | PartialSettingsType
+  | SettingsType
+  | SourceMetaType
+  | SourceType
+  | TrackRecordType
+  | TrackerType
 
 interface NodeList {
   """
@@ -1020,32 +1055,49 @@ interface NodeList {
   """
   edges: [Edge!]!
 
-  """A list of [T] objects."""
+  """
+  A list of [T] objects.
+  """
   nodes: [Node!]!
 
-  """Information to aid in pagination."""
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
 
-  """The count of all nodes you could get from the connection."""
+  """
+  The count of all nodes you could get from the connection.
+  """
   totalCount: Int!
 }
 
 type PageInfo {
-  """When paginating forwards, the cursor to continue."""
+  """
+  When paginating forwards, the cursor to continue.
+  """
   endCursor: Cursor
 
-  """When paginating forwards, are there more items?"""
+  """
+  When paginating forwards, are there more items?
+  """
   hasNextPage: Boolean!
 
-  """When paginating backwards, are there more items?"""
+  """
+  When paginating backwards, are there more items?
+  """
   hasPreviousPage: Boolean!
 
-  """When paginating backwards, the cursor to continue."""
+  """
+  When paginating backwards, the cursor to continue.
+  """
   startCursor: Cursor
 }
 
 type PartialSettingsType implements Settings {
-  autoDownloadAheadLimit: Int @deprecated(reason: "Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit")
+  autoDownloadAheadLimit: Int
+    @deprecated(
+      reason: "Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit"
+    )
   autoDownloadNewChapters: Boolean
   autoDownloadNewChaptersLimit: Int
   backupInterval: Int
@@ -1135,35 +1187,119 @@ input PartialSettingsTypeInput {
   webUIUpdateCheckInterval: Float
 }
 
-union Preference = CheckBoxPreference | EditTextPreference | ListPreference | MultiSelectListPreference | SwitchPreference
+union Preference =
+  | CheckBoxPreference
+  | EditTextPreference
+  | ListPreference
+  | MultiSelectListPreference
+  | SwitchPreference
 
 type Query {
   restoreStatus(id: String!): BackupRestoreStatus
   validateBackup(input: ValidateBackupInput!): ValidateBackupResult!
-  categories(condition: CategoryConditionInput, filter: CategoryFilterInput, orderBy: CategoryOrderBy, orderByType: SortOrder, before: Cursor, after: Cursor, first: Int, last: Int, offset: Int): CategoryNodeList!
+  categories(
+    condition: CategoryConditionInput
+    filter: CategoryFilterInput
+    orderBy: CategoryOrderBy
+    orderByType: SortOrder
+    before: Cursor
+    after: Cursor
+    first: Int
+    last: Int
+    offset: Int
+  ): CategoryNodeList!
   category(id: Int!): CategoryType!
   chapter(id: Int!): ChapterType!
-  chapters(condition: ChapterConditionInput, filter: ChapterFilterInput, orderBy: ChapterOrderBy, orderByType: SortOrder, before: Cursor, after: Cursor, first: Int, last: Int, offset: Int): ChapterNodeList!
+  chapters(
+    condition: ChapterConditionInput
+    filter: ChapterFilterInput
+    orderBy: ChapterOrderBy
+    orderByType: SortOrder
+    before: Cursor
+    after: Cursor
+    first: Int
+    last: Int
+    offset: Int
+  ): ChapterNodeList!
   downloadStatus: DownloadStatus!
   extension(pkgName: String!): ExtensionType!
-  extensions(condition: ExtensionConditionInput, filter: ExtensionFilterInput, orderBy: ExtensionOrderBy, orderByType: SortOrder, before: Cursor, after: Cursor, first: Int, last: Int, offset: Int): ExtensionNodeList!
+  extensions(
+    condition: ExtensionConditionInput
+    filter: ExtensionFilterInput
+    orderBy: ExtensionOrderBy
+    orderByType: SortOrder
+    before: Cursor
+    after: Cursor
+    first: Int
+    last: Int
+    offset: Int
+  ): ExtensionNodeList!
   aboutServer: AboutServerPayload!
   aboutWebUI: AboutWebUI!
   checkForServerUpdates: [CheckForServerUpdatesPayload!]!
   checkForWebUIUpdate: WebUIUpdateCheck!
   getWebUIUpdateStatus: WebUIUpdateStatus!
   manga(id: Int!): MangaType!
-  mangas(condition: MangaConditionInput, filter: MangaFilterInput, orderBy: MangaOrderBy, orderByType: SortOrder, before: Cursor, after: Cursor, first: Int, last: Int, offset: Int): MangaNodeList!
+  mangas(
+    condition: MangaConditionInput
+    filter: MangaFilterInput
+    orderBy: MangaOrderBy
+    orderByType: SortOrder
+    before: Cursor
+    after: Cursor
+    first: Int
+    last: Int
+    offset: Int
+  ): MangaNodeList!
   meta(key: String!): GlobalMetaType!
-  metas(condition: MetaConditionInput, filter: MetaFilterInput, orderBy: MetaOrderBy, orderByType: SortOrder, before: Cursor, after: Cursor, first: Int, last: Int, offset: Int): GlobalMetaNodeList!
+  metas(
+    condition: MetaConditionInput
+    filter: MetaFilterInput
+    orderBy: MetaOrderBy
+    orderByType: SortOrder
+    before: Cursor
+    after: Cursor
+    first: Int
+    last: Int
+    offset: Int
+  ): GlobalMetaNodeList!
   settings: SettingsType!
   source(id: LongString!): SourceType!
-  sources(condition: SourceConditionInput, filter: SourceFilterInput, orderBy: SourceOrderBy, orderByType: SortOrder, before: Cursor, after: Cursor, first: Int, last: Int, offset: Int): SourceNodeList!
+  sources(
+    condition: SourceConditionInput
+    filter: SourceFilterInput
+    orderBy: SourceOrderBy
+    orderByType: SortOrder
+    before: Cursor
+    after: Cursor
+    first: Int
+    last: Int
+    offset: Int
+  ): SourceNodeList!
   searchTracker(input: SearchTrackerInput!): SearchTrackerPayload!
   trackRecord(id: Int!): TrackRecordType!
-  trackRecords(condition: TrackRecordConditionInput, filter: TrackRecordFilterInput, orderBy: TrackRecordOrderBy, orderByType: SortOrder, before: Cursor, after: Cursor, first: Int, last: Int, offset: Int): TrackRecordNodeList!
+  trackRecords(
+    condition: TrackRecordConditionInput
+    filter: TrackRecordFilterInput
+    orderBy: TrackRecordOrderBy
+    orderByType: SortOrder
+    before: Cursor
+    after: Cursor
+    first: Int
+    last: Int
+    offset: Int
+  ): TrackRecordNodeList!
   tracker(id: Int!): TrackerType!
-  trackers(condition: TrackerConditionInput, orderBy: TrackerOrderBy, orderByType: SortOrder, before: Cursor, after: Cursor, first: Int, last: Int, offset: Int): TrackerNodeList!
+  trackers(
+    condition: TrackerConditionInput
+    orderBy: TrackerOrderBy
+    orderByType: SortOrder
+    before: Cursor
+    after: Cursor
+    first: Int
+    last: Int
+    offset: Int
+  ): TrackerNodeList!
   lastUpdateTimestamp: LastUpdateTimestampPayload!
   updateStatus: UpdateStatus!
 }
@@ -1279,7 +1415,10 @@ type SetSourceMetaPayload {
 }
 
 interface Settings {
-  autoDownloadAheadLimit: Int @deprecated(reason: "Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit")
+  autoDownloadAheadLimit: Int
+    @deprecated(
+      reason: "Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit"
+    )
   autoDownloadNewChapters: Boolean
   autoDownloadNewChaptersLimit: Int
   backupInterval: Int
@@ -1325,7 +1464,10 @@ interface Settings {
 }
 
 type SettingsType implements Settings {
-  autoDownloadAheadLimit: Int! @deprecated(reason: "Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit")
+  autoDownloadAheadLimit: Int!
+    @deprecated(
+      reason: "Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit"
+    )
   autoDownloadNewChapters: Boolean!
   autoDownloadNewChaptersLimit: Int!
   backupInterval: Int!
@@ -1952,7 +2094,9 @@ type UpdateTrackPayload {
   trackRecord: TrackRecordType
 }
 
-"""A file part in a multipart request"""
+"""
+A file part in a multipart request
+"""
 scalar Upload
 
 input ValidateBackupInput {

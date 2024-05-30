@@ -468,15 +468,13 @@ export const serverSettings = graphql(
   []
 )
 
-export const latestUpdateTimestamp = graphql(
-  `
-    query latestUpdateTimestamp {
-      lastUpdateTimestamp {
-        timestamp
-      }
+export const latestUpdateTimestamp = graphql(`
+  query latestUpdateTimestamp {
+    lastUpdateTimestamp {
+      timestamp
     }
-  `
-)
+  }
+`)
 
 export const updateStatus = graphql(
   `

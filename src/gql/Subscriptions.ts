@@ -1,4 +1,4 @@
-import { UpdateStatusFragment } from './Fragments';
+import { UpdateStatusFragment } from './Fragments'
 import { graphql } from './graphql'
 
 export const downloadChanged = graphql(`

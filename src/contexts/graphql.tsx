@@ -5,7 +5,7 @@ const defaultClient = new Client({ url: '/graphql', exchanges: [] })
 
 const GraphQLContext = createContext<Client>(defaultClient)
 
-export const GraphQLProvider: ParentComponent<{ client: Client }> = (props) => {
+export const GraphQLProvider: ParentComponent<{ client: Client }> = props => {
   return <GraphQLContext.Provider value={props.client}>{props.children}</GraphQLContext.Provider>
 }
 

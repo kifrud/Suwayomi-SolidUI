@@ -1,4 +1,4 @@
-import { introspection } from './../graphql-env';
+import { introspection } from './../graphql-env'
 import { Client, fetchExchange, subscriptionExchange } from '@urql/core'
 import { cacheExchange } from '@urql/exchange-graphcache'
 import { createClient as createWSClient } from 'graphql-ws'
@@ -48,18 +48,17 @@ export const client = new Client({
         UpdateStatus: () => null,
         LastUpdateTimestampPayload: () => null,
       },
-      schema: introspection
-      // updates: {
-      //   Mutation: {
-      //     updateLibraryMangas(result, _,  cache, info) {
-      //       const res = result as ResultOf<typeof updateLibraryMangas>
-      //       const variables = nfo.variables as VariablesOf<
-      //       typeof updateMangasCategories
-      //     >;
-
-      //     }
-      //   }
-      // }
+      schema: introspection,
+      updates: {
+        // Mutation: {
+        //   updateLibraryMangas(result, _,  cache, info) {
+        //     const res = result as ResultOf<typeof updateLibraryMangas>
+        //     const variables = nfo.variables as VariablesOf<
+        //     typeof updateMangasCategories
+        //   >;
+        //   }
+        // }
+      },
     }),
     fetchExchange,
     subscriptionExchange({
