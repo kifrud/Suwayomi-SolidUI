@@ -19,6 +19,7 @@
     "@solid-primitives/transition-group": "^1.0.5",
     "@solidjs/meta": "^0.29.3",
     "@solidjs/router": "^0.13.2",
+    "@tanstack/solid-query": "^5.40.0",
     "@urql/core": "^5.0.0",
     "@urql/exchange-graphcache": "^7.0.1",
     "gql.tada": "^1.5.2",

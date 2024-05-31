@@ -1,4 +1,5 @@
 import { ParentComponent } from 'solid-js'
+import { QueryClient, QueryClientProvider } from '@tanstack/solid-query'
 import {
   AppContextProvider,
   GlobalMetaProvider,
@@ -10,19 +11,23 @@ import { MetaProvider } from '@solidjs/meta'
 import { ThemeProvider } from '@kifrud/solid-theme-provider'
 import themes from './themes.json'
 
+const queryClient = new QueryClient()
+
 const Providers: ParentComponent = props => {
   return (
-    <MetaProvider>
-      <GlobalMetaProvider>
-        <ThemeProvider themes={themes}>
-          <AppContextProvider>
-            <HeaderContextProvider>
-              <GraphQLProvider client={client}>{props.children}</GraphQLProvider>
-            </HeaderContextProvider>
-          </AppContextProvider>
-        </ThemeProvider>
-      </GlobalMetaProvider>
-    </MetaProvider>
+    <QueryClientProvider client={queryClient}>
+      <MetaProvider>
+        <GlobalMetaProvider>
+          <ThemeProvider themes={themes}>
+            <AppContextProvider>
+              <HeaderContextProvider>
+                <GraphQLProvider client={client}>{props.children}</GraphQLProvider>
+              </HeaderContextProvider>
+            </AppContextProvider>
+          </ThemeProvider>
+        </GlobalMetaProvider>
+      </MetaProvider>
+    </QueryClientProvider>
   )
 }
 
