@@ -28,6 +28,7 @@ import {
 } from './components'
 import CloseIcon from '~icons/material-symbols/close-rounded'
 import './styles.scss'
+import { createQuery } from '@tanstack/solid-query'
 
 const Library: Component = () => {
   const { globalMeta } = useGlobalMeta()
@@ -44,13 +45,13 @@ const Library: Component = () => {
   const [selectMode, setSelectMode] = createSignal(false)
   const [showFilters, setShowFilters] = createSignal(false)
 
-  const [category, { refetch: refetchCategory }] = createResource(
-    currentTab,
-    async () =>
+  const category = createQuery(() => ({
+    queryKey: ['category', currentTab()],
+    queryFn: async () =>
       await client
         .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
-        .toPromise()
-  )
+        .toPromise(),
+  }))
 
   const orderedCategories = createMemo(() =>
     categories()
@@ -59,7 +60,7 @@ const Library: Component = () => {
   )
 
   const mangas = createMemo(() =>
-    category.latest?.data?.category.mangas.nodes
+    category.data?.data?.category.mangas.nodes
       .filter(item => filterManga(item, globalMeta, searchParams.q))
       .toSorted((a, b) => sortManga(a, b, globalMeta))
   )
@@ -127,7 +128,7 @@ const Library: Component = () => {
         <SelectionActions
           selected={selected}
           updateSelected={setSelected}
-          refetchCategory={refetchCategory}
+          refetchCategory={category.refetch}
         />
       )
     } else {
@@ -184,7 +185,10 @@ const Library: Component = () => {
             selected={selected}
             updateSelected={setSelected}
             mangas={mangas}
-            state={category.state}
+            state={{
+              isLoading: category.isLoading,
+              isRefetching: category.isRefetching,
+            }}
           />
         </div>
       </div>

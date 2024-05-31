@@ -9,7 +9,10 @@ import './styles.scss'
 
 interface TitlesListProps {
   mangas: Accessor<Mangas | undefined>
-  state: 'unresolved' | 'pending' | 'errored' | 'ready' | 'refreshing'
+  state: {
+    isLoading: boolean
+    isRefetching: boolean
+  }
   selectMode: Accessor<boolean>
   updateSelectMode: Setter<boolean>
   selected: NonNullable<Mangas>
@@ -18,8 +21,8 @@ interface TitlesListProps {
 
 const TitlesList: Component<TitlesListProps> = props => {
   const { t } = useAppContext()
-  // FIXME: when navigating to some tab state is 'refreshing', when also state is 'refreshing' on refetch
-  const isLoading = createMemo(() => props.state === 'pending')
+
+  const isLoading = createMemo(() => props.state.isLoading && !props.state.isRefetching)
 
   const placeholder = (
     <For each={new Array(10)}>
