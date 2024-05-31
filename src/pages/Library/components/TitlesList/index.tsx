@@ -1,4 +1,4 @@
-import { Accessor, Component, For, Index, Setter, Show, createMemo } from 'solid-js'
+import { Accessor, Component, For, Index, Setter, Show, createEffect, createMemo } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
 import { Skeleton } from '@/components'
 import { useAppContext } from '@/contexts'
@@ -9,7 +9,7 @@ import './styles.scss'
 
 interface TitlesListProps {
   mangas: Accessor<Mangas | undefined>
-  isLoading: boolean
+  state: 'unresolved' | 'pending' | 'errored' | 'ready' | 'refreshing'
   selectMode: Accessor<boolean>
   updateSelectMode: Setter<boolean>
   selected: NonNullable<Mangas>
@@ -18,6 +18,8 @@ interface TitlesListProps {
 
 const TitlesList: Component<TitlesListProps> = props => {
   const { t } = useAppContext()
+  // FIXME: when navigating to some tab state is 'refreshing', when also state is 'refreshing' on refetch
+  const isLoading = createMemo(() => props.state === 'pending')
 
   const placeholder = (
     <For each={new Array(10)}>
@@ -45,15 +47,33 @@ const TitlesList: Component<TitlesListProps> = props => {
       '3xl:grid-cols-10',
       'gap-2',
       'px-2',
-      !props.isLoading && (!props.mangas() || props.mangas()?.length === 0)
+      !isLoading() && (!props.mangas() || props.mangas()?.length === 0)
         ? '!grid-cols-1 h-full'
         : '',
     ].join(' ')
   )
 
+  createEffect(() => {
+    if (props.mangas()) {
+      const updatedSelected = props.selected.map(selectedItem => {
+        const updatedItem = props.mangas()!.find(manga => manga.id === selectedItem.id)
+        return updatedItem ? { ...selectedItem, ...updatedItem } : selectedItem
+      })
+
+      const hasChanges = updatedSelected.some((updatedItem, index) => {
+        const originalItem = props.selected[index]
+        return JSON.stringify(updatedItem) !== JSON.stringify(originalItem)
+      })
+
+      if (hasChanges) {
+        props.updateSelected(updatedSelected)
+      }
+    }
+  })
+
   return (
     <div class={wrapperClasses()}>
-      <Show when={!props.isLoading} fallback={placeholder}>
+      <Show when={!isLoading()} fallback={placeholder}>
         <Show when={props.mangas() && props.mangas()?.length! > 0} fallback={noFoundManga}>
           <Index each={props.mangas!()}>
             {item => (

@@ -15,6 +15,7 @@ import UnreadIcon from '~icons/material-symbols/remove-done'
 interface SelectionActionsProps {
   selected: NonNullable<Mangas>
   updateSelected: SetStoreFunction<NonNullable<Mangas>>
+  refetchCategory: () => void
 }
 // TODO: download not all but some chapters (if possible)
 export const SelectionActions: Component<SelectionActionsProps> = props => {
@@ -22,7 +23,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
   const { t } = useAppContext()
 
   const mangaIds = createMemo(() => props.selected.map(item => item.id))
-
+  // FIXME: state doesn't update when action is performed and categories refetched (cuz selected remains the old one)
   const state = createMemo(() => {
     return {
       downloadableMangas: getDownloadable(props.selected),
@@ -36,6 +37,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
     try {
       const ids = props.selected.map(item => item.id)
       await client.mutation(updateMangas, { ids, inLibrary: false })
+      props.refetchCategory()
     } catch (error) {
       console.error(error) // TODO: better error handling
     }
@@ -50,6 +52,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       await client
         .mutation(enqueueChapterDownloads, { ids: res.data.chapters.nodes.map(item => item.id) })
         .toPromise()
+      props.refetchCategory()
     } catch (error) {
       console.log(error)
     }
@@ -66,6 +69,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         isRead: true,
         lastPageRead: 0,
       })
+      props.refetchCategory()
     } catch (error) {
       console.log(error)
     }
@@ -81,6 +85,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         ids: res.data.chapters.nodes.map(item => item.id),
         isRead: false,
       })
+      props.refetchCategory()
     } catch (error) {
       console.log(error)
     }

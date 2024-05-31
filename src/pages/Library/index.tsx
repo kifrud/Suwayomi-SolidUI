@@ -14,9 +14,7 @@ import {
 import { createStore } from 'solid-js/store'
 import { useSearchParams } from '@solidjs/router'
 import { useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
-import { OperationResult } from '@urql/core'
 import { getCategories, getCategory } from '@/gql/Queries'
-import { ResultOf } from '@/gql'
 import { Chip, SearchBar, Skeleton } from '@/components'
 import { filterManga, matches, sortManga } from '@/helpers'
 import { Mangas } from '@/types'
@@ -45,19 +43,14 @@ const Library: Component = () => {
 
   const [selectMode, setSelectMode] = createSignal(false)
   const [showFilters, setShowFilters] = createSignal(false)
-  const [category, setCategory] = createSignal<OperationResult<ResultOf<typeof getCategory>>>()
-  const [isCategoryLoading, setIsCategoryLoading] = createSignal(true)
-  // FIXME: doesn't update after action such as markAsRead performed
-  createEffect(() => {
-    setIsCategoryLoading(true)
-    const { unsubscribe } = client
-      .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
-      .subscribe(res => {
-        setCategory(res)
-        setIsCategoryLoading(false)
-      })
-    onCleanup(() => unsubscribe())
-  })
+
+  const [category, { refetch: refetchCategory }] = createResource(
+    currentTab,
+    async () =>
+      await client
+        .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
+        .toPromise()
+  )
 
   const orderedCategories = createMemo(() =>
     categories()
@@ -66,8 +59,8 @@ const Library: Component = () => {
   )
 
   const mangas = createMemo(() =>
-    category()
-      ?.data?.category.mangas.nodes.filter(item => filterManga(item, globalMeta, searchParams.q))
+    category.latest?.data?.category.mangas.nodes
+      .filter(item => filterManga(item, globalMeta, searchParams.q))
       .toSorted((a, b) => sortManga(a, b, globalMeta))
   )
 
@@ -131,7 +124,11 @@ const Library: Component = () => {
     if (selectMode()) {
       headerCtx.setHeaderTitle(selectionTitle)
       headerCtx.setHeaderCenter(
-        <SelectionActions selected={selected} updateSelected={setSelected} />
+        <SelectionActions
+          selected={selected}
+          updateSelected={setSelected}
+          refetchCategory={refetchCategory}
+        />
       )
     } else {
       headerCtx.setHeaderTitle(null)
@@ -187,7 +184,7 @@ const Library: Component = () => {
             selected={selected}
             updateSelected={setSelected}
             mangas={mangas}
-            isLoading={isCategoryLoading()}
+            state={category.state}
           />
         </div>
       </div>

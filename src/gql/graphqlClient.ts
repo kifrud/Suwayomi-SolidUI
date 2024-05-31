@@ -49,16 +49,7 @@ export const client = new Client({
         LastUpdateTimestampPayload: () => null,
       },
       schema: introspection,
-      updates: {
-        // Mutation: {
-        //   updateLibraryMangas(result, _,  cache, info) {
-        //     const res = result as ResultOf<typeof updateLibraryMangas>
-        //     const variables = nfo.variables as VariablesOf<
-        //     typeof updateMangasCategories
-        //   >;
-        //   }
-        // }
-      },
+      updates: {},
     }),
     fetchExchange,
     subscriptionExchange({
