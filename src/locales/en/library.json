@@ -39,5 +39,8 @@
     "download": "Download unread chapters",
     "markAsRead": "Mark as read {{ count }} items",
     "markAsUnread": "Mark as unread {{ count }} items"
+  },
+  "modal": {
+    "edit_category": "Edit categories"
   }
 }

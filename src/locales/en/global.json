@@ -7,5 +7,9 @@
     "settings": "Settings"
   },
   "error": "Uncaught error.",
-  "search": "Search"
+  "search": "Search",
+  "button": {
+    "ok": "Ok",
+    "cancel": "Cancel"
+  }
 }

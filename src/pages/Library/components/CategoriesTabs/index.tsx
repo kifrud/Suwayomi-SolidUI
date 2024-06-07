@@ -1,9 +1,9 @@
 import { Accessor, Component, For, Setter, Show } from 'solid-js'
-import { Tabs } from '@kobalte/core/tabs'
 import { useSearchParams } from '@solidjs/router'
+import { Tabs } from '@kobalte/core/tabs'
 import { Chip } from '@/components'
-import './styles.scss'
 import { useGlobalMeta } from '@/contexts'
+import './styles.scss'
 
 interface CategoriesTabsProps {
   categories: Accessor<
@@ -56,7 +56,6 @@ const CategoriesTabs: Component<CategoriesTabsProps> = props => {
           )}
         </For>
         <Tabs.Indicator class="tabs__indicator" />
-        {/* TODO: indictaor stays the same after changing libraryCategoryTotalCounts */}
       </Tabs.List>
     </Tabs>
   )

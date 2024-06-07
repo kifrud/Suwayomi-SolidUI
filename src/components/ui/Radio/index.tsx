@@ -49,7 +49,7 @@ const Radio: ParentComponent<RadioProps> = props => {
     e.preventDefault()
     if (props.onChange) props.onChange
 
-    if (props.updateState) props.updateState(checked() ? false : true)
+    if (props.updateState) props.updateState(!checked())
   }
 
   const onKeyDown: JSX.EventHandler<HTMLInputElement | HTMLDivElement, KeyboardEvent> = e => {
