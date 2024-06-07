@@ -3,16 +3,15 @@ import {
   For,
   JSX,
   Show,
-  Suspense,
   createEffect,
   createMemo,
-  createResource,
   createSignal,
   onCleanup,
   onMount,
 } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { useSearchParams } from '@solidjs/router'
+import { createQuery } from '@tanstack/solid-query'
 import { useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { getCategories, getCategory } from '@/gql/Queries'
 import { Chip, SearchBar, Skeleton } from '@/components'
@@ -28,14 +27,17 @@ import {
 } from './components'
 import CloseIcon from '~icons/material-symbols/close-rounded'
 import './styles.scss'
-import { createQuery } from '@tanstack/solid-query'
 
 const Library: Component = () => {
   const { globalMeta } = useGlobalMeta()
   const headerCtx = useHeaderContext()
   const client = useGraphQLClient()
 
-  const [categories] = createResource(async () => await client.query(getCategories, {}).toPromise())
+  const categories = createQuery(() => ({
+    queryKey: ['categories'],
+    queryFn: async () =>
+      await client.query(getCategories, {}, { requestPolicy: 'cache-and-network' }).toPromise(),
+  }))
 
   const [searchParams] = useSearchParams()
   const [currentTab, setCurrentTab] = createSignal(searchParams.tab ?? '1')
@@ -46,7 +48,7 @@ const Library: Component = () => {
   const [showFilters, setShowFilters] = createSignal(false)
 
   const category = createQuery(() => ({
-    queryKey: ['category', currentTab()],
+    queryKey: ['category', currentTab(), categories.data],
     queryFn: async () =>
       await client
         .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
@@ -54,8 +56,8 @@ const Library: Component = () => {
   }))
 
   const orderedCategories = createMemo(() =>
-    categories()
-      ?.data?.categories.nodes.toSorted((a, b) => (a.order > b.order ? 1 : -1))
+    categories.data?.data?.categories.nodes
+      .toSorted((a, b) => (a.order > b.order ? 1 : -1))
       .filter(e => e.mangas.totalCount)
   )
 
@@ -68,13 +70,13 @@ const Library: Component = () => {
   const totalMangaCount = createMemo(
     () =>
       new Set(
-        categories()?.data?.categories.nodes.flatMap(node =>
+        categories.data?.data?.categories.nodes.flatMap(node =>
           node.mangas.nodes.map(manga => manga.id)
         )
       ).size
   )
 
-  const totalMangaCountElement = (
+  const totalMangaCountEl = (
     <Chip radius="xl" class="py-1 px-2">
       {totalMangaCount()}
     </Chip>
@@ -94,6 +96,15 @@ const Library: Component = () => {
       updateSelected={setSelected}
       updateShowFilter={setShowFilters}
       mangas={mangas()}
+    />
+  )
+
+  const selectionActionsEl = (
+    <SelectionActions
+      selected={selected}
+      updateSelected={setSelected}
+      refetchCategory={category.refetch}
+      refetchCategories={categories.refetch}
     />
   )
 
@@ -124,16 +135,10 @@ const Library: Component = () => {
   createEffect(() => {
     if (selectMode()) {
       headerCtx.setHeaderTitle(selectionTitle)
-      headerCtx.setHeaderCenter(
-        <SelectionActions
-          selected={selected}
-          updateSelected={setSelected}
-          refetchCategory={category.refetch}
-        />
-      )
+      headerCtx.setHeaderCenter(selectionActionsEl)
     } else {
       headerCtx.setHeaderTitle(null)
-      headerCtx.setHeaderTitleData(totalMangaCountElement)
+      headerCtx.setHeaderTitleData(totalMangaCountEl)
       headerCtx.setHeaderCenter(searchEl)
     }
   })
@@ -157,14 +162,14 @@ const Library: Component = () => {
 
     setShowFilters(false)
   }
-
+  // TODO: handle errors
   return (
     <>
       <div class="flex flex-col gap-2 w-full">
-        <Show when={!categories.loading} fallback={tabsPlaceholder}>
+        <Show when={!categories.isLoading} fallback={tabsPlaceholder}>
           {/* TODO: TRANSLATE */}
           <Show
-            when={categories.latest?.data}
+            when={categories.data}
             fallback={<span class="text-rose-800">An error occurred when fetching categories</span>}
           >
             <CategoriesTabs
@@ -192,13 +197,11 @@ const Library: Component = () => {
           />
         </div>
       </div>
-      <Suspense>
-        <Transition>
-          <Show when={showFilters()}>
-            <LibraryFilter />
-          </Show>
-        </Transition>
-      </Suspense>
+      <Transition>
+        <Show when={showFilters()}>
+          <LibraryFilter />
+        </Show>
+      </Transition>
     </>
   )
 }

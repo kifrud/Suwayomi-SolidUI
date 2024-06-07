@@ -448,9 +448,9 @@ export const updateCategory = graphql(
 
 export const updateMangasCategories = graphql(
   `
-    mutation updateMangasCategories($addTo: [Int!] = null, $clear: Boolean = null, $id: [Int!]!) {
+    mutation updateMangasCategories($addTo: [Int!] = null, $clear: Boolean = null, $ids: [Int!]!) {
       updateMangasCategories(
-        input: { ids: $id, patch: { addToCategories: $addTo, clearCategories: $clear } }
+        input: { ids: $ids, patch: { addToCategories: $addTo, clearCategories: $clear } }
       ) {
         mangas {
           id

@@ -39,7 +39,7 @@ const TitleCard: Component<TitleCardProps> = props => {
       return props.updateSelected([...props.selected, props.manga()])
     }
 
-    return props.updateSelected(prev => prev.filter(item => item !== props.manga()))
+    return props.updateSelected(prev => prev.filter(item => item.id !== props.manga().id))
   }
 
   const handleHover = (e: Event, pointerType: PointerType) => {

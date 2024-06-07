@@ -8,7 +8,6 @@ interface AscRadioProps extends JSX.HTMLAttributes<HTMLInputElement> {
   value: string
   updateValue: (v: string) => void | Setter<string>
   checked: boolean | Accessor<boolean>
-  // updateState?: (v: boolean) => void | Setter<boolean>
   name: string
   label?: string
 }
@@ -39,7 +38,6 @@ const AscRadio: Component<AscRadioProps> = props => {
       onChange={e => props.updateValue(e.currentTarget.value)}
       value={props.value}
       name={props.name}
-      // updateState={props.updateState} // FIXME: works weird
       checked={props.checked}
     />
   )

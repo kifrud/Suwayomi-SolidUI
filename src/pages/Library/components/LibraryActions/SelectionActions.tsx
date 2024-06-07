@@ -1,4 +1,4 @@
-import { Component, Show, createMemo } from 'solid-js'
+import { Component, Show, createMemo, createSignal } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
 import { Tooltip } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
@@ -11,19 +11,23 @@ import CategoryIcon from '~icons/material-symbols/label-outline'
 import DownloadIcon from '~icons/material-symbols/download-2'
 import ReadIcon from '~icons/material-symbols/done-all'
 import UnreadIcon from '~icons/material-symbols/remove-done'
+import { CategoryModal } from '../modals'
 
 interface SelectionActionsProps {
   selected: NonNullable<Mangas>
   updateSelected: SetStoreFunction<NonNullable<Mangas>>
   refetchCategory: () => void
+  refetchCategories: () => void
 }
 // TODO: download not all but some chapters (if possible)
 export const SelectionActions: Component<SelectionActionsProps> = props => {
   const client = useGraphQLClient()
   const { t } = useAppContext()
 
+  const [open, setOpen] = createSignal(false)
+
   const mangaIds = createMemo(() => props.selected.map(item => item.id))
-  // FIXME: state doesn't update when action is performed and categories refetched (cuz selected remains the old one)
+
   const state = createMemo(() => {
     return {
       downloadableMangas: getDownloadable(props.selected),
@@ -37,7 +41,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
     try {
       const ids = props.selected.map(item => item.id)
       await client.mutation(updateMangas, { ids, inLibrary: false })
-      props.refetchCategory()
+      props.refetchCategories()
     } catch (error) {
       console.error(error) // TODO: better error handling
     }
@@ -93,6 +97,12 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
 
   return (
     <>
+      <CategoryModal
+        open={open()}
+        onOpenChange={setOpen}
+        mangaIds={props.selected.map(item => item.id)}
+        onSubmit={props.refetchCategories}
+      />
       <Tooltip
         showArrow
         label={
@@ -105,7 +115,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       <Tooltip
         showArrow
         label={
-          <button class="icon-24 transition-all library-action">
+          <button class="icon-24 transition-all library-action" onClick={() => setOpen(true)}>
             <CategoryIcon />
           </button>
         }
