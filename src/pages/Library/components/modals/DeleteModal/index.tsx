@@ -1,8 +1,7 @@
-import { Component } from "solid-js";
+import { Component } from 'solid-js'
 
-const DeleteModal: Component<{}> = (props) => {
-  
-  return <div></div>;
-};
+const DeleteModal: Component<{}> = props => {
+  return <div></div>
+}
 
-export default DeleteModal;
+export default DeleteModal

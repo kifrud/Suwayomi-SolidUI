@@ -41,6 +41,14 @@ export const LibraryFilter: Component = () => {
     metaCtx.set({ Display: e.currentTarget.value as Display })
   }
 
+  const setTriState = (key: keyof GlobalMeta, v: TriState) => {
+    metaCtx.set({ [key]: v })
+  }
+
+  const setCheckBox = (key: keyof GlobalMeta, v: boolean) => {
+    metaCtx.set({ [key]: v })
+  }
+
   const displayModes = createMemo(() =>
     Object.fromEntries(
       Object.entries(Display).map(([key, value]) => [
@@ -72,14 +80,6 @@ export const LibraryFilter: Component = () => {
       ])
     )
   )
-
-  const setTriState = (key: keyof GlobalMeta, v: TriState) => {
-    metaCtx.set({ [key]: v })
-  }
-
-  const setCheckBox = (key: keyof GlobalMeta, v: boolean) => {
-    metaCtx.set({ [key]: v })
-  }
 
   const tabs = {
     filters: {
