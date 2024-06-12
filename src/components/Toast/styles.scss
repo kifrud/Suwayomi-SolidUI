@@ -1,0 +1,108 @@
+.toast {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-radius: 6px;
+  position: relative;
+  background-color: var(--stp-background_muted);
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  &__content-wrp {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__content {
+    display: flex;
+    gap: 6px;
+  }
+
+  &__close-button {
+    flex-shrink: 0;
+    height: 16px;
+    width: 16px;
+    color: hsl(240 5% 34%);
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 500;
+    color: hsl(240 6% 10%);
+  }
+
+  &__description {
+    font-size: 14px;
+    color: hsl(240 5% 26%);
+  }
+
+  &__progress-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 6px;
+    width: 100%;
+    background-color: hsl(240 6% 90%);
+    border-radius: 3px;
+    z-index: 1000;
+  }
+  // TODO: icon & progress bar must change color
+  &__progress-fill {
+    background-color: hsl(200 98% 39%);
+    border-radius: 0 0 3px 3px;
+    height: 100%;
+    width: var(--kb-toast-progress-fill-width);
+    transition: width 250ms linear;
+  }
+}
+
+.toast[data-opened] {
+  animation: slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast[data-closed] {
+  animation: hide 100ms ease-in;
+}
+
+.toast[data-swipe='move'] {
+  transform: translateX(var(--kb-toast-swipe-move-x));
+}
+
+.toast[data-swipe='cancel'] {
+  transform: translateX(0);
+  transition: transform 200ms ease-out;
+}
+
+.toast[data-swipe='end'] {
+  animation: swipeOut 100ms ease-out;
+}
+
+@keyframes hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(calc(100% + var(--viewport-padding)));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes swipeOut {
+  from {
+    transform: translateX(var(--kb-toast-swipe-end-x));
+  }
+  to {
+    transform: translateX(calc(100% + var(--viewport-padding)));
+  }
+}

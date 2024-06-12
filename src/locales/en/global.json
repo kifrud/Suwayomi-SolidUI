@@ -11,5 +11,19 @@
   "button": {
     "ok": "Ok",
     "cancel": "Cancel"
+  },
+  "notification": {
+    "title": {
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Info"
+    },
+    "message": {
+      "success": "Successfuly completed task",
+      "error": "An error occured: {{ error }}",
+      "warning": "Warning!",
+      "info": "Info notification"
+    }
   }
 }
