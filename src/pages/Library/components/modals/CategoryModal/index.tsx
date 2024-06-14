@@ -5,6 +5,7 @@ import { updateMangasCategories } from '@/gql/Mutations'
 import { CategoryTypeFragment } from '@/gql/Fragments'
 import { getCategories } from '@/gql/Queries'
 import { ResultOf } from '@/gql'
+import { useNotification } from '@/helpers'
 
 interface CategoryModalProps {
   onClose?: () => void
@@ -44,7 +45,7 @@ const CategoryModal: Component<CategoryModalProps> = props => {
         clear: true,
       })
     } catch (error) {
-      console.log(error) // TODO: better error handling
+      useNotification('error', { message: error as string })
     } finally {
       if (props.onSubmit) props.onSubmit()
     }

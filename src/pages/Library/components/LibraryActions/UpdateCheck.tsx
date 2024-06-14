@@ -1,7 +1,7 @@
 import { Component, Show, createMemo, createResource } from 'solid-js'
 import { Progress } from '@kobalte/core/progress'
 import { useGraphQLClient } from '@/contexts'
-import { useUpdaterSubscription } from '@/helpers'
+import { useNotification, useUpdaterSubscription } from '@/helpers'
 import { ResultOf } from '@/gql'
 import { latestUpdateTimestamp } from '@/gql/Queries'
 import { updateLibraryMangas } from '@/gql/Mutations'
@@ -49,7 +49,7 @@ const UpdateCheck: Component = () => {
       await client.mutation(updateLibraryMangas, {}).toPromise()
       refetch()
     } catch (error) {
-      console.error(error) // TODO: better error handling
+      useNotification('error', { message: error as string })
     }
   }
 
