@@ -1,6 +1,6 @@
 import { Component, ErrorBoundary, For, JSX, Show, createMemo, createSignal } from 'solid-js'
 import { Tabs } from '@kobalte/core/tabs'
-import { useAppContext, useGlobalMeta } from '@/contexts'
+import { Dictionary, useAppContext, useGlobalMeta } from '@/contexts'
 import { AscRadio, CheckBox, Radio, TriStateInput } from '@/components'
 import { Display, Sort, TriState } from '@/enums'
 import { GlobalMeta } from '@/contexts/meta/globalMeta'
@@ -184,12 +184,11 @@ export const LibraryFilter: Component = () => {
                     <Show when={!(typeof item === 'function')} fallback={item as Element}>
                       <div class="flex flex-col gap-1">
                         <span class="opacity-50">
-                          {/* FIXME: types issue */}
-                          {t(
-                            `library.filterTabs.${name as keyof typeof tabs}.${String(
-                              key as keyof typeof data
-                            )}.name` as any
-                          )}
+                          {
+                            t(
+                              `library.filterTabs.${name as keyof typeof tabs}.${key}.name` as keyof Dictionary
+                            ) as JSX.Element
+                          }
                         </span>
                         <For each={Object.values(item as Object)}>
                           {subItem => subItem as Element}

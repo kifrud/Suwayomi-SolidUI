@@ -1,7 +1,5 @@
 .toast {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: space-between;
   gap: 8px;
   border-radius: 6px;
@@ -10,53 +8,115 @@
   box-shadow:
     0 10px 15px -3px rgb(0 0 0 / 0.1),
     0 4px 6px -4px rgb(0 0 0 / 0.1);
-  &__content-wrp {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    width: 100%;
-  }
+  word-wrap: break-word;
 
-  &__content {
+  &__body {
     display: flex;
     gap: 6px;
   }
 
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+  }
+
+  &__icon-wrp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    svg {
+      .toast--success & {
+        color: var(--stp-success);
+      }
+
+      .toast--error & {
+        color: var(--stp-error);
+      }
+
+      .toast--warning & {
+        color: var(--stp-warning);
+      }
+
+      .toast--info & {
+        color: var(--stp-info);
+      }
+    }
+  }
+
   &__close-button {
+    margin: 8px;
     flex-shrink: 0;
     height: 16px;
     width: 16px;
     color: hsl(240 5% 34%);
+    transition: all 0.15s;
+    &:hover {
+      opacity: 0.7;
+    }
   }
 
   &__title {
     font-size: 16px;
     font-weight: 500;
-    color: hsl(240 6% 10%);
+    color: var(--stp-foreground_secondary);
+    opacity: 0.9;
   }
 
   &__description {
     font-size: 14px;
-    color: hsl(240 5% 26%);
+    color: var(--stp-foreground);
   }
 
   &__progress-track {
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 6px;
+    height: 3px;
     width: 100%;
-    background-color: hsl(240 6% 90%);
-    border-radius: 3px;
+    border-radius: 0 0 3px 3px;
+    opacity: 0.2;
     z-index: 1000;
+    .toast--success & {
+      background-color: var(--stp-success);
+    }
+
+    .toast--error & {
+      background-color: var(--stp-error);
+    }
+
+    .toast--warning & {
+      background-color: var(--stp-warning);
+    }
+
+    .toast--info & {
+      background-color: var(--stp-info);
+    }
   }
   // TODO: icon & progress bar must change color
   &__progress-fill {
-    background-color: hsl(200 98% 39%);
     border-radius: 0 0 3px 3px;
     height: 100%;
     width: var(--kb-toast-progress-fill-width);
     transition: width 250ms linear;
+    .toast--success & {
+      background-color: var(--stp-success);
+    }
+
+    .toast--error & {
+      background-color: var(--stp-error);
+    }
+
+    .toast--warning & {
+      background-color: var(--stp-warning);
+    }
+
+    .toast--info & {
+      background-color: var(--stp-info);
+    }
   }
 }
 
