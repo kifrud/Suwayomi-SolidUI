@@ -4,7 +4,13 @@ import { Tooltip } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
 import { enqueueChapterDownloads, updateChapters, updateMangas } from '@/gql/Mutations'
 import { ConditionalChaptersOfGivenManga } from '@/gql/Queries'
-import { getDownloadable, getDownloaded, getReadMangas, getUnreadMangas } from '@/helpers'
+import {
+  getDownloadable,
+  getDownloaded,
+  getReadMangas,
+  getUnreadMangas,
+  useNotification,
+} from '@/helpers'
 import { Mangas } from '@/types'
 import DeleteIcon from '~icons/material-symbols/delete-forever'
 import CategoryIcon from '~icons/material-symbols/label-outline'
@@ -43,7 +49,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       await client.mutation(updateMangas, { ids, inLibrary: false })
       props.refetchCategories()
     } catch (error) {
-      console.error(error) // TODO: better error handling
+      useNotification('error', { message: error as string })
     }
   }
 
@@ -58,7 +64,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         .toPromise()
       props.refetchCategory()
     } catch (error) {
-      console.log(error)
+      useNotification('error', { message: error as string })
     }
   }
   // TODO: delete read chapters feature
@@ -75,7 +81,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       })
       props.refetchCategory()
     } catch (error) {
-      console.log(error)
+      useNotification('error', { message: error as string })
     }
   }
 
@@ -91,7 +97,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       })
       props.refetchCategory()
     } catch (error) {
-      console.log(error)
+      useNotification('error', { message: error as string })
     }
   }
 
