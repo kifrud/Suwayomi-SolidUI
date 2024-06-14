@@ -11,10 +11,15 @@
       },
       "vars": {
         "background": "#161616",
-        "foreground": "#FFFFFF",
         "background_active": "#F6F6F6",
         "background_muted": "#1F1F1F",
-        "foreground_muted": "#717171"
+        "foreground": "#FFFFFF",
+        "foreground_secondary": "#d9dade",
+        "foreground_muted": "#717171",
+        "success": "#20692b",
+        "error": "#5e130e",
+        "warning": "#8a3b10",
+        "info": "#1c5073"
       }
     },
     "monochrome_light": {
@@ -25,7 +30,12 @@
       "vars": {
         "background": "#EFEFEF",
         "foreground": "#111111",
-        "foreground_muted": "#E1E1E1"
+        "foreground_secondary": "#d9dade",
+        "foreground_muted": "#E1E1E1",
+        "success": "#edfff2",
+        "error": "#fff2f2",
+        "warning": "#fff9e9",
+        "info": "#eff2ff"
       }
     }
   }
