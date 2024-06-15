@@ -1,7 +1,7 @@
 import { Component, For, createMemo } from 'solid-js'
+import { matches } from '@/helpers'
 import { navData } from '../navData'
 import NavbarItem from './NavbarItem'
-import { matches } from '@/helpers'
 import './styles.scss'
 
 const AppNavbar: Component = () => {
