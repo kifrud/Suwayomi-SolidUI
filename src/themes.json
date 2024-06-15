@@ -16,10 +16,10 @@
         "foreground": "#FFFFFF",
         "foreground_secondary": "#d9dade",
         "foreground_muted": "#717171",
-        "success": "#20692b",
-        "error": "#5e130e",
-        "warning": "#8a3b10",
-        "info": "#1c5073"
+        "success": "#5cc56e",
+        "error": "#e46962",
+        "warning": "#f6851b",
+        "info": "#40c4ff"
       }
     },
     "monochrome_light": {
@@ -32,10 +32,10 @@
         "foreground": "#111111",
         "foreground_secondary": "#d9dade",
         "foreground_muted": "#E1E1E1",
-        "success": "#edfff2",
-        "error": "#fff2f2",
-        "warning": "#fff9e9",
-        "info": "#eff2ff"
+        "success": "#5cc56e",
+        "error": "#e46962",
+        "warning": "#f6851b",
+        "info": "#40c4ff"
       }
     }
   }

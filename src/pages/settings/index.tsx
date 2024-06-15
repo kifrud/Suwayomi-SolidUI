@@ -11,6 +11,10 @@ const Settings: Component = () => {
     <div>
       {/* <div onclick={() => themeCtx.setTheme('monochrome_light')}>light</div> */}
       <div onclick={() => useNotification('info')}>notificate</div>
+      <div onclick={() => useNotification('error')}>notificate</div>
+      <div onclick={() => useNotification('success')}>notificate</div>
+      <div onclick={() => useNotification('warning')}>notificate</div>
+
     </div>
   )
 }

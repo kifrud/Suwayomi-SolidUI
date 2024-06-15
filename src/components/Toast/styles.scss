@@ -29,16 +29,16 @@
     width: 64px;
     height: 64px;
     svg {
-      .toast--success & {
-        color: var(--stp-success);
-      }
-
       .toast--error & {
         color: var(--stp-error);
       }
 
       .toast--warning & {
         color: var(--stp-warning);
+      }
+
+      .toast--success & {
+        color: var(--stp-success);
       }
 
       .toast--info & {
@@ -78,23 +78,22 @@
     height: 3px;
     width: 100%;
     border-radius: 0 0 3px 3px;
-    opacity: 0.2;
     z-index: 1000;
-    .toast--success & {
-      background-color: var(--stp-success);
-    }
+    // .toast--success & {
+    //   background-color: var(--stp-success);
+    // }
 
-    .toast--error & {
-      background-color: var(--stp-error);
-    }
+    // .toast--error & {
+    //   background-color: var(--stp-error);
+    // }
 
-    .toast--warning & {
-      background-color: var(--stp-warning);
-    }
+    // .toast--warning & {
+    //   background-color: var(--stp-warning);
+    // }
 
-    .toast--info & {
-      background-color: var(--stp-info);
-    }
+    // .toast--info & {
+    //   background-color: var(--stp-info);
+    // }
   }
   // TODO: icon & progress bar must change color
   &__progress-fill {

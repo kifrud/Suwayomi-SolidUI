@@ -21,7 +21,7 @@
     },
     "message": {
       "success": "Successfuly completed task",
-      "error": "An error occured: {{ error }}",
+      "error": "An error occured",
       "warning": "Warning!",
       "info": "Info notification"
     }
