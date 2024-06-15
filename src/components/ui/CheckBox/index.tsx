@@ -48,7 +48,6 @@ const CheckBox: ParentComponent<CheckBoxProps> = props => {
       'transition-all',
       'flex',
       'items-center',
-      'gap-1',
       'cursor-pointer',
       'icon-24',
       ...(props.classes?.base ? [props.classes.base] : []),
@@ -82,7 +81,7 @@ const CheckBox: ParentComponent<CheckBoxProps> = props => {
       disabled={values.isDisabled}
     >
       <CheckBoxUi.Input />
-      <CheckBoxUi.Control>
+      <CheckBoxUi.Control class='pr-1'>
         <Show when={!values.hideCheckbox}>
           <Dynamic
             component={checkboxStates[values.indeterminate ? 'indeterminate' : checkedString()]}
