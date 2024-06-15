@@ -162,7 +162,7 @@ const Library: Component = () => {
 
     setShowFilters(false)
   }
-  // TODO: handle errors
+  // TODO: wrap in <ErrorBoundary>
   return (
     <>
       <div class="flex flex-col gap-2 w-full">

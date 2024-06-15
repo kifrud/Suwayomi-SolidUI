@@ -3,6 +3,7 @@ import { SetStoreFunction } from 'solid-js/store'
 import { CheckBox, Chip, Image } from '@/components'
 import { useGlobalMeta } from '@/contexts'
 import { Mangas, TManga } from '@/types'
+/* tslint:disable:no-unused-variable */
 import { longPress } from '@/helpers'
 import './styles.scss'
 
