@@ -1,20 +1,25 @@
-import { JSX, ParentComponent, createMemo } from 'solid-js'
+import { JSX, ParentComponent, createMemo, splitProps } from 'solid-js'
 
 interface SkeletonProps extends JSX.HTMLAttributes<HTMLDivElement> {
   rounded?: 'none' | 'lg' | 'sm' | 'md' | 'xl' | '2xl' | 'full'
 }
 
 const Skeleton: ParentComponent<SkeletonProps> = props => {
+  const [values, rest] = splitProps(props, ['class', 'rounded'])
   const skeletonClasses = createMemo(() =>
     [
-      `rounded-${props.rounded ?? 'none'}`,
+      `rounded-${values.rounded ?? 'none'}`,
       'animate-pulse',
       'placeholder',
-      ...(props.class ? [props.class] : []),
+      ...(values.class ? [values.class] : []),
     ].join(' ')
   )
 
-  return <div class={skeletonClasses()}>{props.children}</div>
+  return (
+    <div class={skeletonClasses()} {...rest}>
+      {props.children}
+    </div>
+  )
 }
 
 export default Skeleton

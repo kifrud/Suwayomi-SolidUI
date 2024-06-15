@@ -15,7 +15,7 @@ interface BaseToastPayload {
 export type ToastPayload = BaseToastPayload &
   Partial<{
     title: string
-    icon: Component<JSX.HTMLAttributes<HTMLOrSVGElement>>
+    icon: Component<JSX.HTMLAttributes<SVGElement>>
   }>
 
 const defaultTitles: Record<ToastType, string> = {
