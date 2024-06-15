@@ -1,7 +1,7 @@
 import { Component, Show, createMemo, mergeProps } from 'solid-js'
-import { INavData } from '../navData'
 import { A, useLocation } from '@solidjs/router'
 import { useAppContext } from '@/contexts'
+import { INavData } from '../navData'
 
 interface NavbarItemProps {
   data: INavData

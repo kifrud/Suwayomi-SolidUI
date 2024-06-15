@@ -9,8 +9,8 @@ export enum Sort {
 
 export enum Display {
   Compact = 'compact',
-  Comfortable = 'comfortable',
-  List = 'list',
+  // Comfortable = 'comfortable', // TODO
+  // List = 'list',
 }
 
 export enum ChapterTitle {
