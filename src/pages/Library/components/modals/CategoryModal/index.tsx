@@ -14,7 +14,7 @@ interface CategoryModalProps {
   onOpenChange: (isOpen: boolean) => void
   mangaIds: number[]
 }
-// TODO: check categories that have mangaIds already
+
 const CategoryModal: Component<CategoryModalProps> = props => {
   const { t } = useAppContext()
   const client = useGraphQLClient()
@@ -65,7 +65,7 @@ const CategoryModal: Component<CategoryModalProps> = props => {
           {item => (
             <CheckBox
               label={item.name}
-              // checked={false}
+              // checked={false} // TODO: check categories that have mangaIds already
               onChange={checked => handleSelect(checked, item)}
             />
           )}

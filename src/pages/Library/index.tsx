@@ -48,7 +48,7 @@ const Library: Component = () => {
   const [showFilters, setShowFilters] = createSignal(false)
 
   const category = createQuery(() => ({
-    queryKey: ['category', currentTab(), categories.data],
+    queryKey: ['category', currentTab(), categories.data?.data],
     queryFn: async () =>
       await client
         .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })

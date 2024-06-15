@@ -41,6 +41,11 @@
     "markAsUnread": "Mark as unread {{ count }} items"
   },
   "modal": {
-    "edit_category": "Edit categories"
+    "edit_category": "Edit categories",
+    "delete": {
+      "title": "Delete...",
+      "library": "From library",
+      "chapters": "Downloaded chapters"
+    }
   }
 }
