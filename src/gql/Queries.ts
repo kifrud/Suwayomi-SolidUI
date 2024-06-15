@@ -57,6 +57,9 @@ export const getCategory = graphql(
               }
             }
             chapters {
+              nodes {
+                id
+              }
               totalCount
             }
           }

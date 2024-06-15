@@ -86,7 +86,6 @@ const TitlesList: Component<TitlesListProps> = props => {
                 selected={props.selected}
                 updateSelected={props.updateSelected}
                 manga={item}
-                // isSelected={props.selected.includes(item.id)}
               />
             )}
           </Index>

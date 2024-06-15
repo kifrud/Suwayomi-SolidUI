@@ -17,7 +17,7 @@ import CategoryIcon from '~icons/material-symbols/label-outline'
 import DownloadIcon from '~icons/material-symbols/download-2'
 import ReadIcon from '~icons/material-symbols/done-all'
 import UnreadIcon from '~icons/material-symbols/remove-done'
-import { CategoryModal } from '../modals'
+import { CategoryModal, DeleteModal } from '../modals'
 
 interface SelectionActionsProps {
   selected: NonNullable<Mangas>
@@ -25,12 +25,13 @@ interface SelectionActionsProps {
   refetchCategory: () => void
   refetchCategories: () => void
 }
-// TODO: download not all but some chapters (if possible)
+
 export const SelectionActions: Component<SelectionActionsProps> = props => {
   const client = useGraphQLClient()
   const { t } = useAppContext()
 
-  const [open, setOpen] = createSignal(false)
+  const [openCategoryModal, setOpenCategoryModal] = createSignal(false)
+  const [openDeleteModal, setOpenDeleteModal] = createSignal(false)
 
   const mangaIds = createMemo(() => props.selected.map(item => item.id))
 
@@ -42,17 +43,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       readMangas: getReadMangas(props.selected),
     }
   })
-
-  const handleDelete = async () => {
-    try {
-      const ids = props.selected.map(item => item.id)
-      await client.mutation(updateMangas, { ids, inLibrary: false })
-      props.refetchCategories()
-    } catch (error) {
-      useNotification('error', { message: error as string })
-    }
-  }
-
+  // TODO: download not all but some chapters (if possible)
   const handleDownload = async () => {
     try {
       const res = await client
@@ -104,15 +95,24 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
   return (
     <>
       <CategoryModal
-        open={open()}
-        onOpenChange={setOpen}
+        open={openCategoryModal()}
+        onOpenChange={setOpenCategoryModal}
         mangaIds={props.selected.map(item => item.id)}
         onSubmit={props.refetchCategories}
+      />
+      <DeleteModal
+        open={openDeleteModal()}
+        onOpenChange={setOpenDeleteModal}
+        selected={props.selected}
+        refetchCategories={props.refetchCategories}
       />
       <Tooltip
         showArrow
         label={
-          <button class="icon-24 transition-all library-action" onClick={handleDelete}>
+          <button
+            class="icon-24 transition-all library-action"
+            onClick={() => setOpenDeleteModal(true)}
+          >
             <DeleteIcon />
           </button>
         }
@@ -121,7 +121,10 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       <Tooltip
         showArrow
         label={
-          <button class="icon-24 transition-all library-action" onClick={() => setOpen(true)}>
+          <button
+            class="icon-24 transition-all library-action"
+            onClick={() => setOpenCategoryModal(true)}
+          >
             <CategoryIcon />
           </button>
         }

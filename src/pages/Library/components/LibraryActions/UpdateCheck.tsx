@@ -6,8 +6,8 @@ import { ResultOf } from '@/gql'
 import { latestUpdateTimestamp } from '@/gql/Queries'
 import { updateLibraryMangas } from '@/gql/Mutations'
 import { updateStatusSubscription } from '@/gql/Subscriptions'
-import UpdateIcon from '~icons/material-symbols/update'
 import { Tooltip } from '@/components'
+import UpdateIcon from '~icons/material-symbols/update'
 
 // TODO: notify if found new chapters
 const UpdateCheck: Component = () => {
