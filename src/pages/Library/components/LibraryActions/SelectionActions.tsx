@@ -2,7 +2,7 @@ import { Component, Show, createMemo, createSignal } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
 import { Tooltip } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
-import { enqueueChapterDownloads, updateChapters, updateMangas } from '@/gql/Mutations'
+import { enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
 import { ConditionalChaptersOfGivenManga } from '@/gql/Queries'
 import {
   getDownloadable,
@@ -43,7 +43,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       readMangas: getReadMangas(props.selected),
     }
   })
-  // TODO: download not all but some chapters (if possible)
+  // TODO: download not all but some chapters
   const handleDownload = async () => {
     try {
       const res = await client

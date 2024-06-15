@@ -181,7 +181,14 @@ export const LibraryFilter: Component = () => {
               <Tabs.Content value={name} class="flex flex-col gap-2 px-2">
                 <For each={Object.entries(data)}>
                   {([key, item]) => (
-                    <Show when={!(typeof item === 'function')} fallback={item as Element}>
+                    <Show
+                      when={
+                        import.meta.env.MODE === 'development'
+                          ? typeof item !== 'function'
+                          : !(item instanceof Element)
+                      } // different types of check because in production every function becomes Element
+                      fallback={item as JSX.Element}
+                    >
                       <div class="flex flex-col gap-1">
                         <span class="opacity-50">
                           {
@@ -191,7 +198,7 @@ export const LibraryFilter: Component = () => {
                           }
                         </span>
                         <For each={Object.values(item as Object)}>
-                          {subItem => subItem as Element}
+                          {subItem => subItem as JSX.Element}
                         </For>
                       </div>
                     </Show>

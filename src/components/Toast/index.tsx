@@ -1,4 +1,4 @@
-import { Component, JSX, Show, createEffect, createMemo, splitProps, untrack } from 'solid-js'
+import { Component, JSX, createMemo, splitProps } from 'solid-js'
 import { ToastRootProps, Toast as ToastUi } from '@kobalte/core/toast'
 import type { ToastPayload } from '@/helpers'
 import { Dictionary, useAppContext } from '@/contexts'
