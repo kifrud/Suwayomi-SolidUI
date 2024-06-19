@@ -1,10 +1,19 @@
-import { Component, For, Show, createMemo, createSignal, onCleanup, onMount } from 'solid-js'
+import {
+  Component,
+  For,
+  Show,
+  createMemo,
+  createResource,
+  createSignal,
+  onCleanup,
+  onMount,
+} from 'solid-js'
 import { A } from '@solidjs/router'
 import { createQuery } from '@tanstack/solid-query'
 import { createIntersectionObserver } from '@solid-primitives/intersection-observer'
 import { Image, Skeleton, UpdateCheck } from '@/components'
-import { useGraphQLClient, useHeaderContext } from '@/contexts'
-import { updates as updatesQuery } from '@/gql/Queries'
+import { useAppContext, useGraphQLClient, useHeaderContext } from '@/contexts'
+import { latestUpdateTimestamp, updates as updatesQuery } from '@/gql/Queries'
 import { ResultOf } from '@/gql'
 import './styles.scss'
 
@@ -31,6 +40,7 @@ const groupByDate = (
 const Updates: Component = () => {
   const headerCtx = useHeaderContext()
   const client = useGraphQLClient()
+  const { t } = useAppContext()
 
   const [updates, setUpdates] = createSignal<ResultOf<typeof updatesQuery>['chapters']['nodes']>([])
   const [offset, setOffset] = createSignal(0)
@@ -46,6 +56,16 @@ const Updates: Component = () => {
     },
   }))
 
+  const [latestTimestampData, { refetch }] = createResource(
+    async () =>
+      await client
+        .query(latestUpdateTimestamp, {}, { requestPolicy: 'cache-and-network' })
+        .toPromise()
+  )
+
+  const latestTimestamp = createMemo(() =>
+    new Date(+latestTimestampData.latest?.data?.lastUpdateTimestamp.timestamp!).toLocaleString()
+  )
   const groupedUpdates = createMemo(() => groupByDate(updates()))
 
   onMount(() => {
@@ -85,7 +105,10 @@ const Updates: Component = () => {
   )
 
   return (
-    <div class="w-full">
+    <div class="pt-2 w-full">
+      <span class="opacity-70">
+        <i>{t('global.latestTimestamp', { date: latestTimestamp() })}</i>
+      </span>
       <div class="flex flex-col gap-2">
         <Show when={!updatesData.isLoading} fallback={placeholder}>
           <For each={Object.entries(groupedUpdates())}>
