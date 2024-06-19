@@ -787,6 +787,13 @@
   resolved "https://registry.yarnpkg.com/@solid-primitives/i18n/-/i18n-2.1.1.tgz#19826dabafa10b94abcd06f6c2a1b2b9bf6c5b91"
   integrity sha512-1p9B8hveu+gzFRWfXcRtdzzEdr7gw3c8uLXm+2bU33JHgiI8kYJsWvG128sE6vU1ZtYGPrGq980Jd6hxYupyZQ==
 
+"@solid-primitives/intersection-observer@^2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/intersection-observer/-/intersection-observer-2.1.6.tgz#1d23d3aaf076d127df042aa643e4739c3ebaeea8"
+  integrity sha512-SeiCmN/R46Z+o9+5HhIQzSor0DqVPyo4ROLQMvCI8AsGZl/5nHlWzHTTbWPeukVUXTgb04wfC3DUo9IzF/XloA==
+  dependencies:
+    "@solid-primitives/utils" "^6.2.3"
+
 "@solid-primitives/keyboard@^1.2.5":
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/@solid-primitives/keyboard/-/keyboard-1.2.8.tgz#99a695deede1724e03ce415ebdf5969c174fa398"
