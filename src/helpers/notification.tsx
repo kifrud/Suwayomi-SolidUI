@@ -58,7 +58,7 @@ const generateContent = (type: ToastType, payload?: ToastPayload | JSX.Element) 
 }
 
 /**
- * Function to call notification toasts
+ * Function to call notification {@link Toast}
  *
  * @param type Type of the toast (default: `'info'`)
  * @param payload Toast content
