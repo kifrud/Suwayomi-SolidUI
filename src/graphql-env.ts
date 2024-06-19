@@ -266,8 +266,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -394,8 +393,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "INPUT_OBJECT",
@@ -429,8 +427,7 @@ const introspection = {
               "name": "Int"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -533,8 +530,7 @@ const introspection = {
               "name": "IntFilterInput"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -630,8 +626,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -948,8 +943,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -1143,8 +1137,7 @@ const introspection = {
               "name": "StringFilterInput"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -1240,8 +1233,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -1751,8 +1743,7 @@ const introspection = {
               "name": "Boolean"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -1808,8 +1799,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -1864,8 +1854,7 @@ const introspection = {
               "name": "Boolean"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -1944,8 +1933,7 @@ const introspection = {
               "name": "Int"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2000,8 +1988,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "INPUT_OBJECT",
@@ -2034,8 +2021,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2148,8 +2134,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2209,8 +2194,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2267,8 +2251,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2325,8 +2308,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2384,8 +2366,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2455,8 +2436,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2513,8 +2493,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2571,8 +2550,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -2695,8 +2673,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -3130,8 +3107,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -3188,8 +3164,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -3307,8 +3282,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -3467,8 +3441,7 @@ const introspection = {
               "name": "StringFilterInput"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -3741,8 +3714,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -3811,8 +3783,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -3859,8 +3830,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -3917,8 +3887,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -4009,8 +3978,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -4097,8 +4065,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -4222,8 +4189,7 @@ const introspection = {
               "name": "TriState"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "SCALAR",
@@ -4322,8 +4288,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -4457,8 +4422,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -4555,8 +4519,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -4683,8 +4646,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -4849,8 +4811,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -4923,8 +4884,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -4987,8 +4947,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -5123,8 +5082,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "SCALAR",
@@ -5265,8 +5223,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -5460,8 +5417,7 @@ const introspection = {
               "name": "StringFilterInput"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -5557,8 +5513,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -5781,8 +5736,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -6169,8 +6123,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -6259,8 +6212,7 @@ const introspection = {
               "name": "StringFilterInput"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "ENUM",
@@ -8718,8 +8670,7 @@ const introspection = {
               "name": "Float"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "UNION",
@@ -9750,8 +9701,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -9792,8 +9742,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -9844,8 +9793,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -9908,8 +9856,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -10025,8 +9972,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -10077,8 +10023,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -10129,8 +10074,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -10181,8 +10125,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -10233,8 +10176,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -10285,8 +10227,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -11391,8 +11332,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "INPUT_OBJECT",
@@ -11426,8 +11366,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -11530,8 +11469,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -11627,8 +11565,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -11775,8 +11712,7 @@ const introspection = {
               "name": "Boolean"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -11970,8 +11906,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -12012,8 +11947,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -12320,8 +12254,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -12491,8 +12424,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -12623,8 +12555,7 @@ const introspection = {
               "name": "Int"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -12790,8 +12721,7 @@ const introspection = {
               "name": "IntFilterInput"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -13321,8 +13251,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -13660,8 +13589,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -13725,8 +13653,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -13793,8 +13720,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "INPUT_OBJECT",
@@ -13823,8 +13749,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -13885,8 +13810,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -13954,8 +13878,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14016,8 +13939,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "INPUT_OBJECT",
@@ -14044,8 +13966,7 @@ const introspection = {
               "name": "Int"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14112,8 +14033,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14180,8 +14100,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "INPUT_OBJECT",
@@ -14208,8 +14127,7 @@ const introspection = {
               "name": "Boolean"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14273,8 +14191,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14321,8 +14238,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14383,8 +14299,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "INPUT_OBJECT",
@@ -14423,8 +14338,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14485,8 +14399,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "INPUT_OBJECT",
@@ -14499,8 +14412,7 @@ const introspection = {
               "name": "Boolean"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14567,8 +14479,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14641,8 +14552,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14709,8 +14619,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -14932,8 +14841,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -15021,8 +14929,7 @@ const introspection = {
               "name": "Int"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -15067,8 +14974,7 @@ const introspection = {
               }
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
@@ -15261,8 +15167,7 @@ const introspection = {
               "name": "String"
             }
           }
-        ],
-        "isOneOf": false
+        ]
       },
       {
         "kind": "OBJECT",
