@@ -241,6 +241,7 @@ export const updates = graphql(
           isBookmarked
           isDownloaded
           isRead
+          sourceOrder
           manga {
             id
             title
