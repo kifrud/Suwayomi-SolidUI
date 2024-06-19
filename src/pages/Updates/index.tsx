@@ -1,11 +1,11 @@
 import { Component, For, Show, createSignal, onCleanup, onMount } from 'solid-js'
+import { A } from '@solidjs/router'
 import { createQuery } from '@tanstack/solid-query'
 import { createIntersectionObserver } from '@solid-primitives/intersection-observer'
 import { Image, Skeleton, UpdateCheck } from '@/components'
 import { useGraphQLClient, useHeaderContext } from '@/contexts'
 import { updates as updatesQuery } from '@/gql/Queries'
 import { ResultOf } from '@/gql'
-import { A } from '@solidjs/router'
 
 const Updates: Component = () => {
   const headerCtx = useHeaderContext()
