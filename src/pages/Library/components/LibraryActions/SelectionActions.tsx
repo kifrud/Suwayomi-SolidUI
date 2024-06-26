@@ -12,12 +12,12 @@ import {
   useNotification,
 } from '@/helpers'
 import { Mangas } from '@/types'
+import { CategoryModal, DeleteModal } from '../modals'
 import DeleteIcon from '~icons/material-symbols/delete-forever'
 import CategoryIcon from '~icons/material-symbols/label-outline'
 import DownloadIcon from '~icons/material-symbols/download-2'
 import ReadIcon from '~icons/material-symbols/done-all'
 import UnreadIcon from '~icons/material-symbols/remove-done'
-import { CategoryModal, DeleteModal } from '../modals'
 
 interface SelectionActionsProps {
   selected: NonNullable<Mangas>
@@ -110,7 +110,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         showArrow
         label={
           <button
-            class="icon-24 transition-all library-action"
+            class="icon-24 transition-all action"
             onClick={() => setOpenDeleteModal(true)}
           >
             <DeleteIcon />
@@ -122,7 +122,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         showArrow
         label={
           <button
-            class="icon-24 transition-all library-action"
+            class="icon-24 transition-all action"
             onClick={() => setOpenCategoryModal(true)}
           >
             <CategoryIcon />
@@ -134,7 +134,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         <Tooltip
           showArrow
           label={
-            <button class="icon-24 transition-all library-action" onClick={handleDownload}>
+            <button class="icon-24 transition-all action" onClick={handleDownload}>
               <DownloadIcon />
             </button>
           }
@@ -145,7 +145,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         <Tooltip
           showArrow
           label={
-            <button class="icon-24 transition-all library-action" onClick={handleMarkAsRead}>
+            <button class="icon-24 transition-all action" onClick={handleMarkAsRead}>
               <ReadIcon />
             </button>
           }
@@ -157,7 +157,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
           showArrow
           onClick={handleMarkAsUnread}
           label={
-            <button class="icon-24 transition-all library-action">
+            <button class="icon-24 transition-all action">
               <UnreadIcon />
             </button>
           }

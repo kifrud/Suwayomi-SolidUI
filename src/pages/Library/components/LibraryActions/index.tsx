@@ -41,12 +41,12 @@ export const LibraryActions: Component<LibraryActionsProps> = props => {
   return (
     <>
       <Show when={props.selectMode()}>
-        <button class="icon-24 transition-all library-action" onClick={handleSelectAll}>
+        <button class="icon-24 transition-all action" onClick={handleSelectAll}>
           <Show when={props.selected.length === props.mangas?.length} fallback={<SelectAllIcon />}>
             <DeselectAllIcon />
           </Show>
         </button>
-        <button class="icon-24 transition-all library-action" onClick={handleSelectionState}>
+        <button class="icon-24 transition-all action" onClick={handleSelectionState}>
           <Select />
         </button>
       </Show>
@@ -57,7 +57,7 @@ export const LibraryActions: Component<LibraryActionsProps> = props => {
         <UpdateCheck />
       </Show>
       <button
-        class="icon-24 transition-all library-action"
+        class="icon-24 transition-all action"
         onClick={() => props.updateShowFilter(prev => !prev)}
       >
         <FiltersIcon />

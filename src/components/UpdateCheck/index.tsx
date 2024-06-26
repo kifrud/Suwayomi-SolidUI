@@ -59,7 +59,7 @@ const UpdateCheck: Component = () => {
         openDelay={150}
         closeDelay={100}
         classes={{
-          trigger: 'transition-all icon-24 library-action cursor-pointer',
+          trigger: 'transition-all icon-24 action cursor-pointer',
         }}
         onClick={handleClick}
         disabled={loading()}
