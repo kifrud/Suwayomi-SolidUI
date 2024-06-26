@@ -352,3 +352,25 @@ export const UpdateStatusFragment = graphql(
   `,
   [CategoryUpdaterTypeFragment, MangaUpdaterTypeFragment, MangaTypeFragment]
 )
+
+export const DownloadStatusFragment = graphql(`
+  fragment DownloadStatusFragment on DownloadStatus {
+    queue {
+      chapter {
+        id
+        name
+        sourceOrder
+        isDownloaded
+        manga {
+          id
+          title
+          downloadCount
+        }
+      }
+      progress
+      state
+      tries
+    }
+    state
+  }
+`)

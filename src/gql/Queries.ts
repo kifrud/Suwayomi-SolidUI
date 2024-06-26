@@ -1,6 +1,7 @@
 import {
   CategoryTypeFragment,
   ChapterTypeFragment,
+  DownloadStatusFragment,
   ExtensionTypeFragment,
   FilterFragment,
   MangaTypeFragment,
@@ -280,6 +281,17 @@ export const chapters = graphql(
     }
   `,
   []
+)
+
+export const getDownloadStatus = graphql(
+  `
+    query getDownloadStatus {
+      downloadStatus {
+        ...DownloadStatusFragment
+      }
+    }
+  `,
+  [DownloadStatusFragment]
 )
 
 export const getSource = graphql(

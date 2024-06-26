@@ -41,7 +41,7 @@ const Library: Component = () => {
 
   const [searchParams] = useSearchParams()
   const [currentTab, setCurrentTab] = createSignal(searchParams.tab ?? '1')
-  // TODO: context?
+
   const [selected, setSelected] = createStore<NonNullable<Mangas>>([])
 
   const [selectMode, setSelectMode] = createSignal(false)
@@ -111,7 +111,7 @@ const Library: Component = () => {
   const selectionTitle = (
     <>
       <button
-        class="icon-24 transition-all library-action"
+        class="icon-24 transition-all action"
         on:click={() => {
           setSelectMode(false)
           setSelected([])
