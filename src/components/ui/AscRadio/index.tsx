@@ -1,4 +1,4 @@
-import { Accessor, Component, JSX, Setter, createMemo } from 'solid-js'
+import { Accessor, Component, type JSX, Setter, createMemo } from 'solid-js'
 import './styles.scss'
 import Radio from '../Radio'
 

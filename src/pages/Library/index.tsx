@@ -1,7 +1,7 @@
 import {
   Component,
   For,
-  JSX,
+  type JSX,
   Show,
   createEffect,
   createMemo,

@@ -8,7 +8,7 @@ import {
   onCleanup,
   onMount,
 } from 'solid-js'
-import { createQuery } from '@tanstack/solid-query'
+import { createInfiniteQuery, createQuery } from '@tanstack/solid-query'
 import { createIntersectionObserver } from '@solid-primitives/intersection-observer'
 import { Skeleton, UpdateCheck } from '@/components'
 import { useAppContext, useGraphQLClient, useHeaderContext } from '@/contexts'
@@ -42,21 +42,36 @@ const Updates: Component = () => {
   const client = useGraphQLClient()
   const { t } = useAppContext()
 
-  const [updates, setUpdates] = createSignal<UpdateNode[]>([])
-  const [offset, setOffset] = createSignal(0)
+  // const [updates, setUpdates] = createSignal<UpdateNode[]>([])
 
-  const updatesData = createQuery(() => ({
-    queryKey: ['updates', offset()],
-    queryFn: async () => {
-      const res = await client.query(updatesQuery, { offset: offset() }).toPromise()
-      if (res && res.data && res.data.chapters.pageInfo.hasNextPage) {
-        setUpdates(prev => [...prev, ...res.data!.chapters.nodes])
-      }
+  const updatesData = createInfiniteQuery(() => ({
+    queryKey: ['updates'],
+    queryFn: async ({ pageParam }) => {
+      const res = await client.query(updatesQuery, { offset: pageParam }).toPromise()
       return res
     },
+    getNextPageParam: lastPage => {
+      if (lastPage.data?.chapters.pageInfo.hasNextPage) {
+        return lastPage.data.chapters.nodes.length
+      }
+    },
+    initialPageParam: 0,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   }))
+
+  // const updatesData = createQuery(() => ({
+  //   queryKey: ['updates', offset()],
+  //   queryFn: async () => {
+  //     const res = await client.query(updatesQuery, { offset: offset() }).toPromise()
+  //     if (res && res.data && res.data.chapters.pageInfo.hasNextPage) {
+  //       setUpdates(prev => [...prev, ...res.data!.chapters.nodes])
+  //     }
+  //     return res
+  //   },
+  //   refetchOnWindowFocus: false,
+  //   refetchOnMount: false,
+  // }))
 
   const [latestTimestampData] = createResource(
     async () =>
@@ -68,7 +83,13 @@ const Updates: Component = () => {
   const latestTimestamp = createMemo(() =>
     new Date(+latestTimestampData.latest?.data?.lastUpdateTimestamp.timestamp!).toLocaleString()
   )
-  const groupedUpdates = createMemo(() => groupByDate(updates()))
+  const groupedUpdates = createMemo(
+    () =>
+      updatesData.data &&
+      groupByDate(
+        updatesData.data.pages.map(item => item.data!.chapters.nodes).flatMap(item => item)
+      )
+  )
 
   onMount(() => {
     headerCtx.setHeaderEnd(<UpdateCheck />)
@@ -83,8 +104,8 @@ const Updates: Component = () => {
   createIntersectionObserver(
     () => [endDiv],
     entries => {
-      if (entries[0].isIntersecting && updatesData.data?.data?.chapters.pageInfo.hasNextPage) {
-        setOffset(updates().length)
+      if (entries[0].isIntersecting && updatesData.hasNextPage) {
+        updatesData.fetchNextPage()
       }
     }
   )
@@ -112,8 +133,10 @@ const Updates: Component = () => {
         <i>{t('global.latestTimestamp', { date: latestTimestamp() })}</i>
       </span>
       <div class="flex flex-col gap-2">
-        <UpdatesList updates={groupedUpdates()} />
-        <Show when={updatesData.isLoading}>{placeholder}</Show>
+        <Show when={groupedUpdates()}>
+          <UpdatesList updates={groupedUpdates()!} refetchUpdates={updatesData.refetch} />
+        </Show>
+        <Show when={updatesData.isLoading || updatesData.isFetchingNextPage}>{placeholder}</Show>
       </div>
       <div ref={el => (endDiv = el)} class="flex justify-center items-center w-full">
         <Show when={!updatesData.isLoading}>
