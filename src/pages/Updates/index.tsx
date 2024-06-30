@@ -4,11 +4,10 @@ import {
   Show,
   createMemo,
   createResource,
-  createSignal,
   onCleanup,
   onMount,
 } from 'solid-js'
-import { createInfiniteQuery, createQuery } from '@tanstack/solid-query'
+import { createInfiniteQuery } from '@tanstack/solid-query'
 import { createIntersectionObserver } from '@solid-primitives/intersection-observer'
 import { Skeleton, UpdateCheck } from '@/components'
 import { useAppContext, useGraphQLClient, useHeaderContext } from '@/contexts'
@@ -42,8 +41,6 @@ const Updates: Component = () => {
   const client = useGraphQLClient()
   const { t } = useAppContext()
 
-  // const [updates, setUpdates] = createSignal<UpdateNode[]>([])
-
   const updatesData = createInfiniteQuery(() => ({
     queryKey: ['updates'],
     queryFn: async ({ pageParam }) => {
@@ -59,19 +56,6 @@ const Updates: Component = () => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   }))
-
-  // const updatesData = createQuery(() => ({
-  //   queryKey: ['updates', offset()],
-  //   queryFn: async () => {
-  //     const res = await client.query(updatesQuery, { offset: offset() }).toPromise()
-  //     if (res && res.data && res.data.chapters.pageInfo.hasNextPage) {
-  //       setUpdates(prev => [...prev, ...res.data!.chapters.nodes])
-  //     }
-  //     return res
-  //   },
-  //   refetchOnWindowFocus: false,
-  //   refetchOnMount: false,
-  // }))
 
   const [latestTimestampData] = createResource(
     async () =>
