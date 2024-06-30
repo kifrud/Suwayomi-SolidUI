@@ -1,9 +1,0 @@
-.updates {
-  &__group-date {
-    position: sticky;
-    top: calc(var(--header-height) + 1px);
-    padding: 8px 0;
-    background: var(--stp-background);
-    z-index: 50;
-  }
-}

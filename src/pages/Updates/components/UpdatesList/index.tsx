@@ -1,10 +1,10 @@
 import { Component, For } from 'solid-js'
-import { SetStoreFunction } from 'solid-js/store'
 import { createQuery } from '@tanstack/solid-query'
 import { useGraphQLClient } from '@/contexts'
 import { getDownloadStatus } from '@/gql/Queries'
 import { UpdateNode } from '../..'
 import UpdateItem from './UpdateItem'
+import './styles.scss'
 
 interface UpdatesListProps {
   updates: Record<string, UpdateNode[]>
