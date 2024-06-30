@@ -54,9 +54,11 @@ const Updates: Component = () => {
       }
       return res
     },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   }))
 
-  const [latestTimestampData, { refetch }] = createResource(
+  const [latestTimestampData] = createResource(
     async () =>
       await client
         .query(latestUpdateTimestamp, {}, { requestPolicy: 'cache-and-network' })
@@ -110,9 +112,8 @@ const Updates: Component = () => {
         <i>{t('global.latestTimestamp', { date: latestTimestamp() })}</i>
       </span>
       <div class="flex flex-col gap-2">
-        <Show when={!updatesData.isLoading} fallback={placeholder}>
-          <UpdatesList updates={groupedUpdates()} />
-        </Show>
+        <UpdatesList updates={groupedUpdates()} />
+        <Show when={updatesData.isLoading}>{placeholder}</Show>
       </div>
       <div ref={el => (endDiv = el)} class="flex justify-center items-center w-full">
         <Show when={!updatesData.isLoading}>
