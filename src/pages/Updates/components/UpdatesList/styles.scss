@@ -1,0 +1,24 @@
+.updates {
+  &__group-date {
+    position: sticky;
+    top: calc(var(--header-height) + 1px);
+    padding: 8px 0;
+    background: var(--stp-background);
+    z-index: 50;
+  }
+  &__item {
+    &:hover {
+      opacity: 0.8;
+    }
+    &--read {
+      span {
+        opacity: 0.6;
+      }
+      &:hover {
+        span {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { A } from '@solidjs/router'
-import { Component, Show, createMemo } from 'solid-js'
+import { Component, Show, createMemo, type JSX } from 'solid-js'
 import { Image } from '@/components'
 import { useGraphQLClient } from '@/contexts'
 import { useNotification } from '@/helpers'
@@ -13,6 +13,7 @@ import UnreadIcon from '~icons/material-symbols/remove-done'
 interface UpdateItemProps {
   item: UpdateNode
   isDownloaded: boolean
+  refetchUpdates: () => void
 }
 
 const UpdateItem: Component<UpdateItemProps> = props => {
@@ -22,7 +23,9 @@ const UpdateItem: Component<UpdateItemProps> = props => {
     [`updates__item${props.item.isRead ? '--read' : ''}`].join(' ')
   )
 
-  const handleMarkAsRead = async () => {
+  const handleMarkAsRead: JSX.EventHandler<HTMLButtonElement, MouseEvent> = async e => {
+    e.stopPropagation()
+    e.preventDefault()
     try {
       await client.mutation(updateChapters, {
         ids: [props.item.id],
@@ -32,9 +35,12 @@ const UpdateItem: Component<UpdateItemProps> = props => {
     } catch (error) {
       useNotification('error', { message: error as string })
     }
+    props.refetchUpdates()
   }
 
-  const handleMarkAsUnread = async () => {
+  const handleMarkAsUnread: JSX.EventHandler<HTMLButtonElement, MouseEvent> = async e => {
+    e.stopPropagation()
+    e.preventDefault()
     try {
       await client.mutation(updateChapters, {
         ids: [props.item.id],
@@ -43,22 +49,29 @@ const UpdateItem: Component<UpdateItemProps> = props => {
     } catch (error) {
       useNotification('error', { message: error as string })
     }
+    props.refetchUpdates()
   }
 
-  const handleDownload = async () => {
+  const handleDownload: JSX.EventHandler<HTMLButtonElement, MouseEvent> = async e => {
+    e.stopPropagation()
+    e.preventDefault()
     try {
       await client.mutation(enqueueChapterDownloads, { ids: [props.item.id] }).toPromise()
     } catch (error) {
       useNotification('error', { message: error as string })
     }
+    props.refetchUpdates()
   }
 
-  const handleDelete = async () => {
+  const handleDelete: JSX.EventHandler<HTMLButtonElement, MouseEvent> = async e => {
+    e.stopPropagation()
+    e.preventDefault()
     try {
       await client.mutation(deleteDownloadedChapter, { id: props.item.id }).toPromise()
     } catch (error) {
       useNotification('error', { message: error as string })
     }
+    props.refetchUpdates()
   }
 
   return (

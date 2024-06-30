@@ -8,6 +8,7 @@ import './styles.scss'
 
 interface UpdatesListProps {
   updates: Record<string, UpdateNode[]>
+  refetchUpdates: () => void
 }
 
 const UpdatesList: Component<UpdatesListProps> = props => {
@@ -34,6 +35,7 @@ const UpdatesList: Component<UpdatesListProps> = props => {
                       item.manga.id === q.chapter.manga.id
                   )
                 }
+                refetchUpdates={props.refetchUpdates}
               />
             )}
           </For>
