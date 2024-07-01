@@ -20,7 +20,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
   const client = useGraphQLClient()
 
   const itemClasses = createMemo(() =>
-    [`updates__item${props.item.isRead ? '--read' : ''}`].join(' ')
+    ['flex', 'gap-1', 'w-full', `updates__item${props.item.isRead ? '--read' : ''}`].join(' ')
   )
 
   const handleMarkAsRead: JSX.EventHandler<HTMLButtonElement, MouseEvent> = async e => {
@@ -79,7 +79,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
       href={`/manga/${props.item.manga.id}/chapter/${props.item.sourceOrder}`}
       class="flex justify-between w-full"
     >
-      <div class={`flex gap-1 w-full transition-all ${itemClasses()}`}>
+      <div class={itemClasses()}>
         <div class="h-10 w-10">
           <Image
             class="rounded object-cover min-h-10 min-w-10"
@@ -89,8 +89,8 @@ const UpdateItem: Component<UpdateItemProps> = props => {
           />
         </div>
         <div class="flex flex-col justify-between text-ellipsis overflow-hidden">
-          <span>{props.item.manga.title}</span>
-          <span>{props.item.name}</span>
+          <span class="transition-all">{props.item.manga.title}</span>
+          <span class="transition-all">{props.item.name}</span>
         </div>
       </div>
       <div class="flex gap-1 items-center">
