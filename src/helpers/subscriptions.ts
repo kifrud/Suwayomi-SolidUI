@@ -12,3 +12,6 @@ export const useUpdaterSubscription = () => {
 
   return updaterStatus
 }
+// TODO
+// export const useDownloadSubscription = () => {
+// }
