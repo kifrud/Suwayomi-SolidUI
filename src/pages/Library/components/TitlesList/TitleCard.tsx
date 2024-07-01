@@ -1,4 +1,4 @@
-import { Accessor, Component, JSX, Setter, Show, createMemo, createSignal } from 'solid-js'
+import { Accessor, Component, type JSX, Setter, Show, createMemo, createSignal } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
 import { CheckBox, Chip, Image } from '@/components'
 import { useGlobalMeta } from '@/contexts'

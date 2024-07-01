@@ -1,4 +1,4 @@
-import { Accessor, JSX, JSXElement, Show, createMemo, mergeProps } from 'solid-js'
+import { Accessor, type JSX, JSXElement, Show, createMemo, mergeProps } from 'solid-js'
 import ArrowRight from '~icons/material-symbols/arrow-right-alt-rounded'
 import ClearIcon from '~icons/material-symbols/cancel'
 import './styles.scss'

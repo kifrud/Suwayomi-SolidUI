@@ -1,9 +1,9 @@
 import { TriState } from '@/enums'
-import { Accessor, JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
+import { Accessor, type JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
+import { Dynamic } from 'solid-js/web'
 import IncludeIcon from '~icons/material-symbols/check-box-rounded'
 import IgnoreIcon from '~icons/material-symbols/check-box-outline-blank'
 import ExcludeIcon from '~icons/material-symbols/disabled-by-default-rounded'
-import { Dynamic } from 'solid-js/web'
 
 interface Classes {
   /** Classes for label text wrapper */

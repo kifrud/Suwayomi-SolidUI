@@ -1,6 +1,7 @@
 import {
   CategoryTypeFragment,
   ChapterTypeFragment,
+  DownloadStatusFragment,
   ExtensionTypeFragment,
   FilterFragment,
   MangaTypeFragment,
@@ -241,6 +242,7 @@ export const updates = graphql(
           isBookmarked
           isDownloaded
           isRead
+          sourceOrder
           manga {
             id
             title
@@ -279,6 +281,17 @@ export const chapters = graphql(
     }
   `,
   []
+)
+
+export const getDownloadStatus = graphql(
+  `
+    query getDownloadStatus {
+      downloadStatus {
+        ...DownloadStatusFragment
+      }
+    }
+  `,
+  [DownloadStatusFragment]
 )
 
 export const getSource = graphql(

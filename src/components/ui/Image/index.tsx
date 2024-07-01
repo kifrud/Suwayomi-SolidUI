@@ -39,7 +39,7 @@ const Image: Component<ImageProps> = props => {
       <img
         {...props}
         ref={img}
-        class={`${imgClasses()} ${rounded()}`}
+        class={`${rounded()} ${imgClasses()}`}
         onError={error}
         onLoad={load}
         src={props.src}

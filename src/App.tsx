@@ -21,7 +21,7 @@ const App: ParentComponent = props => {
         <ReaderLayout>{props.children}</ReaderLayout>
       </Show>
       <Portal>
-        <Toast.Region pauseOnPageIdle pauseOnInteraction>
+        <Toast.Region pauseOnPageIdle pauseOnInteraction limit={7}>
           <Toast.List class='toast__list' />
         </Toast.Region>
       </Portal>

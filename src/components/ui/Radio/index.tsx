@@ -1,4 +1,4 @@
-import { Accessor, JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
+import { Accessor, type JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
 
 interface Classes {
   base: string

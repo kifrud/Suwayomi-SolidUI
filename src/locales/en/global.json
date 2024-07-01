@@ -25,5 +25,6 @@
       "warning": "Warning!",
       "info": "Info notification"
     }
-  }
+  },
+  "latestTimestamp": "Last update: {{ date }}"
 }
