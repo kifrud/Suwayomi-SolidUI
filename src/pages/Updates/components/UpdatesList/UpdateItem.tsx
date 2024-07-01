@@ -1,9 +1,12 @@
 import { A } from '@solidjs/router'
-import { Component, Show, createMemo, type JSX } from 'solid-js'
+import { Component, Show, createMemo } from 'solid-js'
 import { Image } from '@/components'
 import { useGraphQLClient } from '@/contexts'
 import { useNotification } from '@/helpers'
 import { deleteDownloadedChapter, enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
+import { getDownloadStatus } from '@/gql/Queries'
+import { ResultOf } from '@/gql'
+import { Actions } from '@/types'
 import { UpdateNode } from '../..'
 import DeleteIcon from '~icons/material-symbols/delete-forever'
 import DownloadIcon from '~icons/material-symbols/download-2'
@@ -12,7 +15,7 @@ import UnreadIcon from '~icons/material-symbols/remove-done'
 
 interface UpdateItemProps {
   item: UpdateNode
-  isDownloaded: boolean
+  download: ResultOf<typeof getDownloadStatus>['downloadStatus']['queue'][number] | undefined
   refetchUpdates: () => void
 }
 
@@ -23,51 +26,40 @@ const UpdateItem: Component<UpdateItemProps> = props => {
     ['flex', 'gap-1', 'w-full', `updates__item${props.item.isRead ? '--read' : ''}`].join(' ')
   )
 
-  const handleMarkAsRead: JSX.EventHandler<HTMLButtonElement, MouseEvent> = async e => {
+  const handleClick = async (
+    e: MouseEvent & {
+      currentTarget: HTMLButtonElement
+      target: Element
+    },
+    action: Actions
+  ) => {
     e.stopPropagation()
     e.preventDefault()
     try {
-      await client.mutation(updateChapters, {
-        ids: [props.item.id],
-        isRead: true,
-        lastPageRead: 0,
-      })
-    } catch (error) {
-      useNotification('error', { message: error as string })
-    }
-    props.refetchUpdates()
-  }
+      switch (action) {
+        case 'download':
+          await client.mutation(enqueueChapterDownloads, { ids: [props.item.id] }).toPromise()
+          break
 
-  const handleMarkAsUnread: JSX.EventHandler<HTMLButtonElement, MouseEvent> = async e => {
-    e.stopPropagation()
-    e.preventDefault()
-    try {
-      await client.mutation(updateChapters, {
-        ids: [props.item.id],
-        isRead: false,
-      })
-    } catch (error) {
-      useNotification('error', { message: error as string })
-    }
-    props.refetchUpdates()
-  }
+        case 'delete':
+          await client.mutation(deleteDownloadedChapter, { id: props.item.id }).toPromise()
+          break
 
-  const handleDownload: JSX.EventHandler<HTMLButtonElement, MouseEvent> = async e => {
-    e.stopPropagation()
-    e.preventDefault()
-    try {
-      await client.mutation(enqueueChapterDownloads, { ids: [props.item.id] }).toPromise()
-    } catch (error) {
-      useNotification('error', { message: error as string })
-    }
-    props.refetchUpdates()
-  }
+        case 'markAsRead':
+          await client.mutation(updateChapters, {
+            ids: [props.item.id],
+            isRead: true,
+            lastPageRead: 0,
+          })
+          break
 
-  const handleDelete: JSX.EventHandler<HTMLButtonElement, MouseEvent> = async e => {
-    e.stopPropagation()
-    e.preventDefault()
-    try {
-      await client.mutation(deleteDownloadedChapter, { id: props.item.id }).toPromise()
+        case 'markAsUnread':
+          await client.mutation(updateChapters, {
+            ids: [props.item.id],
+            isRead: false,
+          })
+          break
+      }
     } catch (error) {
       useNotification('error', { message: error as string })
     }
@@ -99,7 +91,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
           fallback={
             <button
               class="action transition-all icon-24 flex justify-center items-center h-8"
-              on:click={handleMarkAsUnread}
+              on:click={e => handleClick(e, 'markAsUnread')}
             >
               <UnreadIcon />
             </button>
@@ -107,17 +99,17 @@ const UpdateItem: Component<UpdateItemProps> = props => {
         >
           <button
             class="action transition-all icon-24 flex justify-center items-center h-8"
-            on:click={handleMarkAsRead}
+            on:click={e => handleClick(e, 'markAsRead')}
           >
             <ReadIcon />
           </button>
         </Show>
         <Show
-          when={props.isDownloaded === null && !props.item.isDownloaded}
+          when={!props.item.isDownloaded}
           fallback={
             <button
               class="action transition-all icon-24 flex justify-center items-center h-8"
-              on:click={handleDelete}
+              on:click={e => handleClick(e, 'delete')}
             >
               <DeleteIcon />
             </button>
@@ -125,7 +117,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
         >
           <button
             class="action transition-all icon-24 flex justify-center items-center h-8"
-            on:click={handleDownload}
+            on:click={e => handleClick(e, 'download')}
           >
             <DownloadIcon />
           </button>

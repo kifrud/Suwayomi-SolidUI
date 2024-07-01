@@ -15,7 +15,7 @@ const UpdatesList: Component<UpdatesListProps> = props => {
   const client = useGraphQLClient()
 
   const downloadStatus = createQuery(() => ({
-    queryKey: ['donwloadStatus'],
+    queryKey: ['downloadStatus'],
     queryFn: async () => client.query(getDownloadStatus, {}).toPromise(),
   }))
 
@@ -28,13 +28,11 @@ const UpdatesList: Component<UpdatesListProps> = props => {
             {item => (
               <UpdateItem
                 item={item}
-                isDownloaded={
-                  !!downloadStatus.data?.data?.downloadStatus.queue.find(
-                    q =>
-                      item.sourceOrder === q.chapter.sourceOrder &&
-                      item.manga.id === q.chapter.manga.id
-                  )
-                }
+                download={downloadStatus.data?.data?.downloadStatus.queue.find(
+                  q =>
+                    item.sourceOrder === q.chapter.sourceOrder &&
+                    item.manga.id === q.chapter.manga.id
+                )}
                 refetchUpdates={props.refetchUpdates}
               />
             )}
