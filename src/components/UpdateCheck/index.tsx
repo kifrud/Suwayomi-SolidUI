@@ -8,6 +8,7 @@ import { updateLibraryMangas } from '@/gql/Mutations'
 import { updateStatusSubscription } from '@/gql/Subscriptions'
 import { Tooltip } from '@/components'
 import UpdateIcon from '~icons/material-symbols/update'
+import './styles.scss'
 
 // TODO: notify if found new chapters
 const UpdateCheck: Component = () => {

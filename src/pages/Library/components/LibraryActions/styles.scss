@@ -11,22 +11,3 @@
   min-width: 300px;
   max-width: 300px;
 }
-
-.update-check {
-  &__progress {
-    width: 100vw;
-    position: absolute;
-    top: calc(var(--header-height) - 3px);
-    left: 0;
-    z-index: 100;
-    &-track {
-      height: 2px;
-    }
-    &-fill {
-      background: var(--stp-foreground);
-      height: 100%;
-      width: var(--kb-progress-fill-width);
-      transition: width 250ms linear;
-    }
-  }
-}
