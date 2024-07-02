@@ -94,7 +94,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
           <span class="transition-all">{props.item.name}</span>
         </div>
       </div>
-      <div class="flex gap-1 items-center">
+      <div class="relative z-10 flex gap-1 items-center">
         <Show
           when={!props.item.isRead}
           fallback={
@@ -132,7 +132,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
           </button>
         </Show>
       </div>
-      <Progress value={progressValue()} class="absolute bottom-[-4px] z-0 w-full h-[4px]">
+      <Progress value={progressValue()} class="absolute bottom-0 z-0 w-full h-full">
         <Progress.Track class="h-full">
           <Progress.Fill class="updates__item-download-progress h-full" />
         </Progress.Track>
