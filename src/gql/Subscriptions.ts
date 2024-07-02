@@ -31,6 +31,10 @@ export const downloadsOnChapters = graphql(`
         state
         chapter {
           id
+          sourceOrder
+          manga {
+            id
+          }
         }
         manga {
           id

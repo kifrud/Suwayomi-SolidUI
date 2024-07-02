@@ -3,13 +3,14 @@ import { Toast } from '@kobalte/core/toast'
 import { MainLayout, ReaderLayout } from './layouts'
 import { useLocation } from '@solidjs/router'
 import { Title } from '@solidjs/meta'
-import { useUpdaterSubscription } from './helpers'
 import { Portal } from 'solid-js/web'
+import { useDownloadSubscription, useUpdaterSubscription } from './helpers'
 
 const App: ParentComponent = props => {
   const location = useLocation()
 
   useUpdaterSubscription()
+  useDownloadSubscription()
 
   return (
     <>
@@ -22,7 +23,7 @@ const App: ParentComponent = props => {
       </Show>
       <Portal>
         <Toast.Region pauseOnPageIdle pauseOnInteraction limit={7}>
-          <Toast.List class='toast__list' />
+          <Toast.List class="toast__list" />
         </Toast.Region>
       </Portal>
     </>

@@ -1,7 +1,5 @@
 import { Component, For } from 'solid-js'
-import { createQuery } from '@tanstack/solid-query'
-import { useGraphQLClient } from '@/contexts'
-import { getDownloadStatus } from '@/gql/Queries'
+import { useDownloadSubscription } from '@/helpers'
 import { UpdateNode } from '../..'
 import UpdateItem from './UpdateItem'
 import './styles.scss'
@@ -12,12 +10,7 @@ interface UpdatesListProps {
 }
 
 const UpdatesList: Component<UpdatesListProps> = props => {
-  const client = useGraphQLClient()
-
-  const downloadStatus = createQuery(() => ({
-    queryKey: ['downloadStatus'],
-    queryFn: async () => client.query(getDownloadStatus, {}).toPromise(),
-  }))
+  const downloadStatus = useDownloadSubscription()
 
   return (
     <For each={Object.entries(props.updates)}>
@@ -28,7 +21,7 @@ const UpdatesList: Component<UpdatesListProps> = props => {
             {item => (
               <UpdateItem
                 item={item}
-                download={downloadStatus.data?.data?.downloadStatus.queue.find(
+                download={downloadStatus()?.downloadChanged.queue.find(
                   q =>
                     item.sourceOrder === q.chapter.sourceOrder &&
                     item.manga.id === q.chapter.manga.id
