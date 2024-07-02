@@ -1,5 +1,6 @@
-import { A } from '@solidjs/router'
 import { Component, Show, createMemo } from 'solid-js'
+import { A } from '@solidjs/router'
+import { Progress } from '@kobalte/core/progress'
 import { Image } from '@/components'
 import { useGraphQLClient } from '@/contexts'
 import { useNotification } from '@/helpers'
@@ -23,8 +24,16 @@ const UpdateItem: Component<UpdateItemProps> = props => {
   const client = useGraphQLClient()
 
   const itemClasses = createMemo(() =>
-    ['flex', 'gap-1', 'w-full', `updates__item${props.item.isRead ? '--read' : ''}`].join(' ')
+    [
+      'flex',
+      'gap-1',
+      'w-full',
+      'relative',
+      'z-10',
+      `updates__item${props.item.isRead ? '--read' : ''}`,
+    ].join(' ')
   )
+  const progressValue = createMemo(() => (props.download?.progress ?? 0) * 100)
 
   const handleClick = async (
     e: MouseEvent & {
@@ -69,7 +78,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
   return (
     <A
       href={`/manga/${props.item.manga.id}/chapter/${props.item.sourceOrder}`}
-      class="flex justify-between w-full"
+      class="relative flex justify-between w-full"
     >
       <div class={itemClasses()}>
         <div class="h-10 w-10">
@@ -123,6 +132,11 @@ const UpdateItem: Component<UpdateItemProps> = props => {
           </button>
         </Show>
       </div>
+      <Progress value={progressValue()} class="absolute bottom-[-4px] z-0 w-full h-[4px]">
+        <Progress.Track class="h-full">
+          <Progress.Fill class="updates__item-download-progress h-full" />
+        </Progress.Track>
+      </Progress>
     </A>
   )
 }

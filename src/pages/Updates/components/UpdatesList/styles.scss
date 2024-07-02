@@ -22,5 +22,9 @@
         }
       }
     }
+    &-download-progress {
+      width: var(--kb-progress-fill-width);
+      background: var(--stp-foreground_muted);
+    }
   }
 }
