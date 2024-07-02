@@ -4,7 +4,7 @@ import { Image } from '@/components'
 import { useGraphQLClient } from '@/contexts'
 import { useNotification } from '@/helpers'
 import { deleteDownloadedChapter, enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
-import { getDownloadStatus } from '@/gql/Queries'
+import { downloadsOnChapters } from '@/gql/Subscriptions'
 import { ResultOf } from '@/gql'
 import { Actions } from '@/types'
 import { UpdateNode } from '../..'
@@ -15,7 +15,7 @@ import UnreadIcon from '~icons/material-symbols/remove-done'
 
 interface UpdateItemProps {
   item: UpdateNode
-  download: ResultOf<typeof getDownloadStatus>['downloadStatus']['queue'][number] | undefined
+  download: ResultOf<typeof downloadsOnChapters>['downloadChanged']['queue'][number] | undefined
   refetchUpdates: () => void
 }
 
