@@ -25,7 +25,7 @@ interface SelectionActionsProps {
   refetchCategory: () => void
   refetchCategories: () => void
 }
-// TODO: refactor actions
+
 export const SelectionActions: Component<SelectionActionsProps> = props => {
   const client = useGraphQLClient()
   const { t } = useAppContext()
