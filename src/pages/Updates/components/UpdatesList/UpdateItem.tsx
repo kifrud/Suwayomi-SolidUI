@@ -7,7 +7,7 @@ import { useNotification } from '@/helpers'
 import { deleteDownloadedChapter, enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
 import { downloadsOnChapters } from '@/gql/Subscriptions'
 import { ResultOf } from '@/gql'
-import { Actions } from '@/types'
+import { BaseActions } from '@/types'
 import { UpdateNode } from '../..'
 import DeleteIcon from '~icons/material-symbols/delete-forever'
 import DownloadIcon from '~icons/material-symbols/download-2'
@@ -40,7 +40,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
       currentTarget: HTMLButtonElement
       target: Element
     },
-    action: Actions
+    action: BaseActions
   ) => {
     e.stopPropagation()
     e.preventDefault()

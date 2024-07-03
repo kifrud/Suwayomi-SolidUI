@@ -80,7 +80,7 @@ const TitleCard: Component<TitleCardProps> = props => {
                 globalMeta.unreadsBadge &&
                 props.manga().downloadCount > 0 &&
                 props.manga().unreadCount > 0
-                  ? 'rounded-r'
+                  ? 'rounded-l'
                   : 'rounded'
               }`}
             >
@@ -95,7 +95,7 @@ const TitleCard: Component<TitleCardProps> = props => {
                 globalMeta.downloadsBadge &&
                 props.manga().unreadCount > 0 &&
                 props.manga().downloadCount > 0
-                  ? 'rounded-l'
+                  ? 'rounded-r'
                   : 'rounded'
               }`}
             >

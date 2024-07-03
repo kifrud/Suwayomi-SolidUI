@@ -1,1 +1,2 @@
-export type Actions = 'download' | 'markAsRead' | 'markAsUnread' | 'delete'
+export type BaseActions = 'download' | 'markAsRead' | 'markAsUnread' | 'delete'
+export type LibraryActions = BaseActions | 'editCategory'

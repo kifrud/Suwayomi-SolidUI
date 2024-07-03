@@ -11,7 +11,7 @@ import {
   getUnreadMangas,
   useNotification,
 } from '@/helpers'
-import { Mangas } from '@/types'
+import { LibraryActions, Mangas } from '@/types'
 import { CategoryModal, DeleteModal } from '../modals'
 import DeleteIcon from '~icons/material-symbols/delete-forever'
 import CategoryIcon from '~icons/material-symbols/label-outline'
@@ -43,52 +43,72 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       readMangas: getReadMangas(props.selected),
     }
   })
-  // TODO: download not all but some chapters
-  const handleDownload = async () => {
-    try {
-      const res = await client
-        .query(ConditionalChaptersOfGivenManga, { in: mangaIds(), isDownloaded: false })
-        .toPromise()
-      if (!res.data) return
-      await client
-        .mutation(enqueueChapterDownloads, { ids: res.data.chapters.nodes.map(item => item.id) })
-        .toPromise()
-      props.refetchCategory()
-    } catch (error) {
-      useNotification('error', { message: error as string })
-    }
-  }
-  // TODO: delete read chapters feature
-  const handleMarkAsRead = async () => {
-    try {
-      const res = await client
-        .query(ConditionalChaptersOfGivenManga, { in: mangaIds(), isRead: false })
-        .toPromise()
-      if (!res.data) return
-      await client.mutation(updateChapters, {
-        ids: res.data.chapters.nodes.map(item => item.id),
-        isRead: true,
-        lastPageRead: 0,
-      })
-      props.refetchCategory()
-    } catch (error) {
-      useNotification('error', { message: error as string })
-    }
-  }
+  // TODO: download not all but some chapters & delete read chapters
+  const handleClick = async (
+    // e: MouseEvent & {
+    //   currentTarget: HTMLButtonElement
+    //   target: Element
+    // },
+    action: LibraryActions
+  ) => {
+    switch (action) {
+      case 'download':
+        try {
+          const res = await client
+            .query(ConditionalChaptersOfGivenManga, { in: mangaIds(), isDownloaded: false })
+            .toPromise()
+          if (!res.data) return
+          await client
+            .mutation(enqueueChapterDownloads, {
+              ids: res.data.chapters.nodes.map(item => item.id),
+            })
+            .toPromise()
+          props.refetchCategory()
+        } catch (error) {
+          useNotification('error', { message: error as string })
+        }
+        break
 
-  const handleMarkAsUnread = async () => {
-    try {
-      const res = await client
-        .query(ConditionalChaptersOfGivenManga, { in: mangaIds(), isRead: true })
-        .toPromise()
-      if (!res.data) return
-      await client.mutation(updateChapters, {
-        ids: res.data.chapters.nodes.map(item => item.id),
-        isRead: false,
-      })
-      props.refetchCategory()
-    } catch (error) {
-      useNotification('error', { message: error as string })
+      case 'delete':
+        setOpenDeleteModal(true)
+        break
+
+      case 'editCategory':
+        setOpenCategoryModal(true)
+        break
+
+      case 'markAsRead':
+        try {
+          const res = await client
+            .query(ConditionalChaptersOfGivenManga, { in: mangaIds(), isRead: false })
+            .toPromise()
+          if (!res.data) return
+          await client.mutation(updateChapters, {
+            ids: res.data.chapters.nodes.map(item => item.id),
+            isRead: true,
+            lastPageRead: 0,
+          })
+          props.refetchCategory()
+        } catch (error) {
+          useNotification('error', { message: error as string })
+        }
+        break
+
+      case 'markAsUnread':
+        try {
+          const res = await client
+            .query(ConditionalChaptersOfGivenManga, { in: mangaIds(), isRead: true })
+            .toPromise()
+          if (!res.data) return
+          await client.mutation(updateChapters, {
+            ids: res.data.chapters.nodes.map(item => item.id),
+            isRead: false,
+          })
+          props.refetchCategory()
+        } catch (error) {
+          useNotification('error', { message: error as string })
+        }
+        break
     }
   }
 
@@ -109,10 +129,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       <Tooltip
         showArrow
         label={
-          <button
-            class="icon-24 transition-all action"
-            onClick={() => setOpenDeleteModal(true)}
-          >
+          <button class="icon-24 transition-all action" onClick={() => handleClick('delete')}>
             <DeleteIcon />
           </button>
         }
@@ -121,10 +138,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       <Tooltip
         showArrow
         label={
-          <button
-            class="icon-24 transition-all action"
-            onClick={() => setOpenCategoryModal(true)}
-          >
+          <button class="icon-24 transition-all action" onClick={() => handleClick('editCategory')}>
             <CategoryIcon />
           </button>
         }
@@ -134,7 +148,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         <Tooltip
           showArrow
           label={
-            <button class="icon-24 transition-all action" onClick={handleDownload}>
+            <button class="icon-24 transition-all action" onClick={() => handleClick('download')}>
               <DownloadIcon />
             </button>
           }
@@ -145,7 +159,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         <Tooltip
           showArrow
           label={
-            <button class="icon-24 transition-all action" onClick={handleMarkAsRead}>
+            <button class="icon-24 transition-all action" onClick={() => handleClick('markAsRead')}>
               <ReadIcon />
             </button>
           }
@@ -155,7 +169,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       <Show when={!!state().readMangas.length}>
         <Tooltip
           showArrow
-          onClick={handleMarkAsUnread}
+          onClick={() => handleClick('markAsUnread')}
           label={
             <button class="icon-24 transition-all action">
               <UnreadIcon />
