@@ -568,9 +568,9 @@
     type-detect "^4.0.8"
 
 "@kifrud/solid-theme-provider@^0.10.2":
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/@kifrud/solid-theme-provider/-/solid-theme-provider-0.10.2.tgz#6dcde02e83c515b2d13be836018d43d3089440f5"
-  integrity sha512-ROvZnIxtPlMXcLmPnLAO2LbTmVcTqF1NoWxDkL6nqzGsjCL7ImSCoXUBXrhhrS3BCYx+sx0+bO81wp49r4VaKQ==
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/@kifrud/solid-theme-provider/-/solid-theme-provider-0.10.4.tgz#394b5dd078d5a58d878098443a74cd9590626225"
+  integrity sha512-At2Ik7PAzx73yhE/3XHchT8uhSn44NhBp4LKwf0qjgJqbH+ZpResPkanE8pdUF0t0qlfNdi8ERYiIKOCNxyEUg==
   dependencies:
     "@solid-primitives/storage" "^3.5.0"
 
