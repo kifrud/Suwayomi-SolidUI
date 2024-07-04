@@ -23,3 +23,17 @@ export enum ChapterSort {
   FetchedDate = 'fetchedDate',
   UploadDate = 'uploadDate',
 }
+
+export enum Mode {
+  Vertical = 'vertical',
+  Single = 'single',
+  RTL = 'rtl',
+  LTR = 'ltr',
+}
+
+export enum Layout {
+  L = 'l',
+  RAL = 'ral',
+  Kindle = 'kindle',
+  Edge = 'edge',
+}
