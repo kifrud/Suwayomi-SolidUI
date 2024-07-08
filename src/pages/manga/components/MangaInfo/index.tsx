@@ -19,14 +19,29 @@ const MangaInfo: Component<MangaInfoProps> = props => {
   const [openCategoryModal, setOpenCategoryModal] = createSignal(false)
 
   createEffect(() => {
-    if (props.manga) {
-      setIsInLibrary(props.manga.manga.inLibrary)
-    }
+    if (props.manga) setIsInLibrary(props.manga.manga.inLibrary)
   })
 
-  const toggleLibraryState = async (selected?: number[]) => {
+  const toggleLibraryState = async (submitted?: boolean, selected?: number[]) => {
     try {
-      if (!isInLibrary()) setOpenCategoryModal(true)
+      if (!isInLibrary()) {
+        if (submitted) {
+          setIsInLibrary(true)
+          await client
+            .mutation(updateManga, {
+              id: props.manga!.manga.id,
+              inLibrary: !props.manga?.manga.inLibrary,
+              categories: { addToCategories: selected, clearCategories: true },
+              updateCategories: true,
+            })
+            .toPromise()
+          return
+        }
+
+        setOpenCategoryModal(true)
+        return
+      }
+
       setIsInLibrary(prev => !prev)
       await client
         .mutation(updateManga, {
@@ -38,10 +53,9 @@ const MangaInfo: Component<MangaInfoProps> = props => {
         .toPromise()
     } catch (error) {
       useNotification('error', { message: error })
+      setIsInLibrary(!isInLibrary())
     }
   }
-
-  createEffect(() => console.log(props.manga?.manga.inLibrary))
 
   return (
     <Show when={props.manga}>
@@ -49,7 +63,9 @@ const MangaInfo: Component<MangaInfoProps> = props => {
         open={openCategoryModal()}
         onOpenChange={setOpenCategoryModal}
         mangaIds={[props.manga!.manga.id]}
-        onSubmit={selected => toggleLibraryState(selected)}
+        onSubmit={selected => {
+          toggleLibraryState(true, selected)
+        }}
       />
       <div class="title__header">
         <div class="flex flex-col gap-4">

@@ -1,9 +1,9 @@
 import { Accessor, ParentComponent, Show, createMemo, createSignal, mergeProps } from 'solid-js'
+import { Dynamic } from 'solid-js/web'
 import { Checkbox as CheckBoxUi } from '@kobalte/core/checkbox'
 import CheckedIcon from '~icons/material-symbols/check-box-rounded'
 import BlankIcon from '~icons/material-symbols/check-box-outline-blank'
 import IndeterminateIcon from '~icons/material-symbols/indeterminate-check-box'
-import { Dynamic } from 'solid-js/web'
 
 interface Classes {
   /** Classes for label text wrapper */
@@ -14,6 +14,7 @@ interface Classes {
 interface CheckBoxProps {
   label?: string
   checked?: Accessor<boolean> | boolean
+  defaultChecked?: Accessor<boolean> | boolean
   value?: string
   classes?: Partial<Classes>
   isDisabled?: boolean
@@ -27,20 +28,23 @@ const checkboxStates: Record<string, typeof CheckedIcon> = {
   false: BlankIcon,
   indeterminate: IndeterminateIcon,
 }
-
+// TODO
 const CheckBox: ParentComponent<CheckBoxProps> = props => {
   const values = mergeProps({ hideCheckbox: false, isDisabled: false, indeterminate: false }, props)
 
-  const [defaultChecked, setDefaultChecked] = createSignal<string | boolean>(false)
-
-  const checked = createMemo(
-    () =>
-      (typeof props.checked === 'function' ? props.checked() : props.checked) ?? defaultChecked()
+  const defaultChecked = createMemo(() =>
+    typeof props.defaultChecked === 'function' ? props.defaultChecked() : props.defaultChecked
   )
 
-  const checkedString = createMemo(() => String(checked()))
-
   const label = createMemo(() => (props.label ? <span>{props.label}</span> : props.children))
+
+  const [initialChecked, setInitialChecked] = createSignal<string | boolean | undefined>(
+    defaultChecked()
+  )
+  const checked = createMemo(() =>
+    typeof props.checked === 'function' ? props.checked() : props.checked ?? initialChecked()
+  )
+  const checkedString = createMemo(() => String(checked()))
 
   const baseClasses = createMemo(() =>
     [
@@ -68,11 +72,12 @@ const CheckBox: ParentComponent<CheckBoxProps> = props => {
     if (props.onChange) props.onChange(checked)
 
     if (props.checked) return
-    setDefaultChecked(checked)
+    setInitialChecked(checked)
   }
 
   return (
     <CheckBoxUi
+      defaultChecked={defaultChecked()}
       indeterminate={values.indeterminate}
       class={baseClasses()}
       checked={checked() as boolean}
