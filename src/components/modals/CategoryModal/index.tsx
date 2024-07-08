@@ -65,7 +65,7 @@ const CategoryModal: Component<CategoryModalProps> = props => {
           {item => (
             <CheckBox
               label={item.name}
-              checked={item.mangas.nodes.some(manga => props.mangaIds.includes(manga.id))} // TODO: check categories that have mangaIds already
+              defaultChecked={item.mangas.nodes.some(manga => props.mangaIds.includes(manga.id))}
               onChange={checked => handleSelect(checked, item)}
             />
           )}
