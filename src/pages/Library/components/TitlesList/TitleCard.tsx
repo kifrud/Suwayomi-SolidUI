@@ -2,13 +2,13 @@ import { Accessor, Component, type JSX, Setter, Show, createMemo, createSignal }
 import { SetStoreFunction } from 'solid-js/store'
 import { CheckBox, Chip, Image } from '@/components'
 import { useGlobalMeta } from '@/contexts'
-import { Mangas, TManga } from '@/types'
+import { Mangas, TLibraryManga } from '@/types'
 /* tslint:disable:no-unused-variable */
 import { longPress } from '@/helpers'
 import './styles.scss'
 
 interface TitleCardProps {
-  manga: Accessor<TManga>
+  manga: Accessor<TLibraryManga>
   selectMode: Accessor<boolean>
   updateSelectMode: Setter<boolean>
   selected: NonNullable<Mangas>

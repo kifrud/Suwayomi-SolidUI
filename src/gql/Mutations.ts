@@ -102,6 +102,38 @@ export const updateMangas = graphql(
   [MangaTypeFragment]
 )
 
+export const updateManga = graphql(`
+  mutation updateManga(
+    $id: Int!
+    $inLibrary: Boolean!
+    $categories: UpdateMangaCategoriesPatchInput!
+    $updateCategories: Boolean!
+  ) {
+    updateManga(input: { patch: { inLibrary: $inLibrary }, id: $id }) {
+      clientMutationId
+      manga {
+        id
+        inLibrary
+        inLibraryAt
+      }
+    }
+    updateMangaCategories(input: { id: $id, patch: $categories }) @include(if: $updateCategories) {
+      manga {
+        id
+        categories {
+          nodes {
+            id
+            mangas {
+              totalCount
+            }
+          }
+          totalCount
+        }
+      }
+    }
+  }
+`)
+
 export const setGlobalMeta = graphql(
   `
     mutation setGlobalMeta($key: String!, $value: String!) {

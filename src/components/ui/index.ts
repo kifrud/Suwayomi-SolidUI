@@ -1,3 +1,4 @@
+export { default as Button } from './Button'
 export { default as Chip } from './Chip'
 export { default as NotifictaionBadge } from './NotifictaionBadge'
 export { default as Input } from './Input'

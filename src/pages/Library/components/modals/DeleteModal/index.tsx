@@ -1,4 +1,4 @@
-import { CheckBox, Modal } from '@/components'
+import { Button, CheckBox, Modal } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
 import { deleteDownloadedChapters, updateMangas } from '@/gql/Mutations'
 import { useNotification } from '@/helpers'
@@ -71,9 +71,13 @@ const DeleteModal: Component<DeleteModalProps> = props => {
           label={t('library.modal.delete.chapters')}
         />
       </div>
-      <div class="flex gap-3">
-        <button onClick={() => props.onOpenChange(false)}>{t('global.button.cancel')}</button>
-        <button onClick={handleExecuteActions}>{t('global.button.ok')}</button>
+      <div class="flex gap-3 items-center justify-end">
+        <Button onClick={() => props.onOpenChange(false)} class="hover:opacity-70">
+          {t('global.button.cancel')}
+        </Button>
+        <Button scheme="fill" onClick={handleExecuteActions}>
+          {t('global.button.ok')}
+        </Button>
       </div>
     </Modal>
   )
