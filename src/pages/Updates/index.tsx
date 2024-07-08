@@ -1,12 +1,4 @@
-import {
-  Component,
-  For,
-  Show,
-  createMemo,
-  createResource,
-  onCleanup,
-  onMount,
-} from 'solid-js'
+import { Component, For, Show, createMemo, createResource, onCleanup, onMount } from 'solid-js'
 import { createInfiniteQuery } from '@tanstack/solid-query'
 import { createIntersectionObserver } from '@solid-primitives/intersection-observer'
 import { Skeleton, UpdateCheck } from '@/components'

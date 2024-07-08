@@ -1,6 +1,6 @@
 import { Component, Show, createMemo, createSignal } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
-import { Tooltip } from '@/components'
+import { Button, CategoryModal, Tooltip } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
 import { enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
 import { ConditionalChaptersOfGivenManga } from '@/gql/Queries'
@@ -12,7 +12,7 @@ import {
   useNotification,
 } from '@/helpers'
 import { LibraryActions, Mangas } from '@/types'
-import { CategoryModal, DeleteModal } from '../modals'
+import { DeleteModal } from '../modals'
 import DeleteIcon from '~icons/material-symbols/delete-forever'
 import CategoryIcon from '~icons/material-symbols/label-outline'
 import DownloadIcon from '~icons/material-symbols/download-2'
@@ -129,18 +129,18 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       <Tooltip
         showArrow
         label={
-          <button class="icon-24 transition-all action" onClick={() => handleClick('delete')}>
+          <Button onClick={() => handleClick('delete')}>
             <DeleteIcon />
-          </button>
+          </Button>
         }
         content={t('library.selection.delete', { count: props.selected.length })}
       />
       <Tooltip
         showArrow
         label={
-          <button class="icon-24 transition-all action" onClick={() => handleClick('editCategory')}>
+          <Button onClick={() => handleClick('editCategory')}>
             <CategoryIcon />
-          </button>
+          </Button>
         }
         content={t('library.selection.category')}
       />
@@ -148,9 +148,9 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         <Tooltip
           showArrow
           label={
-            <button class="icon-24 transition-all action" onClick={() => handleClick('download')}>
+            <Button onClick={() => handleClick('download')}>
               <DownloadIcon />
-            </button>
+            </Button>
           }
           content={t('library.selection.download')}
         />
@@ -159,9 +159,9 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         <Tooltip
           showArrow
           label={
-            <button class="icon-24 transition-all action" onClick={() => handleClick('markAsRead')}>
+            <Button onClick={() => handleClick('markAsRead')}>
               <ReadIcon />
-            </button>
+            </Button>
           }
           content={t('library.selection.markAsRead', { count: props.selected.length })}
         />
@@ -169,11 +169,10 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
       <Show when={!!state().readMangas.length}>
         <Tooltip
           showArrow
-          onClick={() => handleClick('markAsUnread')}
           label={
-            <button class="icon-24 transition-all action">
+            <Button onClick={() => handleClick('markAsUnread')}>
               <UnreadIcon />
-            </button>
+            </Button>
           }
           content={t('library.selection.markAsUnread', { count: props.selected.length })}
         />

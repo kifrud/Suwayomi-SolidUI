@@ -1,10 +1,12 @@
-import { Component, JSX, Match, Switch, createMemo, createSignal } from 'solid-js'
+import { Component, JSX, Match, Switch, createMemo, createSignal, splitProps } from 'solid-js'
 import FailedIcon from '~icons/material-symbols/broken-image'
 
 interface ImageProps extends JSX.HTMLAttributes<HTMLImageElement> {
   src: string
   alt?: string
   rounded?: string
+  /** Rewrite wrapper classes */
+  wrapperClasses?: string
 }
 
 const Image: Component<ImageProps> = props => {
@@ -14,17 +16,22 @@ const Image: Component<ImageProps> = props => {
     success = 'success',
   }
 
+  const [unique, rest] = splitProps(props, ['class', 'src', 'alt', 'rounded', 'wrapperClasses'])
+
   let img: HTMLImageElement | undefined
 
-  const rounded = createMemo(() => (props.rounded ? `rounded-${props.rounded}` : 'rounded-lg'))
+  const rounded = createMemo(() => (unique.rounded ? `rounded-${unique.rounded}` : 'rounded-lg'))
 
+  const wrapperClasses = createMemo(() =>
+    unique.wrapperClasses ? unique.wrapperClasses : 'relative h-full w-full'
+  )
   const imgClasses = createMemo(() =>
-    ['w-full', 'h-full', 'img', ...(props.class ? [props.class] : [])].join(' ')
+    ['w-full', 'h-full', 'img', ...(unique.class ? [unique.class] : [])].join(' ')
   )
 
   const [state, setState] = createSignal<ImageState>(ImageState.loading)
 
-  if (typeof props.src !== 'string' || props.src === '') error()
+  if (typeof unique.src !== 'string' || unique.src === '') error()
 
   function load() {
     setState(ImageState.success)
@@ -35,16 +42,16 @@ const Image: Component<ImageProps> = props => {
   }
 
   return (
-    <div class="relative h-full w-full">
+    <div class={wrapperClasses()}>
       <img
-        {...props}
         ref={img}
         class={`${rounded()} ${imgClasses()}`}
         onError={error}
         onLoad={load}
-        src={props.src}
-        alt={props.alt}
+        src={unique.src}
+        alt={unique.alt}
         loading="lazy"
+        {...rest}
       />
       <Switch>
         <Match when={state() === ImageState.error}>

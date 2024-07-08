@@ -1,5 +1,5 @@
 import { Component, createSignal, createResource, For } from 'solid-js'
-import { CheckBox, Modal } from '@/components'
+import { Button, CheckBox, Modal } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
 import { updateMangasCategories } from '@/gql/Mutations'
 import { CategoryTypeFragment } from '@/gql/Fragments'
@@ -9,7 +9,7 @@ import { useNotification } from '@/helpers'
 
 interface CategoryModalProps {
   onClose?: () => void
-  onSubmit?: () => void
+  onSubmit?: (selected: number[]) => void
   open: boolean
   onOpenChange: (isOpen: boolean) => void
   mangaIds: number[]
@@ -47,7 +47,7 @@ const CategoryModal: Component<CategoryModalProps> = props => {
     } catch (error) {
       useNotification('error', { message: error as string })
     } finally {
-      if (props.onSubmit) props.onSubmit()
+      if (props.onSubmit) props.onSubmit(selectedCategories())
     }
   }
 
@@ -65,15 +65,19 @@ const CategoryModal: Component<CategoryModalProps> = props => {
           {item => (
             <CheckBox
               label={item.name}
-              // checked={false} // TODO: check categories that have mangaIds already
+              checked={item.mangas.nodes.some(manga => props.mangaIds.includes(manga.id))} // TODO: check categories that have mangaIds already
               onChange={checked => handleSelect(checked, item)}
             />
           )}
         </For>
       </div>
       <div class="flex justify-end gap-4">
-        <button onClick={() => props.onOpenChange(false)}>{t('global.button.cancel')}</button>
-        <button onClick={handleSubmit}>{t('global.button.ok')}</button>
+        <Button onClick={() => props.onOpenChange(false)} class="hover:opacity-70">
+          {t('global.button.cancel')}
+        </Button>
+        <Button scheme="fill" onClick={handleSubmit}>
+          {t('global.button.ok')}
+        </Button>
       </div>
     </Modal>
   )

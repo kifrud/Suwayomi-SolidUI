@@ -1,6 +1,6 @@
 import { Accessor, Component, Setter, Show } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
-import { SearchBar, UpdateCheck } from '@/components'
+import { Button, SearchBar, UpdateCheck } from '@/components'
 import { matches } from '@/helpers'
 import { Mangas } from '@/types'
 import FiltersIcon from '~icons/material-symbols/filter-list'
@@ -41,14 +41,14 @@ export const LibraryActions: Component<LibraryActionsProps> = props => {
   return (
     <>
       <Show when={props.selectMode()}>
-        <button class="icon-24 transition-all action" onClick={handleSelectAll}>
+        <Button onClick={handleSelectAll}>
           <Show when={props.selected.length === props.mangas?.length} fallback={<SelectAllIcon />}>
             <DeselectAllIcon />
           </Show>
-        </button>
-        <button class="icon-24 transition-all action" onClick={handleSelectionState}>
+        </Button>
+        <Button onClick={handleSelectionState}>
           <Select />
-        </button>
+        </Button>
       </Show>
       <Show when={!props.selectMode()}>
         <Show when={!matches.md}>
@@ -56,12 +56,9 @@ export const LibraryActions: Component<LibraryActionsProps> = props => {
         </Show>
         <UpdateCheck />
       </Show>
-      <button
-        class="icon-24 transition-all action"
-        onClick={() => props.updateShowFilter(prev => !prev)}
-      >
+      <Button onClick={() => props.updateShowFilter(prev => !prev)}>
         <FiltersIcon />
-      </button>
+      </Button>
     </>
   )
 }

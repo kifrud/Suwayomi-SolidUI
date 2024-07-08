@@ -81,7 +81,7 @@ const CheckBox: ParentComponent<CheckBoxProps> = props => {
       disabled={values.isDisabled}
     >
       <CheckBoxUi.Input />
-      <CheckBoxUi.Control class='pr-1'>
+      <CheckBoxUi.Control class="pr-1">
         <Show when={!values.hideCheckbox}>
           <Dynamic
             component={checkboxStates[values.indeterminate ? 'indeterminate' : checkedString()]}

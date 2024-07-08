@@ -20,47 +20,45 @@ export interface INavData {
   }
 }
 
-export const navData: () => INavData[] = () => {
-  return [
-    {
-      href: RoutePaths.library,
-      name: 'library',
-      icon: {
-        default: <CollectionBookmarkOutline />,
-        active: <CollectionBookmark />,
-      },
+export const navData: () => INavData[] = () => [
+  {
+    href: RoutePaths.library,
+    name: 'library',
+    icon: {
+      default: <CollectionBookmarkOutline />,
+      active: <CollectionBookmark />,
     },
-    {
-      href: RoutePaths.updates,
-      name: 'updates',
-      icon: {
-        default: <AlertOutlined />,
-        active: <Alert />,
-      },
+  },
+  {
+    href: RoutePaths.updates,
+    name: 'updates',
+    icon: {
+      default: <AlertOutlined />,
+      active: <Alert />,
     },
-    {
-      href: RoutePaths.browse,
-      name: 'browse',
-      icon: {
-        default: <ExploreOutline />,
-        active: <Explore />,
-      },
+  },
+  {
+    href: RoutePaths.browse,
+    name: 'browse',
+    icon: {
+      default: <ExploreOutline />,
+      active: <Explore />,
     },
-    {
-      href: RoutePaths.downloads,
-      name: 'downloads',
-      icon: {
-        default: <DownloadOutline />,
-        active: <Download />,
-      },
+  },
+  {
+    href: RoutePaths.downloads,
+    name: 'downloads',
+    icon: {
+      default: <DownloadOutline />,
+      active: <Download />,
     },
-    {
-      href: RoutePaths.settings,
-      name: 'settings',
-      icon: {
-        default: <SettingsOutline />,
-        active: <Settings />,
-      },
+  },
+  {
+    href: RoutePaths.settings,
+    name: 'settings',
+    icon: {
+      default: <SettingsOutline />,
+      active: <Settings />,
     },
-  ]
-}
+  },
+]

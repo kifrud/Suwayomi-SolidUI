@@ -1,8 +1,8 @@
 import { GlobalMeta } from '@/contexts'
 import { Sort } from '@/enums'
-import { Mangas, TManga } from '@/types'
+import { Mangas, TLibraryManga } from '@/types'
 
-export function filterManga(item: TManga, globalMeta: GlobalMeta, query?: string) {
+export function filterManga(item: TLibraryManga, globalMeta: GlobalMeta, query?: string) {
   if (!item.inLibrary) return false
   if (globalMeta.ignoreFiltersWhenSearching) {
     if (
@@ -33,7 +33,7 @@ export function filterManga(item: TManga, globalMeta: GlobalMeta, query?: string
   return true
 }
 
-export function sortManga(a: TManga, b: TManga, globalMeta: GlobalMeta) {
+export function sortManga(a: TLibraryManga, b: TLibraryManga, globalMeta: GlobalMeta) {
   let result = true
   switch (globalMeta.Sort) {
     case Sort.ID:
@@ -65,9 +65,9 @@ export function sortManga(a: TManga, b: TManga, globalMeta: GlobalMeta) {
   return result ? -1 : 1
 }
 
-type MangaChapterCount = { chapters: Pick<TManga['chapters'], 'totalCount'> }
-type MangaUnread = Pick<TManga, 'unreadCount'> & MangaChapterCount
-type MangaDownload = Pick<TManga, 'downloadCount'> & MangaChapterCount
+type MangaChapterCount = { chapters: Pick<TLibraryManga['chapters'], 'totalCount'> }
+type MangaUnread = Pick<TLibraryManga, 'unreadCount'> & MangaChapterCount
+type MangaDownload = Pick<TLibraryManga, 'downloadCount'> & MangaChapterCount
 
 function isFullyRead({ unreadCount }: MangaUnread) {
   return unreadCount === 0

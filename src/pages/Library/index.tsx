@@ -36,7 +36,8 @@ const Library: Component = () => {
   const categories = createQuery(() => ({
     queryKey: ['categories'],
     queryFn: async () =>
-      await client.query(getCategories, {}, { requestPolicy: 'cache-and-network' }).toPromise(),
+      (await client.query(getCategories, {}, { requestPolicy: 'cache-and-network' }).toPromise())
+        .data,
   }))
 
   const [searchParams] = useSearchParams()
@@ -48,21 +49,23 @@ const Library: Component = () => {
   const [showFilters, setShowFilters] = createSignal(false)
 
   const category = createQuery(() => ({
-    queryKey: ['category', currentTab(), categories.data?.data],
+    queryKey: ['category', currentTab(), categories.data],
     queryFn: async () =>
-      await client
-        .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
-        .toPromise(),
+      (
+        await client
+          .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
+          .toPromise()
+      ).data,
   }))
 
   const orderedCategories = createMemo(() =>
-    categories.data?.data?.categories.nodes
+    categories.data?.categories.nodes
       .toSorted((a, b) => (a.order > b.order ? 1 : -1))
       .filter(e => e.mangas.totalCount)
   )
 
   const mangas = createMemo(() =>
-    category.data?.data?.category.mangas.nodes
+    category.data?.category.mangas.nodes
       .filter(item => filterManga(item, globalMeta, searchParams.q))
       .toSorted((a, b) => sortManga(a, b, globalMeta))
   )
@@ -70,9 +73,7 @@ const Library: Component = () => {
   const totalMangaCount = createMemo(
     () =>
       new Set(
-        categories.data?.data?.categories.nodes.flatMap(node =>
-          node.mangas.nodes.map(manga => manga.id)
-        )
+        categories.data?.categories.nodes.flatMap(node => node.mangas.nodes.map(manga => manga.id))
       ).size
   )
 

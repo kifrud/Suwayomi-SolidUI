@@ -74,15 +74,6 @@ path {
   outline: none;
 }
 
-.action {
-  border-radius: 8px;
-  padding: 4px;
-
-  &:hover {
-    background: var(--stp-background_muted);
-  }
-}
-
 @keyframes contentShow {
   from {
     opacity: 0;

@@ -1,4 +1,5 @@
 export * from './ui'
+export * from './modals'
 export * from './navData'
 export { default as AppNavbar } from './AppNavbar'
 export { default as Header } from './Header'

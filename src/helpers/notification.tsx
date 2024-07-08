@@ -9,7 +9,7 @@ import WarningIcon from '~icons/material-symbols/warning-outline'
 export type ToastType = 'success' | 'error' | 'info' | 'warning'
 
 interface BaseToastPayload {
-  message: string
+  message: string | unknown
 }
 
 export type ToastPayload = BaseToastPayload &
