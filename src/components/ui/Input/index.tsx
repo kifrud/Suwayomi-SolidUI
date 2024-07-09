@@ -1,4 +1,5 @@
-import { Accessor, type JSX, JSXElement, Show, createMemo, mergeProps } from 'solid-js'
+import { type JSX, JSXElement, Show, createMemo, mergeProps } from 'solid-js'
+import { MaybeAccessor } from '@solid-primitives/utils'
 import ArrowRight from '~icons/material-symbols/arrow-right-alt-rounded'
 import ClearIcon from '~icons/material-symbols/cancel'
 import './styles.scss'
@@ -10,7 +11,7 @@ interface InputProps<T extends string> extends JSX.HTMLAttributes<HTMLInputEleme
   clearIcon?: { state: boolean; always?: boolean }
   onClear?: JSX.EventHandler<HTMLSpanElement, MouseEvent>
   type?: 'text' | 'search'
-  value: Accessor<T> | T
+  value: MaybeAccessor<T>
   isDisabled?: boolean
   required?: boolean
   showSubmit?: boolean

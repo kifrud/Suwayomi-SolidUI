@@ -1,4 +1,5 @@
-import { Accessor, type JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
+import { MaybeAccessor } from '@solid-primitives/utils'
+import { type JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
 
 interface Classes {
   base: string
@@ -9,7 +10,7 @@ interface Classes {
 interface RadioProps extends JSX.HTMLAttributes<HTMLInputElement> {
   value: string | number | string[] | undefined
   updateState?: (v: boolean) => void | Setter<boolean>
-  checked: Accessor<boolean> | boolean
+  checked: MaybeAccessor<boolean>
   hideIndicator?: boolean
   isDisabled?: boolean
   label?: string

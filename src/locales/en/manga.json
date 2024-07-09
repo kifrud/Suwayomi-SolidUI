@@ -1,4 +1,22 @@
 {
-  "addToLibrary": "Add to library",
-  "removeFromLibrary": "Remove from library"
+  "button": {
+    "addToLibrary": "Add to library",
+    "inLibrary": "In library",
+    "read": "Read",
+    "continue": "Continue",
+    "toLibrary": "To Library",
+    "toDescription": "To Description"
+  },
+  "status": {
+    "UNKNOWN": "Unknown",
+    "ONGOING": "Ongoing",
+    "COMPLETED": "Completed",
+    "LICENSED": "Licensed",
+    "PUBLISHING_FINISHED": "Publishing finished",
+    "CANCELLED": "Cancelled",
+    "ON_HIATUS": "On hiatus"
+  },
+  "label": {
+    "tags": "Tags"
+  }
 }

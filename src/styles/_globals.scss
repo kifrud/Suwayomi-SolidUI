@@ -18,6 +18,14 @@ path {
   background: var(--stp-background);
 }
 
+.bg-background-muted {
+  background: var(--stp-background_muted);
+}
+
+.bg-background-muted-30 {
+  background: var(--stp-background_muted-alpha_tertiary);
+}
+
 .bg-foreground {
   background: var(--stp-foreground);
 }

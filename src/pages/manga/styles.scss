@@ -8,7 +8,7 @@
   --banner-height: 13.5rem;
   --navbar-height: 53px;
   --banner-overlay-gradient: linear-gradient(60deg, rgba(0, 0, 0, 0.64) 50%, transparent);
-  padding: 0 16px;
+  // padding: 0 16px;
   &__banner-wrp {
     display: block;
     position: absolute;
@@ -44,7 +44,7 @@
   }
   &__content {
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     gap: 16px;
     max-width: 1200px;
     position: relative;
@@ -67,4 +67,12 @@
     font-weight: 600;
     text-shadow: rgba(0, 0, 0, 0.3) 1px 2px 4px;
   }
+  &__tag {
+    text-shadow: rgba(0, 0, 0, 0.3) 1px 2px 4px;
+  }
+}
+
+.sticky-header {
+  position: sticky;
+  top: calc(var(--header-height) + 17px);
 }

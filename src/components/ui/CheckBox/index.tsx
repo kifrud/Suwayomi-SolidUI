@@ -12,6 +12,7 @@ import { Checkbox as CheckBoxUi } from '@kobalte/core/checkbox'
 import CheckedIcon from '~icons/material-symbols/check-box-rounded'
 import BlankIcon from '~icons/material-symbols/check-box-outline-blank'
 import IndeterminateIcon from '~icons/material-symbols/indeterminate-check-box'
+import { MaybeAccessor } from '@solid-primitives/utils'
 
 interface Classes {
   /** Classes for label text wrapper */
@@ -21,8 +22,8 @@ interface Classes {
 
 interface CheckBoxProps {
   label?: string
-  checked?: Accessor<boolean> | boolean
-  defaultChecked?: Accessor<boolean> | boolean
+  checked?: MaybeAccessor<boolean>
+  defaultChecked?: MaybeAccessor<boolean>
   value?: string
   classes?: Partial<Classes>
   isDisabled?: boolean
@@ -36,7 +37,7 @@ const checkboxStates: Record<string, typeof CheckedIcon> = {
   false: BlankIcon,
   indeterminate: IndeterminateIcon,
 }
-
+// TODO: remake props
 const CheckBox: ParentComponent<CheckBoxProps> = props => {
   const values = mergeProps({ hideCheckbox: false, isDisabled: false, indeterminate: false }, props)
 
