@@ -38,7 +38,9 @@ const Toast: Component<ToastProps> = props => {
   )
 
   const msg = createMemo(() =>
-    unique.translate ? (t(payload().message as keyof Dictionary) as JSX.Element) : payload().message as string
+    unique.translate
+      ? (t(payload().message as keyof Dictionary) as JSX.Element)
+      : (payload().message as string)
   )
 
   return (
