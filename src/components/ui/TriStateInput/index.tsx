@@ -1,5 +1,6 @@
 import { TriState } from '@/enums'
-import { Accessor, type JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
+import { MaybeAccessor } from '@solid-primitives/utils'
+import { type JSX, ParentComponent, Setter, Show, createMemo, mergeProps } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import IncludeIcon from '~icons/material-symbols/check-box-rounded'
 import IgnoreIcon from '~icons/material-symbols/check-box-outline-blank'
@@ -13,7 +14,7 @@ interface Classes {
 
 interface TriStateProps extends JSX.HTMLAttributes<HTMLInputElement> {
   label?: string
-  state: Accessor<TriState> | TriState
+  state: MaybeAccessor<TriState>
   updateState: (v: TriState) => void | Setter<TriState>
   classes?: Partial<Classes>
   isDisabled?: boolean

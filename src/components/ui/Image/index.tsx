@@ -2,7 +2,7 @@ import { Component, JSX, Match, Switch, createMemo, createSignal, splitProps } f
 import FailedIcon from '~icons/material-symbols/broken-image'
 
 interface ImageProps extends JSX.HTMLAttributes<HTMLImageElement> {
-  src: string
+  src: string | unknown
   alt?: string
   rounded?: string
   /** Rewrite wrapper classes */
@@ -48,7 +48,7 @@ const Image: Component<ImageProps> = props => {
         class={`${rounded()} ${imgClasses()}`}
         onError={error}
         onLoad={load}
-        src={unique.src}
+        src={unique.src as string}
         alt={unique.alt}
         loading="lazy"
         {...rest}

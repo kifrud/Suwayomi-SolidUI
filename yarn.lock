@@ -866,6 +866,15 @@
   resolved "https://registry.yarnpkg.com/@solid-primitives/scheduled/-/scheduled-1.4.3.tgz#379443e759c90275f7530c11c9df63ff63c8c9fd"
   integrity sha512-HfWN5w7b7FEc6VPLBKnnE302h90jsLMuR28Fcf7neRGGf8jBj6wm6/UFQ00VlKexHFMR6KQ2u4VBh5a1ZcqM8g==
 
+"@solid-primitives/scroll@^2.0.23":
+  version "2.0.23"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/scroll/-/scroll-2.0.23.tgz#caef4a1189174ad3411ba7fe3c87fa712813c6be"
+  integrity sha512-kO0YpXKEUHaAnHp3zIsHYmxxuKXO3/LxVhZQHHmhqsmUY6A5IBObkSkoQ/ChIPl/WMKE7ynxEq40OgRmhvyUSw==
+  dependencies:
+    "@solid-primitives/event-listener" "^2.3.3"
+    "@solid-primitives/rootless" "^1.4.5"
+    "@solid-primitives/static-store" "^0.0.8"
+
 "@solid-primitives/static-store@^0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@solid-primitives/static-store/-/static-store-0.0.5.tgz#ed3e5be8e72121f92fac54e7cfd4ed81aa2e29cd"
