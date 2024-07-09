@@ -1,4 +1,12 @@
-import { Accessor, ParentComponent, Show, createMemo, createSignal, mergeProps } from 'solid-js'
+import {
+  Accessor,
+  ParentComponent,
+  Show,
+  createEffect,
+  createMemo,
+  createSignal,
+  mergeProps,
+} from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import { Checkbox as CheckBoxUi } from '@kobalte/core/checkbox'
 import CheckedIcon from '~icons/material-symbols/check-box-rounded'
@@ -28,7 +36,7 @@ const checkboxStates: Record<string, typeof CheckedIcon> = {
   false: BlankIcon,
   indeterminate: IndeterminateIcon,
 }
-// TODO
+
 const CheckBox: ParentComponent<CheckBoxProps> = props => {
   const values = mergeProps({ hideCheckbox: false, isDisabled: false, indeterminate: false }, props)
 
@@ -41,10 +49,13 @@ const CheckBox: ParentComponent<CheckBoxProps> = props => {
   const [initialChecked, setInitialChecked] = createSignal<string | boolean | undefined>(
     defaultChecked()
   )
+
+  createEffect(() => setInitialChecked(defaultChecked()))
+
   const checked = createMemo(() =>
-    typeof props.checked === 'function' ? props.checked() : props.checked ?? initialChecked()
+    typeof props.checked === 'function' ? props.checked() : props.checked
   )
-  const checkedString = createMemo(() => String(checked()))
+  const checkedString = createMemo(() => String(checked() ?? initialChecked()))
 
   const baseClasses = createMemo(() =>
     [
@@ -80,7 +91,7 @@ const CheckBox: ParentComponent<CheckBoxProps> = props => {
       defaultChecked={defaultChecked()}
       indeterminate={values.indeterminate}
       class={baseClasses()}
-      checked={checked() as boolean}
+      checked={checked() ?? (initialChecked() as boolean)}
       onChange={handleChange}
       value={props.value}
       disabled={values.isDisabled}
