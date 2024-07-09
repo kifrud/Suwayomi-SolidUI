@@ -14,7 +14,6 @@ const Settings: Component = () => {
       <div onclick={() => useNotification('error')}>notificate</div>
       <div onclick={() => useNotification('success')}>notificate</div>
       <div onclick={() => useNotification('warning')}>notificate</div>
-
     </div>
   )
 }

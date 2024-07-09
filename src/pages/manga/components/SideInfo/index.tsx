@@ -135,8 +135,8 @@ const SideInfo: Component<SideInfoProps> = props => {
               <span class={personClasses()}>
                 {statusIcons[props.manga?.manga.status!]}
                 {t(`manga.status.${props.manga!.manga.status!}` as keyof Dictionary) as string}
-              </span>{' '}
-              • <span>{props.manga?.manga.source?.displayName}</span>
+              </span>
+              •<span>{props.manga?.manga.source?.displayName}</span>
             </span>
           </div>
         </div>
