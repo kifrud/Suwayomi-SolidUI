@@ -761,6 +761,13 @@
     "@solid-primitives/static-store" "^0.0.5"
     "@solid-primitives/utils" "^6.2.1"
 
+"@solid-primitives/clipboard@^1.5.10":
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/clipboard/-/clipboard-1.5.10.tgz#3a7ace21350bc362e28d611986e6265955a41f85"
+  integrity sha512-ohwlrBP4j+Qjksg01CFWaP/USpzX78dBNVA1DPRZkf/vJgytX0T6KMc2YxF6o8fs6ePIYSI8Nt3sKxF0sh1q+Q==
+  dependencies:
+    "@solid-primitives/utils" "^6.2.3"
+
 "@solid-primitives/cursor@^0.0.112":
   version "0.0.112"
   resolved "https://registry.yarnpkg.com/@solid-primitives/cursor/-/cursor-0.0.112.tgz#00f5bf5492bbfb0c927407f07bef38c5d53bc6fd"

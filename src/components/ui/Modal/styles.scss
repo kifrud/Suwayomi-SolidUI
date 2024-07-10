@@ -19,6 +19,7 @@
   }
   &__content {
     min-width: 275px;
+    max-height: 70vh;
     z-index: 50;
     max-width: min(calc(100vw - 16px), 500px);
     border-radius: 6px;

@@ -12,6 +12,7 @@
     "@kifrud/solid-theme-provider": "^0.10.2",
     "@kobalte/core": "^0.13.3",
     "@solid-primitives/active-element": "^2.0.20",
+    "@solid-primitives/clipboard": "^1.5.10",
     "@solid-primitives/i18n": "^2.1.1",
     "@solid-primitives/intersection-observer": "^2.1.6",
     "@solid-primitives/media": "^2.2.9",
