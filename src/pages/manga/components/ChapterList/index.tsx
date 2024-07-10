@@ -11,7 +11,8 @@ interface ChapterListProps {
 
 const ChapterList: Component<ChapterListProps> = props => {
   return (
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-3 flex-wrap">
+      <span></span>
       <For each={props.manga?.manga.chapters.nodes}>
         {chapter => (
           <A
