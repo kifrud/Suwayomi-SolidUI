@@ -1,4 +1,5 @@
 import { Component, For, Show, createEffect, createMemo, createSignal } from 'solid-js'
+import { A } from '@solidjs/router'
 import { useWindowScrollPosition } from '@solid-primitives/scroll'
 import { Button, CategoryModal, Chip, Image, Skeleton } from '@/components'
 import { Dictionary, useAppContext, useGraphQLClient } from '@/contexts'
@@ -11,6 +12,8 @@ import FavoriteOutline from '~icons/material-symbols/favorite-outline'
 import AuthorIcon from '~icons/material-symbols/person-outline'
 import Artisticon from '~icons/material-symbols/brush'
 import TagIcon from '~icons/material-symbols/tag'
+import SourceIcon from '~icons/material-symbols/public'
+import TrackIcon from '~icons/material-symbols/sync'
 import './styles.scss'
 
 interface SideInfoProps {
@@ -79,9 +82,7 @@ const SideInfo: Component<SideInfoProps> = props => {
             open={openCategoryModal()}
             onOpenChange={setOpenCategoryModal}
             mangaIds={[props.manga!.manga.id]}
-            onSubmit={selected => {
-              toggleLibraryState(true, selected)
-            }}
+            onSubmit={selected => toggleLibraryState(true, selected)}
           />
           <Image
             src={props.manga!.manga.thumbnailUrl!}
@@ -111,6 +112,20 @@ const SideInfo: Component<SideInfoProps> = props => {
                 {t('manga.button.inLibrary')}
               </Show>
             </Button>
+            <Button
+              class="w-full hover:bg-transparent flex items-center justify-center gap-1"
+              disabled
+            >
+              <TrackIcon />
+              {t('manga.button.track')}
+            </Button>
+            <A
+              href={props.manga?.manga.realUrl!}
+              class="w-full hover:bg-transparent hover:opacity-80 flex items-center justify-center gap-1 p-1 transition-all"
+            >
+              <SourceIcon />
+              {t('manga.button.openSource')}
+            </A>
             <Button class="w-full py-3" scheme="fill">
               <Show
                 when={props.manga?.manga.unreadCount === props.manga?.manga.chapters.totalCount} // TODO: prefetch lastreadchapter
@@ -136,7 +151,7 @@ const SideInfo: Component<SideInfoProps> = props => {
                   <TagIcon />
                   {t('manga.label.tags')}
                 </span>
-                <div class="flex flex-wrap gap-1">
+                <div class="flex flex-wrap gap-1 overflow-hidden max-h-64 hover:overflow-y-auto">
                   <For each={props.manga?.manga.genre}>
                     {tag => <Chip class="title__tag bg-background-muted py-1">{tag}</Chip>}
                   </For>
@@ -144,7 +159,9 @@ const SideInfo: Component<SideInfoProps> = props => {
               </div>
               <span class={`${personClasses()} justify-center flex flex-col`}>
                 <span class={personClasses()}>
-                  {statusIcons[props.manga?.manga.status!]}
+                  <Show when={props.manga?.manga.status}>
+                    {statusIcons()[props.manga?.manga.status!]}
+                  </Show>
                   {t(`manga.status.${props.manga!.manga.status!}` as keyof Dictionary) as string}
                 </span>
                 <span>•</span>

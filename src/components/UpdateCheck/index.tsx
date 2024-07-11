@@ -7,7 +7,7 @@ import { latestUpdateTimestamp } from '@/gql/Queries'
 import { updateLibraryMangas } from '@/gql/Mutations'
 import { updateStatusSubscription } from '@/gql/Subscriptions'
 import { Tooltip } from '@/components'
-import UpdateIcon from '~icons/material-symbols/update'
+import UpdateIcon from '~icons/material-symbols/refresh'
 import './styles.scss'
 
 // TODO: notify if found new chapters
