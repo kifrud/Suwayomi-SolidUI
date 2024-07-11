@@ -5,7 +5,10 @@
     "read": "Read",
     "continue": "Continue",
     "toLibrary": "To Library",
-    "toDescription": "To Description"
+    "toDescription": "To Description",
+    "track": "Track",
+    "tracked": "{{ count }} Tracked",
+    "openSource": "Open source"
   },
   "status": {
     "UNKNOWN": "Unknown",

@@ -87,7 +87,7 @@ const MangaInfo: Component<MangaInfoProps> = props => {
                   {props.manga?.manga.artist}
                 </span>
                 <span class={personClasses()}>
-                  {statusIcons[props.manga?.manga.status!]}
+                  {statusIcons()[props.manga?.manga.status!]}
                   {
                     t(`manga.status.${props.manga!.manga.status!}` as keyof Dictionary) as string
                   } • {props.manga?.manga.source?.displayName}

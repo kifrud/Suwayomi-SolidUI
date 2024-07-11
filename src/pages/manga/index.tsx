@@ -1,4 +1,12 @@
-import { Component, type JSX, createEffect, createSignal, onMount, createMemo } from 'solid-js'
+import {
+  Component,
+  type JSX,
+  createEffect,
+  createSignal,
+  onMount,
+  createMemo,
+  Accessor,
+} from 'solid-js'
 import { createQuery } from '@tanstack/solid-query'
 import { A, useParams } from '@solidjs/router'
 import { Title } from '@solidjs/meta'
@@ -8,6 +16,7 @@ import { getManga } from '@/gql/Queries'
 import { useNotification } from '@/helpers'
 import { fetchMangaChapters, fetchMangaInfo } from '@/gql/Mutations'
 import { ChapterList, MangaInfo, SideInfo } from './components'
+import { RoutePaths } from '@/enums'
 import { TManga } from '@/types'
 import ArrowUp from '~icons/material-symbols/arrow-upward-alt-rounded'
 import ArrowLeft from '~icons/material-symbols/arrow-left-alt-rounded'
@@ -19,11 +28,10 @@ import PublishingFinishedIcon from '~icons/material-symbols/done'
 import CancelledIcon from '~icons/material-symbols/cancel-outline'
 import HiatusIcon from '~icons/material-symbols/pause'
 import './styles.scss'
-import { RoutePaths } from '@/enums'
 
 type MangaStatus = TManga['manga']['status']
 
-export const statusIcons: Record<MangaStatus, JSX.Element> = {
+export const statusIcons: Accessor<Record<MangaStatus, JSX.Element>> = () => ({
   UNKNOWN: <UnknownIcon />,
   ONGOING: <OngoingIcon />,
   COMPLETED: <CompleteIcon />,
@@ -31,7 +39,7 @@ export const statusIcons: Record<MangaStatus, JSX.Element> = {
   PUBLISHING_FINISHED: <PublishingFinishedIcon />,
   CANCELLED: <CancelledIcon />,
   ON_HIATUS: <HiatusIcon />,
-}
+})
 
 const Manga: Component = () => {
   const { t } = useAppContext()
