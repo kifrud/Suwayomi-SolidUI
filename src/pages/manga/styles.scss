@@ -70,6 +70,16 @@
   &__tag {
     text-shadow: rgba(0, 0, 0, 0.3) 1px 2px 4px;
   }
+  &__show-description {
+    background: linear-gradient(0deg, var(--stp-background) 0%, rgba(255, 255, 255, 0) 100%);
+    &:hover {
+      background: linear-gradient(
+        0deg,
+        var(--stp-background-alpha_secondary) 0%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    }
+  }
 }
 
 .sticky-header {

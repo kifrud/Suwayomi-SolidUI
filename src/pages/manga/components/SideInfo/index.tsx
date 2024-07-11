@@ -9,7 +9,7 @@ import { statusIcons } from '../..'
 import Favorite from '~icons/material-symbols/favorite'
 import FavoriteOutline from '~icons/material-symbols/favorite-outline'
 import AuthorIcon from '~icons/material-symbols/person-outline'
-import Artisticon from '~icons/material-symbols/group-outline'
+import Artisticon from '~icons/material-symbols/brush'
 import TagIcon from '~icons/material-symbols/tag'
 import './styles.scss'
 

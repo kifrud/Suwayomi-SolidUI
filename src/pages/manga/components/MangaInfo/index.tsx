@@ -2,13 +2,13 @@ import { Component, For, Show, createMemo, createSignal } from 'solid-js'
 import { writeClipboard } from '@solid-primitives/clipboard'
 import { Button, Chip, Skeleton } from '@/components'
 import { Dictionary, useAppContext } from '@/contexts'
+import { useNotification } from '@/helpers'
 import { TManga } from '@/types'
 import { statusIcons } from '../..'
 import ChevronDown from '~icons/material-symbols/keyboard-arrow-down-rounded'
 import ChevronUp from '~icons/material-symbols/keyboard-arrow-up-rounded'
 import AuthorIcon from '~icons/material-symbols/person-outline'
-import Artisticon from '~icons/material-symbols/group-outline'
-import { useNotification } from '@/helpers'
+import Artisticon from '~icons/material-symbols/brush'
 
 interface MangaInfoProps {
   manga: TManga | undefined
@@ -22,6 +22,13 @@ const MangaInfo: Component<MangaInfoProps> = props => {
 
   const personClasses = createMemo(() =>
     ['opacity-80', 'hover:opacity-100', 'transition-all', 'flex', 'items-center'].join(' ')
+  )
+  const descriptionClasses = createMemo(
+    () => `overflow-hidden text-ellipsis ${showDescription() ? 'max-h-auto' : 'max-h-[100px]'}`
+  )
+  const showDescriptionBtnClasses = createMemo(
+    () =>
+      `w-full flex items-center justify-center ${showDescription() ? '' : 'absolute bottom-0 bg-gradient-to-t title__show-description'}`
   )
 
   const computeFontSize = (title: string | undefined) => {
@@ -87,24 +94,16 @@ const MangaInfo: Component<MangaInfoProps> = props => {
                 </span>
               </div>
             </div>
-            <div class="w-full text-xs xs:text-sm md:text-base whitespace-pre-line">
-              <p class="overflow-hidden text-ellipsis">
+            <div class="w-full text-xs xs:text-sm md:text-base whitespace-pre-line relative">
+              <p class={descriptionClasses()}>
                 {/* TODO: animate */}
-                <Show
-                  when={
-                    showDescription() ||
-                    (props.manga?.manga.description && props.manga?.manga.description.length < 250)
-                  }
-                  fallback={props.manga?.manga.description?.substring(0, 250) + '...'}
-                >
-                  {props.manga?.manga.description}
-                </Show>
+                {props.manga?.manga.description}
               </p>
               <Show
-                when={props.manga?.manga.description && props.manga?.manga.description.length > 250}
+                when={props.manga?.manga.description && props.manga?.manga.description.length > 400}
               >
                 <Button
-                  class="w-full flex items-center justify-center"
+                  class={showDescriptionBtnClasses()}
                   onClick={() => setShowDescription(prev => !prev)}
                 >
                   <Show when={showDescription()} fallback={<ChevronDown />}>

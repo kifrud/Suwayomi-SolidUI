@@ -20,10 +20,10 @@ const Tooltip: ParentComponent<Partial<TooltipProps>> = props => {
   const [trigger, content, rest] = splitProps(
     props,
     ['onClick', 'classes', 'disabled', 'label'],
-    ['showArrow', 'classes']
+    ['showArrow', 'classes', 'content']
   )
 
-  const tooltipContent = createMemo(() => (props.children ? props.children : rest.content))
+  const tooltipContent = createMemo(() => (props.children ? props.children : content.content))
 
   return (
     <TooltipUi {...rest}>
