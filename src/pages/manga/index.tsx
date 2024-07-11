@@ -84,8 +84,6 @@ const Manga: Component = () => {
     }
   })
 
-  createEffect(() => console.log(mangaData.isFetching))
-
   return (
     <div class="title">
       {metaTitle() && <Title>{metaTitle()}</Title>}
