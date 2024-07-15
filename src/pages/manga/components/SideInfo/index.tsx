@@ -73,7 +73,7 @@ const SideInfo: Component<SideInfoProps> = props => {
       </div>
     </div>
   )
-  // TODO: add tooltips
+
   return (
     <Show when={!props.isLoading} fallback={placeholder}>
       <Show when={props.manga?.manga}>

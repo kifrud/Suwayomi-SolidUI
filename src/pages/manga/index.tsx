@@ -6,6 +6,7 @@ import {
   onMount,
   createMemo,
   Accessor,
+  onCleanup,
 } from 'solid-js'
 import { createQuery } from '@tanstack/solid-query'
 import { A, useParams } from '@solidjs/router'
@@ -27,6 +28,7 @@ import LicenseIcon from '~icons/material-symbols/license'
 import PublishingFinishedIcon from '~icons/material-symbols/done'
 import CancelledIcon from '~icons/material-symbols/cancel-outline'
 import HiatusIcon from '~icons/material-symbols/pause'
+import RefreshIcon from '~icons/material-symbols/refresh'
 import './styles.scss'
 
 type MangaStatus = TManga['manga']['status']
@@ -67,7 +69,13 @@ const Manga: Component = () => {
   const mangaData = createQuery(() => ({
     queryKey: ['manga'],
     queryFn: async () => {
-      return (await client.query(getManga, { id: Number(params.id) })).data
+      return (
+        await client.query(
+          getManga,
+          { id: Number(params.id) },
+          { requestPolicy: 'cache-and-network' }
+        )
+      ).data
     },
     refetchOnWindowFocus: false,
   }))
@@ -76,20 +84,33 @@ const Manga: Component = () => {
     try {
       await client.mutation(fetchMangaInfo, { id: Number(params.id) })
       await client.mutation(fetchMangaChapters, { id: Number(params.id) })
+      mangaData.refetch()
     } catch (error) {
       useNotification('error', { message: error })
     }
   }
+
+  onMount(() => {
+    headerCtx.setHeaderEnd(
+      <Button onClick={fetchChapters}>
+        <RefreshIcon />
+      </Button>
+    )
+  })
 
   createEffect(() => {
     setMetaTitle(mangaData.data?.manga.title)
     headerCtx.setHeaderTitle(<h1>{mangaData.data?.manga.title}</h1>)
   })
 
-  onMount(() => {
+  createEffect(() => {
     if (mangaData.data?.manga.lastFetchedAt === '0') {
       fetchChapters()
     }
+  })
+
+  onCleanup(() => {
+    headerCtx.clear()
   })
 
   return (
