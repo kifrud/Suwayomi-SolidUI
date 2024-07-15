@@ -8,3 +8,4 @@ export type Mangas =
 export type TLibraryManga = NonNullable<Mangas>[number]
 
 export type TManga = ResultOf<typeof getManga>
+export type TChapter = ResultOf<typeof getManga>['manga']['chapters']['nodes'][number]

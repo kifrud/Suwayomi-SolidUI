@@ -1,6 +1,6 @@
-import { GlobalMeta } from '@/contexts'
-import { Sort } from '@/enums'
-import { Mangas, TLibraryManga } from '@/types'
+import { GlobalMeta, MangaMeta } from '@/contexts'
+import { ChapterSort, Sort } from '@/enums'
+import { Mangas, TChapter, TLibraryManga } from '@/types'
 
 export function filterManga(item: TLibraryManga, globalMeta: GlobalMeta, query?: string) {
   if (!item.inLibrary) return false
@@ -63,6 +63,31 @@ export function sortManga(a: TLibraryManga, b: TLibraryManga, globalMeta: Global
   if (globalMeta.Asc) result = !result
 
   return result ? -1 : 1
+}
+
+export function filterChapters(chapter: TChapter, mangaMeta: MangaMeta) {
+  if (mangaMeta.ChapterUnread === 1 && chapter.isRead) return false
+  if (mangaMeta.ChapterUnread === 2 && !chapter.isRead) return false
+
+  if (mangaMeta.ChapterDownloaded === 1 && !chapter.isDownloaded) return false
+  if (mangaMeta.ChapterDownloaded === 2 && chapter.isDownloaded) return false
+
+  if (mangaMeta.ChapterBookmarked === 1 && !chapter.isBookmarked) return false
+  if (mangaMeta.ChapterBookmarked === 2 && chapter.isBookmarked) return false
+  return true
+}
+
+export function sortChapters(a: TChapter, b: TChapter, mangaMeta: MangaMeta) {
+  let tmp = true
+  if (mangaMeta.ChapterSort === ChapterSort.Source) {
+    tmp = a.sourceOrder > b.sourceOrder
+  } else if (mangaMeta.ChapterSort === ChapterSort.FetchedDate) {
+    tmp = a.fetchedAt > b.fetchedAt
+  } else {
+    tmp = a.uploadDate > b.uploadDate
+  }
+  if (mangaMeta.ChapterAsc) tmp = !tmp
+  return tmp ? -1 : 1
 }
 
 type MangaChapterCount = { chapters: Pick<TLibraryManga['chapters'], 'totalCount'> }
