@@ -4,7 +4,7 @@ import { CheckBox, Chip, Image } from '@/components'
 import { useGlobalMeta } from '@/contexts'
 import { Mangas, TLibraryManga } from '@/types'
 /* tslint:disable:no-unused-variable */
-import { longPress } from '@/helpers'
+import { longPress, useHover } from '@/helpers'
 import './styles.scss'
 
 interface TitleCardProps {
@@ -21,11 +21,13 @@ type PointerType = HoverPointerType | 'touch' | 'keyboard' | 'virtual'
 // TODO: make options menu
 const TitleCard: Component<TitleCardProps> = props => {
   const { globalMeta } = useGlobalMeta()
-  const [isHovered, setIsHovered] = createSignal(false)
 
   const isSelected = createMemo(() =>
     props.selected.map(item => item.id).includes(props.manga().id)
   )
+
+  const [cardRef, setCardRef] = createSignal<HTMLElement>()
+  const { isHovered } = useHover(cardRef)
 
   const cardClasses = createMemo(() =>
     ['title-card', `title-card${isSelected() ? '--selected' : ''}`, 'aspect-cover'].join(' ')
@@ -43,29 +45,16 @@ const TitleCard: Component<TitleCardProps> = props => {
     return props.updateSelected(prev => prev.filter(item => item.id !== props.manga().id))
   }
 
-  const handleHover = (e: Event, pointerType: PointerType) => {
-    if (
-      pointerType === 'touch' ||
-      isHovered() ||
-      !(e.currentTarget as HTMLElement).contains(e.target as HTMLElement)
-    ) {
-      return
-    }
-
-    setIsHovered(true)
-  }
-
   const handleClick: JSX.EventHandler<HTMLAnchorElement, MouseEvent> = e => {
     if (!props.selectMode()) return e.stopPropagation()
     handleSelect()
   }
-
+  // TODO: add resume button
   return (
     <a
+      ref={setCardRef}
       href={`/manga/${props.manga().id}`}
       class={cardClasses()}
-      onPointerEnter={e => handleHover(e, e.pointerType as PointerType)}
-      onPointerLeave={() => setIsHovered(false)}
       onClick={handleClick}
       use:longPress={250}
       on:LongPressStart={() => props.updateSelectMode(true)}

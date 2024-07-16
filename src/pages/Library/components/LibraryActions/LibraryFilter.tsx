@@ -1,9 +1,9 @@
 import { Component, ErrorBoundary, For, type JSX, Show, createMemo, createSignal } from 'solid-js'
 import { Tabs } from '@kobalte/core/tabs'
+import { GlobalMeta } from '@/contexts'
 import { Dictionary, useAppContext, useGlobalMeta } from '@/contexts'
 import { AscRadio, CheckBox, Radio, TriStateInput } from '@/components'
 import { Display, Sort, TriState } from '@/enums'
-import { GlobalMeta } from '@/contexts/meta/globalMeta'
 
 interface ITabs {
   filters: {
