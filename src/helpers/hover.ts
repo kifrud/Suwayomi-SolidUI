@@ -6,11 +6,10 @@ type PointerType = HoverPointerType | 'touch' | 'keyboard' | 'virtual'
 /**
  * Function to listen to hover change
  *
- * @param el listening element (pass as signal)
+ * @param el listening element (must be signal)
  * @returns isHovered state as signal
  */
 export const useHover = (el: Accessor<HTMLElement | undefined>) => {
-  // TODO: make it available not only for signal ref
   const [isHovered, setIsHovered] = createSignal(false)
 
   const handleHover = (e: Event, pointerType: PointerType) => {
