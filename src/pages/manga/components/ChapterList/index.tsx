@@ -7,6 +7,7 @@ import ChapterListItem from './ChapterListItem'
 interface ChapterListProps {
   manga: TManga | undefined
   mangaMeta: MangaMeta
+  refetch: () => Promise<void>
 }
 
 const ChapterList: Component<ChapterListProps> = props => {
@@ -23,7 +24,9 @@ const ChapterList: Component<ChapterListProps> = props => {
       <span class="font-bold">{props.manga?.manga.chapters.totalCount}</span>
       <div class="flex flex-col gap-2">
         <For each={sortedChapters()}>
-          {chapter => <ChapterListItem chapter={chapter} manga={props.manga} />}
+          {chapter => (
+            <ChapterListItem chapter={chapter} manga={props.manga} refetch={props.refetch} />
+          )}
         </For>
       </div>
     </div>

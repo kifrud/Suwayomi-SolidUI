@@ -139,7 +139,7 @@ const Manga: Component = () => {
           <SideInfo manga={mangaData.data} isLoading={mangaData.isFetching} />
           <div class="flex flex-col w-full gap-2">
             <MangaInfo manga={mangaData.data} isLoading={mangaData.isFetching} />
-            <ChapterList manga={mangaData.data} mangaMeta={mangaMeta} />
+            <ChapterList manga={mangaData.data} mangaMeta={mangaMeta} refetch={fetchChapters} />
           </div>
         </div>
         <div class="flex flex-1 sticky top-[-2px] h-screen justify-end">

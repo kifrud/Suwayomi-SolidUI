@@ -11,7 +11,13 @@ import { MetaProvider } from '@solidjs/meta'
 import { ThemeProvider } from '@kifrud/solid-theme-provider'
 import themes from './themes.json'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 const Providers: ParentComponent = props => {
   return (
