@@ -7,14 +7,16 @@ import {
   createMemo,
   Accessor,
   onCleanup,
+  Show,
 } from 'solid-js'
 import { createQuery } from '@tanstack/solid-query'
 import { A, useParams } from '@solidjs/router'
 import { Title } from '@solidjs/meta'
+import { useWindowScrollPosition } from '@solid-primitives/scroll'
 import { Button } from '@/components'
 import { useAppContext, useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { getManga } from '@/gql/Queries'
-import { useNotification } from '@/helpers'
+import { matches, useNotification } from '@/helpers'
 import { fetchMangaChapters, fetchMangaInfo } from '@/gql/Mutations'
 import { ChapterList, MangaInfo, SideInfo } from './components'
 import { RoutePaths } from '@/enums'
@@ -48,6 +50,7 @@ const Manga: Component = () => {
   const client = useGraphQLClient()
   const headerCtx = useHeaderContext()
   const params = useParams()
+  const scroll = useWindowScrollPosition()
 
   const { mangaMeta: getMangaMeta } = useGlobalMeta()
 
@@ -124,32 +127,40 @@ const Manga: Component = () => {
         <div class="title__banner-shade" />
       </div>
       <div class="flex w-full">
-        <div class="flex-1">
-          <A
-            href={RoutePaths.library}
-            class={`${sideBtnClasses()} transition-all py-3 px-2 w-full justify-end`}
-          >
-            <span class="flex items-center">
-              <ArrowLeft />
-              {t('manga.button.toLibrary')}
-            </span>
-          </A>
-        </div>
+        <Show when={matches.md}>
+          <div class="flex-1">
+            <A
+              href={RoutePaths.library}
+              class={`${sideBtnClasses()} transition-all py-3 px-2 w-full justify-end`}
+            >
+              <span class="flex items-center">
+                <ArrowLeft />
+                {t('manga.button.toLibrary')}
+              </span>
+            </A>
+          </div>
+        </Show>
         <div class="title__content w-full">
-          <SideInfo manga={mangaData.data} isLoading={mangaData.isFetching} />
+          <Show when={matches.md}>
+            <SideInfo manga={mangaData.data} isLoading={mangaData.isFetching} />
+          </Show>
           <div class="flex flex-col w-full gap-2">
             <MangaInfo manga={mangaData.data} isLoading={mangaData.isFetching} />
             <ChapterList manga={mangaData.data} mangaMeta={mangaMeta} refetch={fetchChapters} />
           </div>
         </div>
-        <div class="flex flex-1 sticky top-[-2px] h-screen justify-end">
-          <Button class={`${sideBtnClasses()} items-end`} onClick={() => window.scrollTo(0, 0)}>
-            <span class="flex items-center">
-              <ArrowUp />
-              {t('manga.button.toDescription')}
-            </span>
-          </Button>
-        </div>
+        <Show when={matches.md}>
+          <div class="flex flex-1 w-full sticky top-[-2px] h-screen justify-end min-w-[142px] transition-all">
+            <Show when={scroll.y > 0}>
+              <Button class={`${sideBtnClasses()} items-end`} onClick={() => window.scrollTo(0, 0)}>
+                <span class="flex items-center">
+                  <ArrowUp />
+                  {t('manga.button.toDescription')}
+                </span>
+              </Button>
+            </Show>
+          </div>
+        </Show>
       </div>
     </div>
   )
