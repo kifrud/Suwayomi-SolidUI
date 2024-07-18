@@ -153,7 +153,9 @@ const SideInfo: Component<SideInfoProps> = props => {
                 </span>
                 <div class="flex flex-wrap gap-1 overflow-hidden max-h-64 hover:overflow-y-auto">
                   <For each={props.manga?.manga.genre}>
-                    {tag => <Chip class="title__tag bg-background-muted py-1">{tag}</Chip>}
+                    {tag => (
+                      <Chip class="title__tag !border-0 bg-background-muted py-1">{tag}</Chip>
+                    )}
                   </For>
                 </div>
               </div>

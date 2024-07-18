@@ -8,7 +8,7 @@
   --banner-height: 13.5rem;
   --navbar-height: 53px;
   --banner-overlay-gradient: linear-gradient(60deg, rgba(0, 0, 0, 0.64) 50%, transparent);
-  // padding: 0 16px;
+  padding: 0 8px;
   &__banner-wrp {
     display: block;
     position: absolute;
@@ -68,7 +68,15 @@
     text-shadow: rgba(0, 0, 0, 0.3) 1px 2px 4px;
   }
   &__tag {
+    cursor: pointer;
     text-shadow: rgba(0, 0, 0, 0.3) 1px 2px 4px;
+    border: 1px solid var(--stp-foreground_muted-alpha_tertiary);
+    height: fit-content;
+    width: fit-content;
+    white-space: nowrap;
+    &:hover {
+      border-color: var(--stp-foreground_muted);
+    }
   }
   &__show-description {
     background: linear-gradient(0deg, var(--stp-background) 0%, rgba(255, 255, 255, 0) 100%);

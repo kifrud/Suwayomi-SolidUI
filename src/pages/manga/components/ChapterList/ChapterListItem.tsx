@@ -28,7 +28,15 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
 
   const { isHovered } = useHover(ref)
 
-  const handleAction = async (action: ChapterActions) => {
+  const handleAction = async (
+    e: MouseEvent & {
+      currentTarget: HTMLButtonElement
+      target: Element
+    },
+    action: ChapterActions
+  ) => {
+    e.stopPropagation()
+    e.preventDefault()
     try {
       switch (action) {
         case 'bookmark':
@@ -74,12 +82,14 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
       ref={setRef}
       href={`${RoutePaths.manga}/${props.manga?.manga.id}${RoutePaths.chapter}/${props.chapter.id}`}
       class="flex justify-between transition-all p-2 hover:bg-background-muted rounded-lg"
-      classList={{
-        'opacity-50': props.chapter.isRead,
-        'opacity-100': !props.chapter.isRead,
-      }}
     >
-      <div class="flex flex-col justify-between">
+      <div
+        class="flex flex-col justify-between"
+        classList={{
+          'opacity-50': props.chapter.isRead,
+          'opacity-100': !props.chapter.isRead,
+        }}
+      >
         <span>{props.chapter.name}</span>
         <div class="flex gap-1">
           <span>#{props.chapter.sourceOrder}</span>
@@ -95,12 +105,12 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
             'opacity-0': !isHovered(),
           }}
         >
-          <Button class="hover:opacity-90 icon-18" onClick={() => handleAction('bookmark')}>
+          <Button class="hover:opacity-90 icon-18" onClick={e => handleAction(e, 'bookmark')}>
             <Show when={!props.chapter.isBookmarked} fallback={<RemoveBookmarkIcon />}>
               <AddBookmarkIcon />
             </Show>
           </Button>
-          <Button class="hover:opacity-90 icon-18" onClick={() => handleAction('read')}>
+          <Button class="hover:opacity-90 icon-18" onClick={e => handleAction(e, 'read')}>
             <Show when={!props.chapter.isRead} fallback={<UnreadIcon />}>
               <ReadIcon />
             </Show>
@@ -108,14 +118,14 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
           <Show when={props.chapter.sourceOrder > 1}>
             <Button
               class="hover:opacity-90 icon-18"
-              onClick={() => handleAction('markAsReadBefore')}
+              onClick={e => handleAction(e, 'markAsReadBefore')}
             >
               <ReadLowerIcon />
             </Button>
           </Show>
           <Button
             class="hover:opacity-90 icon-18"
-            onClick={() => handleAction(props.chapter.isDownloaded ? 'download' : 'delete')}
+            onClick={e => handleAction(e, props.chapter.isDownloaded ? 'download' : 'delete')}
           >
             <Show when={!props.chapter.isDownloaded} fallback={<DeleteIcon />}>
               <DownloadIcon />

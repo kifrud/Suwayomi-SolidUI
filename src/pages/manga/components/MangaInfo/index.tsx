@@ -32,6 +32,7 @@ const MangaInfo: Component<MangaInfoProps> = props => {
   )
 
   const computeFontSize = (title: string | undefined) => {
+    // TODO: there should be a better way
     if (!title) return 'text-base'
     if (title.length <= 10) return 'text-3xl'
     if (title.length <= 20) return 'text-2xl'
@@ -73,11 +74,6 @@ const MangaInfo: Component<MangaInfoProps> = props => {
                 {props.manga?.manga.title}
               </h1>
               <div class="flex flex-col gap-2">
-                <div class="flex gap-1 flex-wrap">
-                  <For each={props.manga?.manga.genre}>
-                    {tag => <Chip class="title__tag bg-background-muted-30 py-1">{tag}</Chip>}
-                  </For>
-                </div>
                 <span class={personClasses()}>
                   <AuthorIcon />
                   {props.manga?.manga.author}
@@ -95,6 +91,13 @@ const MangaInfo: Component<MangaInfoProps> = props => {
               </div>
             </div>
             <div class="w-full text-xs xs:text-sm md:text-base whitespace-pre-line relative">
+              <div class="flex gap-1 flex-wrap">
+                <For each={props.manga?.manga.genre}>
+                  {tag => (
+                    <Chip class="title__tag transition-all bg-background-muted-30">{tag}</Chip>
+                  )}
+                </For>
+              </div>
               <p class={descriptionClasses()}>
                 {/* TODO: animate */}
                 {props.manga?.manga.description}
