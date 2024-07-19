@@ -32,6 +32,7 @@ import CancelledIcon from '~icons/material-symbols/cancel-outline'
 import HiatusIcon from '~icons/material-symbols/pause'
 import RefreshIcon from '~icons/material-symbols/refresh'
 import './styles.scss'
+import { ResultOf } from '@/gql'
 
 type MangaStatus = TManga['manga']['status']
 
@@ -69,25 +70,26 @@ const Manga: Component = () => {
     ].join(' ')
   )
 
-  const mangaData = createQuery(() => ({
-    queryKey: ['manga'],
-    queryFn: async () => {
-      return (
-        await client.query(
-          getManga,
-          { id: Number(params.id) },
-          { requestPolicy: 'cache-and-network' }
-        )
-      ).data
-    },
-    refetchOnWindowFocus: false,
-  }))
+  // const mangaData = createQuery(() => ({
+  //   queryKey: ['manga', params.id],
+  //   queryFn: async () => {
+  //     return (
+  //       await client.query(getManga, { id: Number(params.id) }, { requestPolicy: 'network-only' })
+  //     ).data
+  //   },
+  //   refetchOnWindowFocus: false,
+  // }))
+
+  const [manga, setManga] = createSignal<ResultOf<typeof getManga> | undefined>()
+
+  const { unsubscribe } = client
+    .query(getManga, { id: Number(params.id) }, { requestPolicy: 'cache-and-network' })
+    .subscribe(res => setManga(res.data))
 
   const fetchChapters = async () => {
     try {
       await client.mutation(fetchMangaInfo, { id: Number(params.id) })
       await client.mutation(fetchMangaChapters, { id: Number(params.id) })
-      mangaData.refetch()
     } catch (error) {
       useNotification('error', { message: error })
     }
@@ -102,17 +104,18 @@ const Manga: Component = () => {
   })
 
   createEffect(() => {
-    setMetaTitle(mangaData.data?.manga.title)
-    headerCtx.setHeaderTitle(<h1>{mangaData.data?.manga.title}</h1>)
+    setMetaTitle(manga()?.manga.title)
+    headerCtx.setHeaderTitle(<h1>{manga()?.manga.title}</h1>)
   })
 
   createEffect(() => {
-    if (mangaData.data?.manga.lastFetchedAt === '0') {
+    if (manga()?.manga.lastFetchedAt === '0') {
       fetchChapters()
     }
   })
 
   onCleanup(() => {
+    unsubscribe()
     headerCtx.clear()
   })
 
@@ -122,7 +125,7 @@ const Manga: Component = () => {
       <div class="title__banner-wrp">
         <div
           class="title__banner"
-          style={{ 'background-image': `url(${mangaData.data?.manga.thumbnailUrl})` }}
+          style={{ 'background-image': `url(${manga()?.manga.thumbnailUrl})` }}
         />
         <div class="title__banner-shade" />
       </div>
@@ -142,11 +145,11 @@ const Manga: Component = () => {
         </Show>
         <div class="title__content w-full">
           <Show when={matches.md}>
-            <SideInfo manga={mangaData.data} isLoading={mangaData.isFetching} />
+            <SideInfo manga={manga()} isLoading={!manga()} />
           </Show>
           <div class="flex flex-col w-full gap-2">
-            <MangaInfo manga={mangaData.data} isLoading={mangaData.isFetching} />
-            <ChapterList manga={mangaData.data} mangaMeta={mangaMeta} refetch={fetchChapters} />
+            <MangaInfo manga={manga()} isLoading={!manga()} />
+            <ChapterList manga={manga()} mangaMeta={mangaMeta} refetch={fetchChapters} />
           </div>
         </div>
         <Show when={matches.md}>

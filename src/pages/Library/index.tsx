@@ -32,7 +32,7 @@ const Library: Component = () => {
   const { globalMeta } = useGlobalMeta()
   const headerCtx = useHeaderContext()
   const client = useGraphQLClient()
-
+  // FIXME: Query data cannot be undefined. Please make sure to return a value other than undefined from your query function.
   const categories = createQuery(() => ({
     queryKey: ['categories'],
     queryFn: async () =>
