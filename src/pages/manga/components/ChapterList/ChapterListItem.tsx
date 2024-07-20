@@ -84,20 +84,20 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
       class="flex justify-between transition-all p-2 hover:bg-background-muted rounded-lg"
     >
       <div
-        class="flex flex-col justify-between"
+        class="flex flex-col justify-between text-sm md:text-base leading-4"
         classList={{
           'opacity-50': props.chapter.isRead,
           'opacity-100': !props.chapter.isRead,
         }}
       >
         <span>{props.chapter.name}</span>
-        <div class="flex gap-1">
-          <span>#{props.chapter.sourceOrder}</span>
-          <span>{new Date(+props.chapter.uploadDate).toLocaleDateString()}</span>
+        <div class="flex items-center gap-1">
+          <span>#{props.chapter.sourceOrder}</span>•
+          <span>{new Date(+props.chapter.uploadDate).toLocaleDateString()}</span>•
           <span>{props.chapter.scanlator}</span>
         </div>
       </div>
-      <div class="flex items-start">
+      <div class="hidden md:flex items-start">
         <div
           class="flex transition-all"
           classList={{
