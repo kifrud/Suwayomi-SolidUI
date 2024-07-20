@@ -1,14 +1,15 @@
 import { Component, For, Show, createMemo, createSignal } from 'solid-js'
 import { writeClipboard } from '@solid-primitives/clipboard'
-import { Button, Chip, Skeleton } from '@/components'
+import { Button, Chip, Skeleton, Image } from '@/components'
 import { Dictionary, useAppContext } from '@/contexts'
-import { useNotification } from '@/helpers'
+import { matches, useNotification } from '@/helpers'
 import { TManga } from '@/types'
 import { statusIcons } from '../..'
 import ChevronDown from '~icons/material-symbols/keyboard-arrow-down-rounded'
 import ChevronUp from '~icons/material-symbols/keyboard-arrow-up-rounded'
 import AuthorIcon from '~icons/material-symbols/person-outline'
 import Artisticon from '~icons/material-symbols/brush'
+import ImageView from '../ImageView'
 
 interface MangaInfoProps {
   manga: TManga | undefined
@@ -21,7 +22,15 @@ const MangaInfo: Component<MangaInfoProps> = props => {
   const [showDescription, setShowDescription] = createSignal(false)
 
   const personClasses = createMemo(() =>
-    ['opacity-80', 'hover:opacity-100', 'transition-all', 'flex', 'items-center'].join(' ')
+    [
+      'opacity-80',
+      'hover:opacity-100',
+      'transition-all',
+      'flex',
+      'items-center',
+      'text-sm',
+      'md:text-base',
+    ].join(' ')
   )
   const descriptionClasses = createMemo(
     () => `overflow-hidden text-ellipsis ${showDescription() ? 'max-h-auto' : 'max-h-[100px]'}`
@@ -63,31 +72,39 @@ const MangaInfo: Component<MangaInfoProps> = props => {
       <Show when={props.manga?.manga}>
         <div class="title__header">
           <div class="flex flex-col flex-1 gap-2">
-            <div class="title__headline-wrp">
-              <h1
-                class={`title__headline cursor-pointer ${computeFontSize(props.manga?.manga.title)}`}
-                on:click={() => {
-                  writeClipboard(props.manga?.manga.title!)
-                  useNotification('info', { message: 'Copied title' })
-                }}
-              >
-                {props.manga?.manga.title}
-              </h1>
-              <div class="flex flex-col gap-2">
-                <span class={personClasses()}>
-                  <AuthorIcon />
-                  {props.manga?.manga.author}
-                </span>
-                <span class={personClasses()}>
-                  <Artisticon />
-                  {props.manga?.manga.artist}
-                </span>
-                <span class={personClasses()}>
-                  {statusIcons()[props.manga?.manga.status!]}
-                  {
-                    t(`manga.status.${props.manga!.manga.status!}` as keyof Dictionary) as string
-                  } • {props.manga?.manga.source?.displayName}
-                </span>
+            <div class="flex gap-2 md:block">
+              <Show when={!matches.md}>
+                <ImageView src={props.manga!.manga.thumbnailUrl!} />
+              </Show>
+              <div class="title__headline-wrp">
+                <h1
+                  class={`title__headline cursor-pointer ${computeFontSize(props.manga?.manga.title)}`}
+                  on:click={() => {
+                    writeClipboard(props.manga?.manga.title!)
+                    useNotification('info', { message: 'Copied title' })
+                  }}
+                >
+                  {props.manga?.manga.title}
+                </h1>
+                <div class="flex flex-col gap-1">
+                  <span class={personClasses()}>
+                    <AuthorIcon />
+                    {props.manga?.manga.author}
+                  </span>
+                  <Show when={props.manga?.manga.artist}>
+                    <span class={personClasses()}>
+                      <Artisticon />
+                      {props.manga?.manga.artist}
+                    </span>
+                  </Show>
+                  <span class={`${personClasses()} whitespace-nowrap`}>
+                    {statusIcons()[props.manga?.manga.status!]}
+                    {
+                      t(`manga.status.${props.manga!.manga.status!}` as keyof Dictionary) as string
+                    }{' '}
+                    • {props.manga?.manga.source?.displayName}
+                  </span>
+                </div>
               </div>
             </div>
             <div class="w-full text-xs xs:text-sm md:text-base whitespace-pre-line relative">

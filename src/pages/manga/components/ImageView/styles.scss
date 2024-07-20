@@ -1,0 +1,59 @@
+.imageview {
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgb(0 0 0 / 0.2);
+    animation: overlayHide 250ms ease 100ms forwards;
+  }
+  &__overlay[data-expanded] {
+    animation: overlayShow 250ms ease;
+  }
+  &__position {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__content {
+    z-index: 50;
+    border-radius: 6px;
+    padding: 16px;
+    max-height: 100vh;
+    animation: contentHide 300ms ease-in forwards;
+  }
+  &__content[data-expanded] {
+    animation: contentShow 300ms ease-out;
+  }
+  &__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  &__close-button {
+    transition: all 0.15s;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlayHide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

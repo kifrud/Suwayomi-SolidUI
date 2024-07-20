@@ -9,12 +9,12 @@ import {
   onCleanup,
   Show,
 } from 'solid-js'
-import { createQuery } from '@tanstack/solid-query'
 import { A, useParams } from '@solidjs/router'
 import { Title } from '@solidjs/meta'
 import { useWindowScrollPosition } from '@solid-primitives/scroll'
 import { Button } from '@/components'
 import { useAppContext, useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
+import { ResultOf } from '@/gql'
 import { getManga } from '@/gql/Queries'
 import { matches, useNotification } from '@/helpers'
 import { fetchMangaChapters, fetchMangaInfo } from '@/gql/Mutations'
@@ -32,7 +32,6 @@ import CancelledIcon from '~icons/material-symbols/cancel-outline'
 import HiatusIcon from '~icons/material-symbols/pause'
 import RefreshIcon from '~icons/material-symbols/refresh'
 import './styles.scss'
-import { ResultOf } from '@/gql'
 
 type MangaStatus = TManga['manga']['status']
 
@@ -70,18 +69,7 @@ const Manga: Component = () => {
     ].join(' ')
   )
 
-  // const mangaData = createQuery(() => ({
-  //   queryKey: ['manga', params.id],
-  //   queryFn: async () => {
-  //     return (
-  //       await client.query(getManga, { id: Number(params.id) }, { requestPolicy: 'network-only' })
-  //     ).data
-  //   },
-  //   refetchOnWindowFocus: false,
-  // }))
-
   const [manga, setManga] = createSignal<ResultOf<typeof getManga> | undefined>()
-
   const { unsubscribe } = client
     .query(getManga, { id: Number(params.id) }, { requestPolicy: 'cache-and-network' })
     .subscribe(res => setManga(res.data))
@@ -105,7 +93,7 @@ const Manga: Component = () => {
 
   createEffect(() => {
     setMetaTitle(manga()?.manga.title)
-    headerCtx.setHeaderTitle(<h1>{manga()?.manga.title}</h1>)
+    headerCtx.setHeaderTitle(<h1 class='truncate text-lg'>{manga()?.manga.title}</h1>)
   })
 
   createEffect(() => {
@@ -130,7 +118,7 @@ const Manga: Component = () => {
         <div class="title__banner-shade" />
       </div>
       <div class="flex w-full">
-        <Show when={matches.md}>
+        <Show when={matches.lg}>
           <div class="flex-1">
             <A
               href={RoutePaths.library}
@@ -152,7 +140,7 @@ const Manga: Component = () => {
             <ChapterList manga={manga()} mangaMeta={mangaMeta} refetch={fetchChapters} />
           </div>
         </div>
-        <Show when={matches.md}>
+        <Show when={matches.lg}>
           <div class="flex flex-1 w-full sticky top-[-2px] h-screen justify-end min-w-[142px] transition-all">
             <Show when={scroll.y > 0}>
               <Button class={`${sideBtnClasses()} items-end`} onClick={() => window.scrollTo(0, 0)}>

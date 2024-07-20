@@ -15,6 +15,7 @@ import TagIcon from '~icons/material-symbols/tag'
 import SourceIcon from '~icons/material-symbols/public'
 import TrackIcon from '~icons/material-symbols/sync'
 import './styles.scss'
+import ImageView from '../ImageView'
 
 interface SideInfoProps {
   manga: TManga | undefined
@@ -84,12 +85,7 @@ const SideInfo: Component<SideInfoProps> = props => {
             mangaIds={[props.manga!.manga.id]}
             onSubmit={selected => toggleLibraryState(true, selected)}
           />
-          <Image
-            src={props.manga!.manga.thumbnailUrl!}
-            alt="Cover"
-            wrapperClasses="max-w-[200px] relative"
-            class="object-cover w-full h-auto max-w-[200px]"
-          />
+          <ImageView src={props.manga?.manga.thumbnailUrl} />
           <div class="flex flex-col gap-2">
             <Button
               class="w-full hover:bg-transparent flex items-center justify-center gap-1"

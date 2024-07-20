@@ -29,7 +29,7 @@ const Header: Component = () => {
   return (
     <header class="header">
       <Title>{routeData() ? t(`global.nav.${routeData()!.name}`) : 'Suwayomi'}</Title>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 truncate">
         <Show when={ctx.headerTitle} fallback={defaultTitle()}>
           {ctx.headerTitle}
         </Show>

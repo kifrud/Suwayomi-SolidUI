@@ -1,0 +1,54 @@
+import { Component, ParentComponent, Show, createSignal } from 'solid-js'
+import { Dialog } from '@kobalte/core/dialog'
+import { Image } from '@/components'
+import CloseIcon from '~icons/material-symbols/close-rounded'
+import SaveIcon from '~icons/material-symbols/save'
+import './styles.scss'
+
+interface ImageViewProps {
+  src: string | undefined | null
+}
+
+const ImageView: Component<ImageViewProps> = props => {
+  return (
+    <Dialog>
+      <Dialog.Trigger>
+        <Image
+          src={props.src}
+          alt="Cover"
+          wrapperClasses="max-w-[200px] relative h-full"
+          class="flex object-cover w-full h-auto max-w-[200px]"
+        />
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <div class="imageview__position">
+          <Dialog.Overlay class="imageview__overlay" />
+          <Dialog.Content class="imageview__content">
+            <div class="imageview__header icon-32">
+              <Dialog.Title>
+                <a href={props.src as string} download="cover">
+                  <SaveIcon />
+                </a>
+              </Dialog.Title>
+              <Dialog.CloseButton class="imageview__close-button">
+                <CloseIcon />
+              </Dialog.CloseButton>
+            </div>
+            <Dialog.Description>
+              <Dialog.CloseButton>
+                <Image
+                  src={props.src}
+                  alt="Cover"
+                  class="object-cover h-full max-h-[90vh]"
+                  rounded="none"
+                />
+              </Dialog.CloseButton>
+            </Dialog.Description>
+          </Dialog.Content>
+        </div>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+
+export default ImageView
