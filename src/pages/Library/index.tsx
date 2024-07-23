@@ -1,7 +1,6 @@
 import {
   Component,
   For,
-  type JSX,
   Show,
   createEffect,
   createMemo,
@@ -14,8 +13,8 @@ import { useSearchParams } from '@solidjs/router'
 import { createQuery } from '@tanstack/solid-query'
 import { useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { getCategories, getCategory } from '@/gql/Queries'
-import { Chip, SearchBar, Skeleton } from '@/components'
-import { filterManga, matches, sortManga } from '@/helpers'
+import { Chip, SearchBar, Skeleton, Transition } from '@/components'
+import { filterManga, matches, sortManga, useOutside } from '@/helpers'
 import { Mangas } from '@/types'
 import {
   CategoriesTabs,
@@ -23,7 +22,6 @@ import {
   LibraryFilter,
   SelectionActions,
   TitlesList,
-  Transition,
 } from './components'
 import CloseIcon from '~icons/material-symbols/close-rounded'
 import './styles.scss'
@@ -89,6 +87,8 @@ const Library: Component = () => {
     </Show>
   )
 
+  const [btnRef, setBtnRef] = createSignal<HTMLButtonElement>()
+  // if we use `let btnRef!: HTMLButtonElement` it won't forward
   const actionsEl = (
     <LibraryActions
       selectMode={selectMode}
@@ -97,6 +97,7 @@ const Library: Component = () => {
       updateSelected={setSelected}
       updateShowFilter={setShowFilters}
       mangas={mangas()}
+      filtersButtonRef={setBtnRef}
     />
   )
 
@@ -123,10 +124,15 @@ const Library: Component = () => {
       <span>{selected.length}</span>
     </>
   )
+  let filtersRef!: HTMLDivElement
 
   onMount(() => {
     headerCtx.setHeaderCenter(searchEl)
     headerCtx.setHeaderEnd(actionsEl)
+    useOutside(filtersRef, () => {
+      if (!showFilters()) return
+      setShowFilters(false)
+    }, [btnRef()!])
   })
 
   createEffect(() => {
@@ -156,13 +162,6 @@ const Library: Component = () => {
     </div>
   )
 
-  const handleWrapperClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = e => {
-    e.stopPropagation()
-    e.preventDefault()
-    if (!showFilters()) return
-
-    setShowFilters(false)
-  }
   // TODO: wrap in <ErrorBoundary>
   return (
     <>
@@ -180,11 +179,7 @@ const Library: Component = () => {
             />
           </Show>
         </Show>
-        <div
-          class="transition-all"
-          classList={{ 'h-full library--darker': showFilters() }}
-          onClick={handleWrapperClick}
-        >
+        <div class="transition-all" classList={{ 'h-full library--darker': showFilters() }}>
           <TitlesList
             selectMode={selectMode}
             updateSelectMode={setSelectMode}
@@ -198,11 +193,13 @@ const Library: Component = () => {
           />
         </div>
       </div>
-      <Transition>
-        <Show when={showFilters()}>
-          <LibraryFilter />
-        </Show>
-      </Transition>
+      <div ref={filtersRef}>
+        <Transition>
+          <Show when={showFilters()}>
+            <LibraryFilter />
+          </Show>
+        </Transition>
+      </div>
     </>
   )
 }

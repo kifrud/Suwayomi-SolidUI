@@ -7,7 +7,7 @@ interface ButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: ParentComponent<ButtonProps> = props => {
-  const [unique, rest] = splitProps(props, ['scheme', 'class'])
+  const [unique, rest] = splitProps(props, ['scheme', 'class', 'ref'])
 
   const scheme = createMemo(() => (unique.scheme ? unique.scheme : 'default'))
 
@@ -22,7 +22,7 @@ const Button: ParentComponent<ButtonProps> = props => {
   )
 
   return (
-    <button class={btnClasses()} {...rest}>
+    <button class={btnClasses()} ref={unique.ref} {...rest}>
       {props.children}
     </button>
   )

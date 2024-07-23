@@ -1,0 +1,13 @@
+.manga-actions {
+  position: fixed;
+  right: 0;
+  z-index: 40;
+  height: calc(100% - var(--header-height));
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  // margin-top: calc(var(--categories-tabs-height) - 1px);
+  background: var(--stp-background_muted);
+  min-width: 300px;
+  max-width: 300px;
+}

@@ -1,4 +1,13 @@
-import { Component, ErrorBoundary, For, type JSX, Show, createMemo, createSignal } from 'solid-js'
+import {
+  Component,
+  ErrorBoundary,
+  For,
+  type JSX,
+  Show,
+  createMemo,
+  createSignal,
+  Ref,
+} from 'solid-js'
 import { Tabs } from '@kobalte/core/tabs'
 import { GlobalMeta } from '@/contexts'
 import { Dictionary, useAppContext, useGlobalMeta } from '@/contexts'
@@ -32,7 +41,7 @@ interface ITabs {
   }
 }
 
-export const LibraryFilter: Component = () => {
+export const LibraryFilter: Component<{ ref?: Ref<HTMLDivElement> }> = props => {
   const { t } = useAppContext()
   const metaCtx = useGlobalMeta()
 
@@ -161,7 +170,7 @@ export const LibraryFilter: Component = () => {
   const [tab, setTab] = createSignal(Object.keys(tabs)[0])
 
   return (
-    <div class="library-filters">
+    <div class="library-filters" ref={props.ref}>
       <Tabs value={tab()} onChange={setTab} class="flex flex-col h-full gap-2">
         <Tabs.List class="flex items-center relative justify-between">
           <For each={Object.keys(tabs)}>
