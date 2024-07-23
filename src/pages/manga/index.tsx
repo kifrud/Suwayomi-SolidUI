@@ -12,13 +12,13 @@ import {
 import { A, useParams } from '@solidjs/router'
 import { Title } from '@solidjs/meta'
 import { useWindowScrollPosition } from '@solid-primitives/scroll'
-import { Button } from '@/components'
+import { Button, Transition } from '@/components'
 import { useAppContext, useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { ResultOf } from '@/gql'
 import { getManga } from '@/gql/Queries'
 import { matches, useNotification } from '@/helpers'
 import { fetchMangaChapters, fetchMangaInfo } from '@/gql/Mutations'
-import { ChapterList, MangaInfo, SideInfo } from './components'
+import { ChapterList, MangaActions, MangaFilters, MangaInfo, SideInfo } from './components'
 import { RoutePaths } from '@/enums'
 import { TManga } from '@/types'
 import ArrowUp from '~icons/material-symbols/arrow-upward-alt-rounded'
@@ -30,7 +30,6 @@ import LicenseIcon from '~icons/material-symbols/license'
 import PublishingFinishedIcon from '~icons/material-symbols/done'
 import CancelledIcon from '~icons/material-symbols/cancel-outline'
 import HiatusIcon from '~icons/material-symbols/pause'
-import RefreshIcon from '~icons/material-symbols/refresh'
 import './styles.scss'
 
 type MangaStatus = TManga['manga']['status']
@@ -44,7 +43,7 @@ export const statusIcons: Accessor<Record<MangaStatus, JSX.Element>> = () => ({
   CANCELLED: <CancelledIcon />,
   ON_HIATUS: <HiatusIcon />,
 })
-
+// TODO: add selection for chapters
 const Manga: Component = () => {
   const { t } = useAppContext()
   const client = useGraphQLClient()
@@ -57,6 +56,7 @@ const Manga: Component = () => {
   const { mangaMeta } = getMangaMeta(Number(params.id))
 
   const [metaTitle, setMetaTitle] = createSignal<JSX.Element>()
+  const [showFilters, setShowFilters] = createSignal(false)
 
   const sideBtnClasses = createMemo(() =>
     [
@@ -85,15 +85,13 @@ const Manga: Component = () => {
 
   onMount(() => {
     headerCtx.setHeaderEnd(
-      <Button onClick={fetchChapters}>
-        <RefreshIcon />
-      </Button>
+      <MangaActions refresh={fetchChapters} updateShowFilter={setShowFilters} />
     )
   })
 
   createEffect(() => {
     setMetaTitle(manga()?.manga.title)
-    headerCtx.setHeaderTitle(<h1 class='truncate text-lg'>{manga()?.manga.title}</h1>)
+    headerCtx.setHeaderTitle(<h1 class="truncate text-lg">{manga()?.manga.title}</h1>)
   })
 
   createEffect(() => {
@@ -152,6 +150,13 @@ const Manga: Component = () => {
             </Show>
           </div>
         </Show>
+        <div>
+          <Transition>
+            <Show when={showFilters()}>
+              <MangaFilters />
+            </Show>
+          </Transition>
+        </div>
       </div>
     </div>
   )

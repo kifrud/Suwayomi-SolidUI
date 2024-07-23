@@ -1,7 +1,7 @@
 import { resolveFirst } from '@solid-primitives/refs'
 import { createSwitchTransition } from '@solid-primitives/transition-group'
 import { ParentComponent } from 'solid-js'
-
+// TODO: improve
 const Transition: ParentComponent = props => {
   const animationMap = new Map<Element, Animation>()
 

@@ -1,4 +1,4 @@
-import { Accessor, Component, Setter, Show } from 'solid-js'
+import { Accessor, Component, Ref, Setter, Show } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
 import { Button, SearchBar, UpdateCheck } from '@/components'
 import { matches } from '@/helpers'
@@ -16,6 +16,7 @@ interface LibraryActionsProps {
   selected: NonNullable<Mangas>
   updateSelected: SetStoreFunction<NonNullable<Mangas>>
   mangas: Mangas
+  filtersButtonRef: Ref<HTMLButtonElement>
 }
 
 export const LibraryActions: Component<LibraryActionsProps> = props => {
@@ -56,7 +57,7 @@ export const LibraryActions: Component<LibraryActionsProps> = props => {
         </Show>
         <UpdateCheck />
       </Show>
-      <Button onClick={() => props.updateShowFilter(prev => !prev)}>
+      <Button ref={props.filtersButtonRef} onClick={() => props.updateShowFilter(prev => !prev)}>
         <FiltersIcon />
       </Button>
     </>
