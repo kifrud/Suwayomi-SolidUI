@@ -24,6 +24,10 @@ path {
     background: var(--stp-background_muted);
   }
 
+  .bg-background-active {
+    background: var(--stp-background_active);
+  }
+
   .bg-background-muted-30 {
     background: var(--stp-background_muted-alpha_tertiary);
   }
@@ -34,6 +38,10 @@ path {
 
   .bg-foreground-muted {
     background: var(--stp-foreground_muted);
+  }
+
+  .bg-foreground-muted-30 {
+    background: var(--stp-foreground_muted-alpha_tertiary);
   }
 
   .bg-active {
