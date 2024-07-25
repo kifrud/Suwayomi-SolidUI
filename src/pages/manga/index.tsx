@@ -18,7 +18,7 @@ import { ResultOf } from '@/gql'
 import { getManga } from '@/gql/Queries'
 import { matches, useNotification } from '@/helpers'
 import { fetchMangaChapters, fetchMangaInfo } from '@/gql/Mutations'
-import { ChapterList, MangaActions, MangaFilters, MangaInfo, SideInfo } from './components'
+import { ChapterList, MangaActions, MangaFilter, MangaInfo, SideInfo } from './components'
 import { RoutePaths } from '@/enums'
 import { TManga } from '@/types'
 import ArrowUp from '~icons/material-symbols/arrow-upward-alt-rounded'
@@ -53,7 +53,7 @@ const Manga: Component = () => {
 
   const { mangaMeta: getMangaMeta } = useGlobalMeta()
 
-  const { mangaMeta } = getMangaMeta(Number(params.id))
+  const { mangaMeta, set } = getMangaMeta(Number(params.id))
 
   const [metaTitle, setMetaTitle] = createSignal<JSX.Element>()
   const [showFilters, setShowFilters] = createSignal(false)
@@ -85,7 +85,7 @@ const Manga: Component = () => {
 
   onMount(() => {
     headerCtx.setHeaderEnd(
-      <MangaActions refresh={fetchChapters} updateShowFilter={setShowFilters} />
+      <MangaActions refresh={fetchChapters} updateShowFilter={setShowFilters} manga={manga()} />
     )
   })
 
@@ -153,7 +153,7 @@ const Manga: Component = () => {
         <div>
           <Transition>
             <Show when={showFilters()}>
-              <MangaFilters />
+              <MangaFilter mangaMeta={mangaMeta} updateMangaMeta={set} />
             </Show>
           </Transition>
         </div>

@@ -17,8 +17,8 @@ import { Display, Sort, TriState } from '@/enums'
 interface ITabs {
   filters: {
     unread: JSX.Element
-    bookmarked: JSX.Element
     downloaded: JSX.Element
+    bookmarked: JSX.Element
     tracked: JSX.Element
   }
   sort: {
@@ -78,7 +78,7 @@ export const LibraryFilter: Component<{ ref?: Ref<HTMLDivElement> }> = props => 
       Object.entries(Sort).map(([key, value]) => [
         key,
         <AscRadio
-          label={key}
+          label={t(`library.filterTabs.sort.${value}`)}
           updateValue={v => metaCtx.set({ Sort: v as Sort })}
           ascending={metaCtx.globalMeta.Asc}
           updateAscending={v => metaCtx.set({ Asc: v })}

@@ -9,7 +9,7 @@ interface ChapterListProps {
   mangaMeta: MangaMeta
   refetch: () => Promise<void>
 }
-
+// TODO: virtualize & add placeholder
 const ChapterList: Component<ChapterListProps> = props => {
   const filteredChapters = createMemo(() =>
     props.manga?.manga.chapters.nodes.filter(ch => filterChapters(ch, props.mangaMeta))
