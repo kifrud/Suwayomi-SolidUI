@@ -133,7 +133,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
             <DeleteIcon />
           </Button>
         }
-        content={t('library.selection.delete', { count: props.selected.length })}
+        content={t('global.selection.delete', { count: props.selected.length })}
       />
       <Tooltip
         showArrow
@@ -142,7 +142,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
             <CategoryIcon />
           </Button>
         }
-        content={t('library.selection.category')}
+        content={t('global.selection.category')}
       />
       <Show when={!!state().downloadableMangas}>
         <Tooltip
@@ -152,7 +152,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
               <DownloadIcon />
             </Button>
           }
-          content={t('library.selection.download')}
+          content={t('global.selection.download')}
         />
       </Show>
       <Show when={!!state().unreadMangas.length}>
@@ -163,7 +163,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
               <ReadIcon />
             </Button>
           }
-          content={t('library.selection.markAsRead', { count: props.selected.length })}
+          content={t('global.selection.markAsRead', { count: props.selected.length })}
         />
       </Show>
       <Show when={!!state().readMangas.length}>
@@ -174,7 +174,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
               <UnreadIcon />
             </Button>
           }
-          content={t('library.selection.markAsUnread', { count: props.selected.length })}
+          content={t('global.selection.markAsUnread', { count: props.selected.length })}
         />
       </Show>
     </>

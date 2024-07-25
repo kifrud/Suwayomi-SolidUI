@@ -1,14 +1,20 @@
 {
   "filterTabs": {
     "filters": {
-      "name": "Filters",
+      "name": "Filter",
       "unread": "Unread",
       "downloaded": "Downloaded",
       "bookmarked": "Bookmarked",
       "tracked": "Tracked"
     },
     "sort": {
-      "name": "Sort"
+      "name": "Sort",
+      "unreadSort": "Unread",
+      "alphabetical": "Alphabetical",
+      "id": "ID",
+      "latestRead": "Latest read",
+      "latestFetched": "Latest fetched",
+      "latestUploaded": "Latest uploaded"
     },
     "display": {
       "name": "Display",
@@ -32,13 +38,6 @@
         "resumeButton": "Show resume button"
       }
     }
-  },
-  "selection": {
-    "delete": "Delete {{ count }} items",
-    "category": "Change category",
-    "download": "Download unread chapters",
-    "markAsRead": "Mark as read {{ count }} items",
-    "markAsUnread": "Mark as unread {{ count }} items"
   },
   "modal": {
     "edit_category": "Edit categories",

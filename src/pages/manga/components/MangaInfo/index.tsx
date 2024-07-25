@@ -81,7 +81,7 @@ const MangaInfo: Component<MangaInfoProps> = props => {
                   class={`title__headline cursor-pointer ${computeFontSize(props.manga?.manga.title)}`}
                   on:click={() => {
                     writeClipboard(props.manga?.manga.title!)
-                    useNotification('info', { message: 'Copied title' })
+                    useNotification('info', { message: 'global.copied' })
                   }}
                 >
                   {props.manga?.manga.title}
