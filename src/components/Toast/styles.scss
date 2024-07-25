@@ -77,7 +77,7 @@
     left: 0;
     height: 3px;
     width: 100%;
-    border-radius: 0 0 3px 3px;
+    // border-radius: 0 0 3px 3px;
     z-index: 1000;
     // .toast--success & {
     //   background-color: var(--stp-success);
@@ -96,7 +96,7 @@
     // }
   }
   &__progress-fill {
-    border-radius: 0 0 3px 3px;
+    // border-radius: 0 0 3px 3px;
     height: 100%;
     width: var(--kb-toast-progress-fill-width);
     transition: width 250ms linear;
