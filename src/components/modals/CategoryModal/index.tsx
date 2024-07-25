@@ -1,4 +1,4 @@
-import { Component, createSignal, createResource, For } from 'solid-js'
+import { Component, createSignal, createResource, For, createEffect } from 'solid-js'
 import { Button, CheckBox, Modal } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
 import { updateMangasCategories } from '@/gql/Mutations'
@@ -14,7 +14,7 @@ interface CategoryModalProps {
   onOpenChange: (isOpen: boolean) => void
   mangaIds: number[]
 }
-
+// TODO: add indeterminate state if some mangas included in category and some not
 const CategoryModal: Component<CategoryModalProps> = props => {
   const { t } = useAppContext()
   const client = useGraphQLClient()
@@ -22,6 +22,18 @@ const CategoryModal: Component<CategoryModalProps> = props => {
   const [selectedCategories, setSelectedCategories] = createSignal<number[]>([])
 
   const [categories] = createResource(async () => await client.query(getCategories, {}).toPromise())
+
+  createEffect(() => {
+    if (categories.latest?.data?.categories.nodes) {
+      setSelectedCategories(
+        categories.latest.data.categories.nodes
+          .filter(category =>
+            category.mangas.nodes.some(manga => props.mangaIds.includes(manga.id))
+          )
+          .map(category => category.id)
+      )
+    }
+  })
 
   const handleClose = (isOpen: boolean) => {
     if (isOpen && props.onClose) props.onClose()
