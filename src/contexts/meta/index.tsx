@@ -1,6 +1,7 @@
 import { makePersisted } from '@solid-primitives/storage'
 import { ParentComponent, createContext, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
+import { getObjectEntries, getObjectKeys } from '@/helpers'
 import { ResultOf, client } from '@/gql'
 import { getManga, metas } from '@/gql/Queries'
 import { OperationResult } from '@urql/core'
@@ -14,14 +15,6 @@ interface GlobalMetaState {
     set: (value: Partial<MangaMeta>) => void
   }
   set(value: Partial<GlobalMeta>): void
-}
-
-export function getObjectKeys<T extends object>(obj: T): (keyof T)[] {
-  return Object.keys(obj) as (keyof T)[]
-}
-
-export function getObjectEntries<T extends object>(obj: T): [keyof T, T[keyof T]][] {
-  return Object.entries(obj) as [keyof T, T[keyof T]][]
 }
 
 const GlobalMetaContext = createContext<GlobalMetaState>({} as GlobalMetaState)
