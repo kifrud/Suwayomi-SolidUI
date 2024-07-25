@@ -71,7 +71,6 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
           await client.mutation(deleteDownloadedChapter, { id: props.chapter.id }).toPromise()
           break
       }
-      // props.refetch()
     } catch (error) {
       useNotification('error', { message: error })
     }

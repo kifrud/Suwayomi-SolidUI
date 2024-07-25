@@ -2800,6 +2800,11 @@ validate-html-nesting@^1.2.1:
   resolved "https://registry.yarnpkg.com/validate-html-nesting/-/validate-html-nesting-1.2.2.tgz#2d74de14b598a0de671fad01bd71deabb93b8aca"
   integrity sha512-hGdgQozCsQJMyfK5urgFcWEqsSSrK63Awe0t/IMR0bZ0QMtnuaiHzThW81guu3qx9abLi99NEuiaN6P9gVYsNg==
 
+virtua@^0.33.3:
+  version "0.33.3"
+  resolved "https://registry.yarnpkg.com/virtua/-/virtua-0.33.3.tgz#3471568d02e3e0cacef63107bf4b2c0c55fc15cc"
+  integrity sha512-Zxr2hhmTHARMHdZjs5fvd17bHH2YJ1uZZGaw4SKmynDEXtHFzJn/pL9xYJeXWZ8UfXNIBbPvGlHGpruCRbLHIg==
+
 vite-plugin-solid@^2.10.2:
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/vite-plugin-solid/-/vite-plugin-solid-2.10.2.tgz#180f5ec9d8ac03d19160dd5728b313fe9b62ee0d"
