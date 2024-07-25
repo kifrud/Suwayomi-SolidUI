@@ -66,18 +66,21 @@ export const MangaFilter: Component<MangaFilterProps> = props => {
     filters: {
       unread: (
         <TriStateInput
+          label={t('manga.filterTabs.filters.unread')}
           state={props.mangaMeta.ChapterUnread}
           updateState={v => props.updateMangaMeta({ ChapterUnread: v })}
         />
       ),
       downloaded: (
         <TriStateInput
+          label={t('manga.filterTabs.filters.downloaded')}
           state={props.mangaMeta.ChapterDownloaded}
           updateState={v => props.updateMangaMeta({ ChapterDownloaded: v })}
         />
       ),
       bookmarked: (
         <TriStateInput
+          label={t('manga.filterTabs.filters.bookmarked')}
           state={props.mangaMeta.ChapterBookmarked}
           updateState={v => props.updateMangaMeta({ ChapterBookmarked: v })}
         />
