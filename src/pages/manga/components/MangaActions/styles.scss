@@ -6,8 +6,29 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  // margin-top: calc(var(--categories-tabs-height) - 1px);
   background: var(--stp-background_muted);
   min-width: 300px;
   max-width: 300px;
+}
+
+.manga-menu {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    position: relative;
+    z-index: 50;
+    min-width: 220px;
+    padding: 8px;
+    background-color: var(--stp-background_muted);
+    border-radius: 6px;
+    border: 1px solid var(--stp-background);
+    box-shadow: 0 2px 4px -2px rgb(0 0 0 / 1);
+    outline: none;
+    transform-origin: var(--kb-menu-content-transform-origin);
+    animation: contentHide 250ms ease-in forwards;
+  }
+  &__content[data-expanded] {
+    animation: contentShow 250ms ease-out;
+  }
 }
