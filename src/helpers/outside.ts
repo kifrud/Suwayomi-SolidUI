@@ -7,8 +7,6 @@ import { onCleanup, onMount } from 'solid-js'
  * @param ignoreRefs array of elements to ignore clicks on
  */
 export const useOutside = (ref: HTMLElement, action: () => void, ignoreRefs?: HTMLElement[]) => {
-  console.log(ignoreRefs)
-
   const handleClick = (event: MouseEvent) => {
     if (ignoreRefs && ignoreRefs.some(ignoreRef => ignoreRef.contains(event.target as Node))) {
       return
