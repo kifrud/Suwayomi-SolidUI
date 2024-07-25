@@ -2,5 +2,11 @@
   "library": {
     "cover": "Failed to load cover",
     "emptyCategory": "No manga found"
+  },
+  "manga": {
+    "noChapters": "No chapters."
+  },
+  "updates": {
+    "end": "End of updates."
   }
 }

@@ -116,7 +116,7 @@ const Updates: Component = () => {
       </div>
       <div ref={el => (endDiv = el)} class="flex justify-center items-center w-full">
         <Show when={!updatesData.isLoading}>
-          <span class="opacity-50">End of updates.</span>
+          <span class="opacity-50">{t('exceptions.updates.end')}</span>
         </Show>
       </div>
     </div>
