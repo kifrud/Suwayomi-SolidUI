@@ -8,6 +8,7 @@
   },
   "error": "Uncaught error.",
   "search": "Search",
+  "copied": "Copied",
   "button": {
     "ok": "Ok",
     "cancel": "Cancel"
@@ -26,5 +27,12 @@
       "info": "Info notification"
     }
   },
-  "latestTimestamp": "Last update: {{ date }}"
+  "latestTimestamp": "Last update: {{ date }}",
+  "selection": {
+    "delete": "Delete {{ count }} items",
+    "category": "Change category",
+    "download": "Download unread chapters",
+    "markAsRead": "Mark as read {{ count }} items",
+    "markAsUnread": "Mark as unread {{ count }} items"
+  }
 }

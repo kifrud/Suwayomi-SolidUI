@@ -21,5 +21,31 @@
   },
   "label": {
     "tags": "Tags"
+  },
+  "actions": {
+    "refresh": "Refresh",
+    "category": "Change categories",
+    "migrate": "Migrate",
+    "link": "Copy source link"
+  },
+  "filterTabs": {
+    "filters": {
+      "name": "Filter",
+      "unread": "Unread",
+      "downloaded": "Downloaded",
+      "bookmarked": "Bookmarked",
+      "tracked": "Tracked"
+    },
+    "sort": {
+      "name": "Sort",
+      "source": "Source",
+      "fetchedDate": "Fetched date",
+      "uploadDate": "Upload date"
+    },
+    "display": {
+      "name": "Display",
+      "sourceTitle": "Source",
+      "chapterNumber": "Chapter number"
+    }
   }
 }
