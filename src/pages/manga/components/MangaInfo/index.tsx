@@ -5,11 +5,13 @@ import { Dictionary, useAppContext } from '@/contexts'
 import { matches, useNotification } from '@/helpers'
 import { TManga } from '@/types'
 import { statusIcons } from '../..'
+import MangaButtons from '../MangaButtons'
 import ChevronDown from '~icons/material-symbols/keyboard-arrow-down-rounded'
 import ChevronUp from '~icons/material-symbols/keyboard-arrow-up-rounded'
 import AuthorIcon from '~icons/material-symbols/person-outline'
 import Artisticon from '~icons/material-symbols/brush'
 import ImageView from '../ImageView'
+import './styles.scss'
 
 interface MangaInfoProps {
   manga: TManga | undefined
@@ -77,33 +79,40 @@ const MangaInfo: Component<MangaInfoProps> = props => {
                 <ImageView src={props.manga!.manga.thumbnailUrl!} />
               </Show>
               <div class="title__headline-wrp">
-                <h1
-                  class={`title__headline cursor-pointer ${computeFontSize(props.manga?.manga.title)}`}
-                  on:click={() => {
-                    writeClipboard(props.manga?.manga.title!)
-                    useNotification('info', { message: 'global.copied' })
-                  }}
-                >
-                  {props.manga?.manga.title}
-                </h1>
-                <div class="flex flex-col gap-1">
-                  <span class={personClasses()}>
-                    <AuthorIcon />
-                    {props.manga?.manga.author}
-                  </span>
-                  <Show when={props.manga?.manga.artist}>
+                <div>
+                  <h1
+                    class={`title__headline cursor-pointer ${computeFontSize(props.manga?.manga.title)}`}
+                    on:click={() => {
+                      writeClipboard(props.manga?.manga.title!)
+                      useNotification('info', { message: 'global.copied' })
+                    }}
+                  >
+                    {props.manga?.manga.title}
+                  </h1>
+                  <div class="flex flex-col gap-1">
                     <span class={personClasses()}>
-                      <Artisticon />
-                      {props.manga?.manga.artist}
+                      <AuthorIcon />
+                      {props.manga?.manga.author}
                     </span>
-                  </Show>
-                  <span class={`${personClasses()} whitespace-nowrap`}>
-                    {statusIcons()[props.manga?.manga.status!]}
-                    {
-                      t(`manga.status.${props.manga!.manga.status!}` as keyof Dictionary) as string
-                    }{' '}
-                    • {props.manga?.manga.source?.displayName}
-                  </span>
+                    <Show when={props.manga?.manga.artist}>
+                      <span class={personClasses()}>
+                        <Artisticon />
+                        {props.manga?.manga.artist}
+                      </span>
+                    </Show>
+                    <span class={`${personClasses()} whitespace-nowrap`}>
+                      {statusIcons()[props.manga?.manga.status!]}
+                      {
+                        t(
+                          `manga.status.${props.manga!.manga.status!}` as keyof Dictionary
+                        ) as string
+                      }{' '}
+                      • {props.manga?.manga.source?.displayName}
+                    </span>
+                  </div>
+                </div>
+                <div class="flex flex-wrap py-1 manga-info__buttons justify-evenly md:hidden">
+                  <MangaButtons manga={props.manga} hideReadBtn />
                 </div>
               </div>
             </div>

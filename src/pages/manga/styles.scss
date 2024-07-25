@@ -59,6 +59,9 @@
   &__headline {
     &-wrp {
       height: calc(var(--banner-height) - 16px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     overflow-wrap: break-word;
     width: 100%;
