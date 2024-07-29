@@ -1,8 +1,11 @@
-import { Component, Show, createSignal } from 'solid-js'
-import { A } from '@solidjs/router'
+import { Accessor, Component, type JSX, Setter, Show, createMemo, createSignal } from 'solid-js'
+import { SetStoreFunction } from 'solid-js/store'
 import { useGraphQLClient } from '@/contexts'
 import { Button } from '@/components'
-import { useHover, useNotification } from '@/helpers'
+import { ResultOf } from '@/gql'
+import { downloadsOnChapters } from '@/gql/Subscriptions'
+/* tslint:disable:no-unused-variable */
+import { useHover, useNotification, longPress } from '@/helpers'
 import { RoutePaths } from '@/enums'
 import { ChapterActions, TChapter, TManga } from '@/types'
 import { deleteDownloadedChapter, enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
@@ -19,7 +22,13 @@ import BookmarkedIcon from '~icons/material-symbols/bookmark'
 interface ChapterListItemProps {
   chapter: TChapter
   manga: TManga | undefined
+  chapters: TChapter[] | undefined
   refetch: () => Promise<void>
+  selectMode: Accessor<boolean>
+  updateSelectMode: Setter<boolean>
+  selected: TChapter[]
+  updateSelected: SetStoreFunction<TChapter[]>
+  download: ResultOf<typeof downloadsOnChapters>['downloadChanged']['queue'][number] | undefined
 }
 
 const ChapterListItem: Component<ChapterListItemProps> = props => {
@@ -27,6 +36,10 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
   const [ref, setRef] = createSignal<HTMLElement>()
 
   const { isHovered } = useHover(ref)
+
+  const isSelected = createMemo(() =>
+    props.selected.map(item => item.id).includes(props.chapter.id)
+  )
 
   const handleAction = async (
     e: MouseEvent & {
@@ -56,11 +69,14 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
             .toPromise()
           break
         case 'markAsReadBefore':
+          const index = props.chapters?.findIndex(ch => ch.id === props.chapter.id)
+
           await client
             .mutation(updateChapters, {
-              ids: props.manga?.manga.chapters.nodes
-                .filter(ch => ch.id !== props.chapter.id)
+              ids: props.chapters
+                ?.slice(index, props.chapters?.length)
                 .map(item => item.id) as number[],
+              isRead: true,
             })
             .toPromise()
           break
@@ -76,11 +92,37 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
     }
   }
 
+  const handleSelect = () => {
+    if (!props.selectMode()) {
+      props.updateSelectMode(true)
+    }
+
+    if (!isSelected()) {
+      return props.updateSelected([...props.selected, props.chapter])
+    }
+
+    return props.updateSelected(prev => prev.filter(item => item.id !== props.chapter.id))
+  }
+
+  const handleClick: JSX.EventHandler<HTMLAnchorElement, MouseEvent> = e => {
+    if (!props.selectMode()) return
+
+    e.preventDefault()
+    e.stopPropagation()
+    return handleSelect()
+  }
+
   return (
-    <A
+    <a
       ref={setRef}
       href={`${RoutePaths.manga}/${props.manga?.manga.id}${RoutePaths.chapter}/${props.chapter.id}`}
       class="flex justify-between transition-all p-2 hover:bg-background-muted rounded-lg"
+      classList={{
+        'border-2 border-bg-foreground': isSelected(),
+      }}
+      onClick={handleClick}
+      use:longPress={250}
+      on:LongPressStart={() => props.updateSelectMode(true)}
     >
       <div
         class="flex flex-col justify-between text-sm md:text-base leading-4"
@@ -146,7 +188,7 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
           </div>
         </Show>
       </div>
-    </A>
+    </a>
   )
 }
 

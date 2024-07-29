@@ -48,7 +48,7 @@ const MangaInfo: Component<MangaInfoProps> = props => {
     if (title.length <= 10) return 'text-3xl'
     if (title.length <= 20) return 'text-2xl'
     if (title.length <= 30) return 'text-xl'
-    return 'text-lg'
+    return 'text-md'
   }
 
   const placeholder = (

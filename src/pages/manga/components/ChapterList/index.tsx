@@ -1,19 +1,26 @@
-import { Component, For, Show, createMemo } from 'solid-js'
+import { Accessor, Component, For, Setter, Show, createMemo } from 'solid-js'
+import { SetStoreFunction } from 'solid-js/store'
+import { WindowVirtualizer } from 'virtua/solid'
 import { Skeleton } from '@/components'
 import { MangaMeta, useAppContext } from '@/contexts'
-import { TManga } from '@/types'
-import { filterChapters, sortChapters } from '@/helpers'
-import { WindowVirtualizer } from 'virtua/solid'
+import { filterChapters, sortChapters, useDownloadSubscription } from '@/helpers'
+import { TChapter, TManga } from '@/types'
 import ChapterListItem from './ChapterListItem'
 
 interface ChapterListProps {
   manga: TManga | undefined
   mangaMeta: MangaMeta
   refetch: () => Promise<void>
+  selectMode: Accessor<boolean>
+  updateSelectMode: Setter<boolean>
+  selected: TChapter[]
+  updateSelected: SetStoreFunction<TChapter[]>
 }
 
 const ChapterList: Component<ChapterListProps> = props => {
   const { t } = useAppContext()
+
+  const downloadStatus = useDownloadSubscription()
 
   const filteredChapters = createMemo(() =>
     props.manga?.manga.chapters.nodes.filter(ch => filterChapters(ch, props.mangaMeta))
@@ -42,7 +49,20 @@ const ChapterList: Component<ChapterListProps> = props => {
           >
             <WindowVirtualizer data={sortedChapters()!}>
               {chapter => (
-                <ChapterListItem chapter={chapter} manga={props.manga} refetch={props.refetch} />
+                <ChapterListItem
+                  chapter={chapter}
+                  manga={props.manga}
+                  chapters={sortedChapters()}
+                  selectMode={props.selectMode}
+                  updateSelectMode={props.updateSelectMode}
+                  selected={props.selected}
+                  updateSelected={props.updateSelected}
+                  download={downloadStatus()?.downloadChanged.queue.find(
+                    q =>
+                      chapter.sourceOrder === q.chapter.sourceOrder && chapter.id === q.chapter.id
+                  )}
+                  refetch={props.refetch}
+                />
               )}
             </WindowVirtualizer>
           </Show>
