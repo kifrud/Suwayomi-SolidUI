@@ -31,8 +31,10 @@
   "selection": {
     "delete": "Delete {{ count }} items",
     "category": "Change category",
-    "download": "Download unread chapters",
+    "download": "Download chapters",
     "markAsRead": "Mark as read {{ count }} items",
-    "markAsUnread": "Mark as unread {{ count }} items"
+    "markAsUnread": "Mark as unread {{ count }} items",
+    "addBookmark": "Bookmark {{ count }} items",
+    "removeBookmark": "Unbookmark {{ count }} items"
   }
 }

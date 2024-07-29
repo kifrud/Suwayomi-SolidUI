@@ -5,8 +5,8 @@ import { useAppContext, useGraphQLClient } from '@/contexts'
 import { enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
 import { ConditionalChaptersOfGivenManga } from '@/gql/Queries'
 import {
-  getDownloadable,
-  getDownloaded,
+  getDownloadableManga,
+  getDownloadedManga,
   getReadMangas,
   getUnreadMangas,
   useNotification,
@@ -37,8 +37,8 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
 
   const state = createMemo(() => {
     return {
-      downloadableMangas: getDownloadable(props.selected),
-      downloadedMangas: getDownloaded(props.selected),
+      downloadableMangas: getDownloadableManga(props.selected),
+      downloadedMangas: getDownloadedManga(props.selected),
       unreadMangas: getUnreadMangas(props.selected),
       readMangas: getReadMangas(props.selected),
     }
@@ -126,15 +126,17 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         selected={props.selected}
         refetchCategories={props.refetchCategories}
       />
-      <Tooltip
-        showArrow
-        label={
-          <Button onClick={() => handleClick('delete')}>
-            <DeleteIcon />
-          </Button>
-        }
-        content={t('global.selection.delete', { count: props.selected.length })}
-      />
+      <Show when={state().downloadedMangas.length}>
+        <Tooltip
+          showArrow
+          label={
+            <Button onClick={() => handleClick('delete')}>
+              <DeleteIcon />
+            </Button>
+          }
+          content={t('global.selection.delete', { count: state().downloadedMangas.length })}
+        />
+      </Show>
       <Tooltip
         showArrow
         label={
@@ -144,7 +146,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
         }
         content={t('global.selection.category')}
       />
-      <Show when={!!state().downloadableMangas}>
+      <Show when={state().downloadableMangas.length}>
         <Tooltip
           showArrow
           label={
@@ -155,7 +157,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
           content={t('global.selection.download')}
         />
       </Show>
-      <Show when={!!state().unreadMangas.length}>
+      <Show when={state().unreadMangas.length}>
         <Tooltip
           showArrow
           label={
@@ -163,10 +165,10 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
               <ReadIcon />
             </Button>
           }
-          content={t('global.selection.markAsRead', { count: props.selected.length })}
+          content={t('global.selection.markAsRead', { count: state().unreadMangas.length })}
         />
       </Show>
-      <Show when={!!state().readMangas.length}>
+      <Show when={state().readMangas.length}>
         <Tooltip
           showArrow
           label={
@@ -174,7 +176,7 @@ export const SelectionActions: Component<SelectionActionsProps> = props => {
               <UnreadIcon />
             </Button>
           }
-          content={t('global.selection.markAsUnread', { count: props.selected.length })}
+          content={t('global.selection.markAsUnread', { count: state().readMangas.length })}
         />
       </Show>
     </>

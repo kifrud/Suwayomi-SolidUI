@@ -1,5 +1,6 @@
 import { GlobalMeta, MangaMeta } from '@/contexts'
 import { ChapterSort, Sort } from '@/enums'
+import { UpdateNode } from '@/pages/Updates'
 import { Mangas, TChapter, TLibraryManga } from '@/types'
 
 export function filterManga(item: TLibraryManga, globalMeta: GlobalMeta, query?: string) {
@@ -94,66 +95,92 @@ type MangaChapterCount = { chapters: Pick<TLibraryManga['chapters'], 'totalCount
 type MangaUnread = Pick<TLibraryManga, 'unreadCount'> & MangaChapterCount
 type MangaDownload = Pick<TLibraryManga, 'downloadCount'> & MangaChapterCount
 
-function isFullyRead({ unreadCount }: MangaUnread) {
+function isFullyReadManga({ unreadCount }: MangaUnread) {
   return unreadCount === 0
 }
 
-function getFullyRead(mangas: NonNullable<Mangas>) {
-  return mangas.filter(isFullyRead)
+function getFullyReadManga(mangas: NonNullable<Mangas>) {
+  return mangas.filter(isFullyReadManga)
 }
 
 function isMangaUnread({ unreadCount, chapters: { totalCount } }: MangaUnread) {
   return unreadCount === totalCount
 }
 
-function getUnread(mangas: NonNullable<Mangas>) {
+function getUnreadManga(mangas: NonNullable<Mangas>) {
   return mangas?.filter(isMangaUnread)
 }
 
-function isPartiallyRead(manga: MangaUnread) {
-  return !isFullyRead(manga) && !isMangaUnread(manga)
+function isPartiallyReadManga(manga: MangaUnread) {
+  return !isFullyReadManga(manga) && !isMangaUnread(manga)
 }
 
-function getPartiallyRead(mangas: NonNullable<Mangas>) {
-  return mangas?.filter(isPartiallyRead)
+function getPartiallyReadManga(mangas: NonNullable<Mangas>) {
+  return mangas?.filter(isPartiallyReadManga)
 }
 
 export function getUnreadMangas(mangas: NonNullable<Mangas>) {
-  return [...getUnread(mangas), ...getPartiallyRead(mangas)]
+  return [...getUnreadManga(mangas), ...getPartiallyReadManga(mangas)]
 }
 
 export function getReadMangas(mangas: NonNullable<Mangas>) {
-  return [...getFullyRead(mangas), ...getPartiallyRead(mangas)]
+  return [...getFullyReadManga(mangas), ...getPartiallyReadManga(mangas)]
 }
 
-function isFullyDownloaded({ downloadCount, chapters: { totalCount } }: MangaDownload) {
+function isFullyDownloadedManga({ downloadCount, chapters: { totalCount } }: MangaDownload) {
   return downloadCount === totalCount
 }
 
-function getFullyDownloaded(mangas: NonNullable<Mangas>) {
-  return mangas.filter(isFullyDownloaded)
+function getFullyDownloadedManga(mangas: NonNullable<Mangas>) {
+  return mangas.filter(isFullyDownloadedManga)
 }
 
 function isNotDownloaded({ downloadCount }: MangaDownload) {
   return downloadCount === 0
 }
 
-function getNotDownloaded(mangas: NonNullable<Mangas>) {
+function getNotDownloadedManga(mangas: NonNullable<Mangas>) {
   return mangas.filter(isNotDownloaded)
 }
 
 function isPartiallyDownloaded(manga: MangaDownload) {
-  return !isFullyDownloaded(manga) && !isNotDownloaded(manga)
+  return !isFullyDownloadedManga(manga) && !isNotDownloaded(manga)
 }
 
-function getPartiallyDownloaded(mangas: NonNullable<Mangas>) {
+function getPartiallyDownloadedManga(mangas: NonNullable<Mangas>) {
   return mangas.filter(isPartiallyDownloaded)
 }
 
-export function getDownloadable(mangas: NonNullable<Mangas>) {
-  return [...getNotDownloaded(mangas), ...getPartiallyDownloaded(mangas)]
+export function getDownloadableManga(mangas: NonNullable<Mangas>) {
+  return [...getNotDownloadedManga(mangas), ...getPartiallyDownloadedManga(mangas)]
 }
 
-export function getDownloaded(mangas: NonNullable<Mangas>) {
-  return [...getFullyDownloaded(mangas), ...getPartiallyDownloaded(mangas)]
+export function getDownloadedManga(mangas: NonNullable<Mangas>) {
+  return [...getFullyDownloadedManga(mangas), ...getPartiallyDownloadedManga(mangas)]
+}
+
+type Chapters = (UpdateNode | TChapter)[]
+
+export function getDownloadableChapter(chapters: Chapters) {
+  return chapters.filter(chapter => !chapter.isDownloaded)
+}
+
+export function getDownloadedChapter(chapters: Chapters) {
+  return chapters.filter(chapter => chapter.isDownloaded)
+}
+
+export function getUnBookmarkedChapter(chapters: Chapters) {
+  return chapters.filter(chapter => !chapter.isBookmarked)
+}
+
+export function getBookmarkedChapter(chapters: Chapters) {
+  return chapters.filter(chapter => chapter.isBookmarked)
+}
+
+export function getUnReadChapter(chapters: Chapters) {
+  return chapters.filter(chapter => !chapter.isRead)
+}
+
+export function getReadChapter(chapters: Chapters) {
+  return chapters.filter(chapter => chapter.isRead)
 }
