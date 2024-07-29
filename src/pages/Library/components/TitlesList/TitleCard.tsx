@@ -46,11 +46,11 @@ const TitleCard: Component<TitleCardProps> = props => {
   }
 
   const handleClick: JSX.EventHandler<HTMLAnchorElement, MouseEvent> = e => {
-    if (props.selectMode()) {
-      e.stopPropagation()
-      e.preventDefault()
-      return handleSelect()
-    }
+    if (!props.selectMode()) return
+
+    e.preventDefault()
+    e.stopPropagation()
+    return handleSelect()
   }
   // TODO: add resume button
   return (

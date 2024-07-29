@@ -13,14 +13,16 @@
   }
 
   &--default {
-    &:hover {
+    &:hover,
+    &:active {
       background: var(--stp-background_muted);
     }
   }
 
   &--disabled {
     opacity: 0.5;
-    &:hover {
+    &:hover,
+    &:active {
       background: transparent;
     }
   }

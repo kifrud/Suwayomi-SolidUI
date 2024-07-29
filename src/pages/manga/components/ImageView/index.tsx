@@ -16,8 +16,8 @@ const ImageView: Component<ImageViewProps> = props => {
         <Image
           src={props.src}
           alt="Cover"
-          wrapperClasses="max-w-[200px] relative h-full"
-          class="flex object-cover w-full h-auto max-w-[200px]"
+          wrapperClasses="w-full relative h-full"
+          class="flex object-cover w-full h-auto aspect-cover"
         />
       </Dialog.Trigger>
       <Dialog.Portal>

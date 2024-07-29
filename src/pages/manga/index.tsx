@@ -9,10 +9,11 @@ import {
   onCleanup,
   Show,
 } from 'solid-js'
+import { createStore } from 'solid-js/store'
 import { A, useParams } from '@solidjs/router'
 import { Title } from '@solidjs/meta'
 import { useWindowScrollPosition } from '@solid-primitives/scroll'
-import { Button, Transition } from '@/components'
+import { Button, Transition, ChaptersSelection } from '@/components'
 import { useAppContext, useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { ResultOf } from '@/gql'
 import { getManga } from '@/gql/Queries'
@@ -20,7 +21,7 @@ import { matches, useNotification } from '@/helpers'
 import { fetchMangaChapters, fetchMangaInfo } from '@/gql/Mutations'
 import { ChapterList, MangaActions, MangaFilter, MangaInfo, SideInfo } from './components'
 import { RoutePaths } from '@/enums'
-import { TManga } from '@/types'
+import { TChapter, TManga } from '@/types'
 import ArrowUp from '~icons/material-symbols/arrow-upward-alt-rounded'
 import ArrowLeft from '~icons/material-symbols/arrow-left-alt-rounded'
 import UnknownIcon from '~icons/material-symbols/block'
@@ -57,6 +58,9 @@ const Manga: Component = () => {
 
   const [metaTitle, setMetaTitle] = createSignal<JSX.Element>()
   const [showFilters, setShowFilters] = createSignal(false)
+  const [selectMode, setSelectMode] = createSignal(false)
+
+  const [selected, setSelected] = createStore<TChapter[]>([])
 
   const sideBtnClasses = createMemo(() =>
     [
@@ -91,12 +95,26 @@ const Manga: Component = () => {
 
   createEffect(() => {
     setMetaTitle(manga()?.manga.title)
-    headerCtx.setHeaderTitle(<h1 class="truncate text-lg">{manga()?.manga.title}</h1>)
+    headerCtx.setHeaderTitle(<h1 class="truncate text-lg max-w-64 hover:max-w-max">{manga()?.manga.title}</h1>)
   })
 
   createEffect(() => {
     if (manga()?.manga.lastFetchedAt === '0') {
       fetchChapters()
+    }
+  })
+
+  createEffect(() => {
+    if (selected.length === 0) setSelectMode(false)
+  })
+
+  createEffect(() => {
+    if (selectMode()) {
+      headerCtx.setHeaderCenter(
+        <ChaptersSelection selected={selected} updateSelected={setSelected} />
+      )
+    } else {
+      headerCtx.setHeaderCenter(null)
     }
   })
 
@@ -107,7 +125,7 @@ const Manga: Component = () => {
 
   return (
     <div class="title">
-      {metaTitle() && <Title>{metaTitle()}</Title>}
+      {metaTitle() && <Title>{metaTitle()}</Title>} {/* TODO: kinda broken */}
       <div class="title__banner-wrp">
         <div
           class="title__banner"
@@ -135,7 +153,15 @@ const Manga: Component = () => {
           </Show>
           <div class="flex flex-col w-full gap-2">
             <MangaInfo manga={manga()} isLoading={!manga()} />
-            <ChapterList manga={manga()} mangaMeta={mangaMeta} refetch={fetchChapters} />
+            <ChapterList
+              manga={manga()}
+              mangaMeta={mangaMeta}
+              selectMode={selectMode}
+              updateSelectMode={setSelectMode}
+              selected={selected}
+              updateSelected={setSelected}
+              refetch={fetchChapters}
+            />
           </div>
         </div>
         <Show when={matches.lg}>
