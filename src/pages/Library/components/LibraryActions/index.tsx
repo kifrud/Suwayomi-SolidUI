@@ -1,7 +1,7 @@
 import { Accessor, Component, Ref, Setter, Show } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
 import { Button, SearchBar, UpdateCheck } from '@/components'
-import { matches } from '@/helpers'
+import { matches, selectAll, selectFlip } from '@/helpers'
 import { Mangas } from '@/types'
 import FiltersIcon from '~icons/material-symbols/filter-list'
 import SelectAllIcon from '~icons/material-symbols/select-all-rounded'
@@ -20,34 +20,19 @@ interface LibraryActionsProps {
 }
 
 export const LibraryActions: Component<LibraryActionsProps> = props => {
-  const handleSelectAll = () => {
-    props.updateSelectMode(true)
-    if (props.selected.length === props.mangas?.length) {
-      props.updateSelected([])
-    } else {
-      const newSelected = Array.from(
-        new Set([...props.selected, ...(props.mangas ? props.mangas : [])])
-      )
-      props.updateSelected(newSelected)
-    }
-  }
-
-  const handleSelectionState = () => {
-    props.updateSelectMode(true)
-    const allIds = props.mangas ? props.mangas : []
-    const newSelected = allIds.filter(item => !props.selected.includes(item))
-    props.updateSelected(newSelected)
-  }
-
   return (
     <>
+      <Button
+        onClick={() =>
+          selectAll(props.selected, props.updateSelectMode, props.updateSelected, props.mangas!)
+        }
+      >
+        <Show when={props.selected.length === props.mangas?.length} fallback={<SelectAllIcon />}>
+          <DeselectAllIcon />
+        </Show>
+      </Button>
       <Show when={props.selectMode()}>
-        <Button onClick={handleSelectAll}>
-          <Show when={props.selected.length === props.mangas?.length} fallback={<SelectAllIcon />}>
-            <DeselectAllIcon />
-          </Show>
-        </Button>
-        <Button onClick={handleSelectionState}>
+        <Button onClick={() => selectFlip(props.selected, props.updateSelected, props.mangas!)}>
           <Select />
         </Button>
       </Show>
