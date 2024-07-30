@@ -1,9 +1,9 @@
-import { Component, Show, createMemo } from 'solid-js'
-import { A } from '@solidjs/router'
+import { Accessor, Component, type JSX, Setter, Show, createMemo } from 'solid-js'
+import { SetStoreFunction } from 'solid-js/store'
 import { Progress } from '@kobalte/core/progress'
 import { Image } from '@/components'
 import { useGraphQLClient } from '@/contexts'
-import { useNotification } from '@/helpers'
+import { useNotification, longPress } from '@/helpers'
 import { deleteDownloadedChapter, enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
 import { downloadsOnChapters } from '@/gql/Subscriptions'
 import { ResultOf } from '@/gql'
@@ -17,6 +17,10 @@ import UnreadIcon from '~icons/material-symbols/remove-done'
 interface UpdateItemProps {
   item: UpdateNode
   download: ResultOf<typeof downloadsOnChapters>['downloadChanged']['queue'][number] | undefined
+  selectMode: Accessor<boolean>
+  updateSelectMode: Setter<boolean>
+  selected: UpdateNode[]
+  updateSelected: SetStoreFunction<UpdateNode[]>
   refetchUpdates: () => void
 }
 
@@ -34,8 +38,9 @@ const UpdateItem: Component<UpdateItemProps> = props => {
     ].join(' ')
   )
   const progressValue = createMemo(() => (props.download?.progress ?? 0) * 100)
+  const isSelected = createMemo(() => props.selected.map(item => item.id).includes(props.item.id))
 
-  const handleClick = async (
+  const handleAction = async (
     e: MouseEvent & {
       currentTarget: HTMLButtonElement
       target: Element
@@ -75,10 +80,34 @@ const UpdateItem: Component<UpdateItemProps> = props => {
     props.refetchUpdates()
   }
 
+  const handleSelect = () => {
+    if (!props.selectMode()) {
+      props.updateSelectMode(true)
+    }
+
+    if (!isSelected()) {
+      return props.updateSelected(prev => [...prev, props.item])
+    }
+
+    return props.updateSelected(prev => prev.filter(item => item.id !== props.item.id))
+  }
+
+  const handleClick: JSX.EventHandler<HTMLAnchorElement, MouseEvent> = e => {
+    if (!props.selectMode()) return
+
+    e.preventDefault()
+    e.stopPropagation()
+    return handleSelect()
+  }
+
   return (
-    <A
+    <a
       href={`/manga/${props.item.manga.id}/chapter/${props.item.sourceOrder}`}
-      class="relative flex justify-between w-full"
+      class="relative flex justify-between w-full transition-all p-1 rounded-lg"
+      classList={{ 'border-2 border-bg-foreground': isSelected() }}
+      onClick={handleClick}
+      use:longPress
+      on:LongPressStart={() => props.updateSelectMode(true)}
     >
       <div class={itemClasses()}>
         <div class="h-10 w-10">
@@ -100,7 +129,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
           fallback={
             <button
               class="action transition-all icon-24 flex justify-center items-center h-8"
-              on:click={e => handleClick(e, 'markAsUnread')}
+              on:click={e => handleAction(e, 'markAsUnread')}
             >
               <UnreadIcon />
             </button>
@@ -108,7 +137,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
         >
           <button
             class="action transition-all icon-24 flex justify-center items-center h-8"
-            on:click={e => handleClick(e, 'markAsRead')}
+            on:click={e => handleAction(e, 'markAsRead')}
           >
             <ReadIcon />
           </button>
@@ -118,7 +147,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
           fallback={
             <button
               class="action transition-all icon-24 flex justify-center items-center h-8"
-              on:click={e => handleClick(e, 'delete')}
+              on:click={e => handleAction(e, 'delete')}
             >
               <DeleteIcon />
             </button>
@@ -126,7 +155,8 @@ const UpdateItem: Component<UpdateItemProps> = props => {
         >
           <button
             class="action transition-all icon-24 flex justify-center items-center h-8"
-            on:click={e => handleClick(e, 'download')}
+            on:click={e => handleAction(e, 'download')}
+            disabled={(props.download?.progress ?? 0) > 0}
           >
             <DownloadIcon />
           </button>
@@ -137,7 +167,7 @@ const UpdateItem: Component<UpdateItemProps> = props => {
           <Progress.Fill class="updates__item-download-progress h-full" />
         </Progress.Track>
       </Progress>
-    </A>
+    </a>
   )
 }
 

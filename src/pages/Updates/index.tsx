@@ -1,7 +1,18 @@
-import { Component, For, Show, createMemo, createResource, onCleanup, onMount } from 'solid-js'
+import {
+  Component,
+  For,
+  Show,
+  createEffect,
+  createMemo,
+  createResource,
+  createSignal,
+  onCleanup,
+  onMount,
+} from 'solid-js'
+import { createStore } from 'solid-js/store'
 import { createInfiniteQuery } from '@tanstack/solid-query'
 import { createIntersectionObserver } from '@solid-primitives/intersection-observer'
-import { Skeleton, UpdateCheck } from '@/components'
+import { ChaptersSelection, Skeleton, UpdateCheck } from '@/components'
 import { useAppContext, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { latestUpdateTimestamp, updates as updatesQuery } from '@/gql/Queries'
 import { ResultOf } from '@/gql'
@@ -33,8 +44,37 @@ const Updates: Component = () => {
   const client = useGraphQLClient()
   const { t } = useAppContext()
 
+  const [selectMode, setSelectMode] = createSignal(false)
+
+  const [selected, setSelected] = createStore<UpdateNode[]>([])
+
+  createEffect(() => {
+    if (selectMode()) {
+      headerCtx.setHeaderCenter(
+        <ChaptersSelection selected={selected} updateSelected={setSelected} />
+      )
+    } else {
+      headerCtx.setHeaderCenter(null)
+    }
+  })
+
+  createEffect(() => {
+    if (selected.length === 0) setSelectMode(false)
+  })
+
+  const [latestTimestampData, setLatestTimestampData] =
+    createSignal<ResultOf<typeof latestUpdateTimestamp>>()
+
+  const { unsubscribe } = client
+    .query(latestUpdateTimestamp, {}, { requestPolicy: 'cache-and-network' })
+    .subscribe(res => setLatestTimestampData(res.data))
+
+  const latestTimestamp = createMemo(() =>
+    new Date(+latestTimestampData()?.lastUpdateTimestamp.timestamp!).toLocaleString()
+  )
+
   const updatesData = createInfiniteQuery(() => ({
-    queryKey: ['updates'],
+    queryKey: ['updates', latestTimestamp()],
     queryFn: async ({ pageParam }) => {
       const res = await client.query(updatesQuery, { offset: pageParam }).toPromise()
       return res
@@ -45,20 +85,8 @@ const Updates: Component = () => {
       }
     },
     initialPageParam: 0,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
   }))
 
-  const [latestTimestampData] = createResource(
-    async () =>
-      await client
-        .query(latestUpdateTimestamp, {}, { requestPolicy: 'cache-and-network' })
-        .toPromise()
-  )
-
-  const latestTimestamp = createMemo(() =>
-    new Date(+latestTimestampData.latest?.data?.lastUpdateTimestamp.timestamp!).toLocaleString()
-  )
   const groupedUpdates = createMemo(
     () =>
       updatesData.data &&
@@ -73,6 +101,7 @@ const Updates: Component = () => {
 
   onCleanup(() => {
     headerCtx.clear()
+    unsubscribe()
   })
 
   let endDiv!: HTMLDivElement
@@ -104,13 +133,20 @@ const Updates: Component = () => {
   )
 
   return (
-    <div class="pt-2 w-full">
+    <div class="pt-2 w-full px-2">
       <span class="opacity-70">
         <i>{t('global.latestTimestamp', { date: latestTimestamp() })}</i>
       </span>
       <div class="flex flex-col gap-2">
         <Show when={groupedUpdates()}>
-          <UpdatesList updates={groupedUpdates()!} refetchUpdates={updatesData.refetch} />
+          <UpdatesList
+            updates={groupedUpdates()!}
+            selectMode={selectMode}
+            updateSelectedMode={setSelectMode}
+            selected={selected}
+            updateSelected={setSelected}
+            refetchUpdates={updatesData.refetch}
+          />
         </Show>
         <Show when={updatesData.isLoading || updatesData.isFetchingNextPage}>{placeholder}</Show>
       </div>
