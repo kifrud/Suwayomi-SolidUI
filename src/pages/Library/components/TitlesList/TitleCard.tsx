@@ -39,7 +39,7 @@ const TitleCard: Component<TitleCardProps> = props => {
     }
 
     if (!isSelected()) {
-      return props.updateSelected([...props.selected, props.manga()])
+      return props.updateSelected(prev => [...prev, props.manga()])
     }
 
     return props.updateSelected(prev => prev.filter(item => item.id !== props.manga().id))

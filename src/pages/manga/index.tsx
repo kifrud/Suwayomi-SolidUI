@@ -31,6 +31,7 @@ import LicenseIcon from '~icons/material-symbols/license'
 import PublishingFinishedIcon from '~icons/material-symbols/done'
 import CancelledIcon from '~icons/material-symbols/cancel-outline'
 import HiatusIcon from '~icons/material-symbols/pause'
+import CloseIcon from '~icons/material-symbols/close-rounded'
 import './styles.scss'
 
 type MangaStatus = TManga['manga']['status']
@@ -87,15 +88,27 @@ const Manga: Component = () => {
     }
   }
 
+  const headerTitle = (
+    <h1 class="truncate text-lg max-w-64 hover:max-w-max">{manga()?.manga.title}</h1>
+  )
+
   onMount(() => {
     headerCtx.setHeaderEnd(
-      <MangaActions refresh={fetchChapters} updateShowFilter={setShowFilters} manga={manga()} />
+      <MangaActions
+        refresh={fetchChapters}
+        selectMode={selectMode}
+        updateSelectMode={setSelectMode}
+        selected={selected}
+        updateSelected={setSelected}
+        updateShowFilter={setShowFilters}
+        manga={manga()}
+      />
     )
   })
 
   createEffect(() => {
     setMetaTitle(manga()?.manga.title)
-    headerCtx.setHeaderTitle(<h1 class="truncate text-lg max-w-64 hover:max-w-max">{manga()?.manga.title}</h1>)
+    headerCtx.setHeaderTitle(headerTitle)
   })
 
   createEffect(() => {
@@ -110,10 +123,24 @@ const Manga: Component = () => {
 
   createEffect(() => {
     if (selectMode()) {
+      headerCtx.setHeaderTitle(
+        <>
+          <Button
+            on:click={() => {
+              setSelectMode(false)
+              setSelected([])
+            }}
+          >
+            <CloseIcon />
+          </Button>
+          <span>{selected.length}</span>
+        </>
+      )
       headerCtx.setHeaderCenter(
         <ChaptersSelection selected={selected} updateSelected={setSelected} />
       )
     } else {
+      headerCtx.setHeaderTitle(headerTitle)
       headerCtx.setHeaderCenter(null)
     }
   })

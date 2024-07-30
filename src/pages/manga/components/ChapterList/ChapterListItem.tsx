@@ -60,6 +60,7 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
             })
             .toPromise()
           break
+
         case 'read':
           await client
             .mutation(updateChapters, {
@@ -68,6 +69,7 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
             })
             .toPromise()
           break
+
         case 'markAsReadBefore':
           const index = props.chapters?.findIndex(ch => ch.id === props.chapter.id)
 
@@ -80,9 +82,11 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
             })
             .toPromise()
           break
+
         case 'download':
           await client.mutation(enqueueChapterDownloads, { ids: [props.chapter.id] }).toPromise()
           break
+
         case 'delete':
           await client.mutation(deleteDownloadedChapter, { id: props.chapter.id }).toPromise()
           break
@@ -98,7 +102,7 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
     }
 
     if (!isSelected()) {
-      return props.updateSelected([...props.selected, props.chapter])
+      return props.updateSelected(prev => [...prev, props.chapter])
     }
 
     return props.updateSelected(prev => prev.filter(item => item.id !== props.chapter.id))
