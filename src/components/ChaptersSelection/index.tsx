@@ -52,6 +52,14 @@ const ChaptersActions = <T extends UpdateNode | TChapter>(props: ChaptersActions
             })
             .toPromise()
           break
+        case 'removeBookmark':
+          await client
+            .mutation(updateChapters, {
+              ids: props.selected.map(item => item.id),
+              isBookmarked: false,
+            })
+            .toPromise()
+          break
         case 'markAsRead':
           await client
             .mutation(updateChapters, {
