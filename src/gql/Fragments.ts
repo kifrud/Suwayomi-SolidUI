@@ -19,6 +19,9 @@ export const TrackRecordTypeFragment = graphql(
 export const ChapterTypeFragment = graphql(
   `
     fragment ChapterTypeFragment on ChapterType {
+      manga {
+        id
+      }
       isBookmarked
       isDownloaded
       isRead
