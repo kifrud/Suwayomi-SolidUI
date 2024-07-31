@@ -1,7 +1,16 @@
-import { Accessor, Component, type JSX, Setter, Show, createMemo, createSignal } from 'solid-js'
+import {
+  Accessor,
+  Component,
+  type JSX,
+  Setter,
+  Show,
+  createMemo,
+  createSignal,
+  createEffect,
+} from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
 import { useGraphQLClient } from '@/contexts'
-import { Button } from '@/components'
+import { Button, RadialProgress } from '@/components'
 import { ResultOf } from '@/gql'
 import { downloadsOnChapters } from '@/gql/Subscriptions'
 /* tslint:disable:no-unused-variable */
@@ -34,6 +43,7 @@ interface ChapterListItemProps {
 const ChapterListItem: Component<ChapterListItemProps> = props => {
   const client = useGraphQLClient()
   const [ref, setRef] = createSignal<HTMLElement>()
+  const [isDownloaded, setIsDownloaded] = createSignal(props.chapter.isDownloaded)
 
   const { isHovered } = useHover(ref)
 
@@ -89,6 +99,7 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
 
         case 'delete':
           await client.mutation(deleteDownloadedChapter, { id: props.chapter.id }).toPromise()
+          setIsDownloaded(false)
           break
       }
     } catch (error) {
@@ -115,6 +126,10 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
     e.stopPropagation()
     return handleSelect()
   }
+
+  createEffect(() => {
+    if (props.download?.state === 'FINISHED') setIsDownloaded(true)
+  })
 
   return (
     <a
@@ -168,23 +183,33 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
               <ReadLowerIcon />
             </Button>
           </Show>
-          <Button
-            class="hover:opacity-90 icon-18"
-            onClick={e => handleAction(e, props.chapter.isDownloaded ? 'download' : 'delete')}
+          <Show
+            when={!isDownloaded()}
+            fallback={
+              <Show when={(props.download?.progress ?? 0) > 0}>
+                <RadialProgress value={props.download?.progress! * 100} size="xs" />
+              </Show>
+            }
           >
-            <Show when={!props.chapter.isDownloaded} fallback={<DeleteIcon />}>
-              <DownloadIcon />
-            </Show>
-          </Button>
+            <Button
+              class="hover:opacity-90 icon-18"
+              onClick={e => handleAction(e, isDownloaded() ? 'delete' : 'download')}
+              disabled={(props.download?.progress ?? 0) > 0}
+            >
+              <Show when={!isDownloaded()} fallback={<DeleteIcon />}>
+                <DownloadIcon />
+              </Show>
+            </Button>
+          </Show>
         </div>
-        <Show when={props.chapter.isBookmarked || props.chapter.isDownloaded}>
+        <Show when={props.chapter.isBookmarked || isDownloaded()}>
           <div class="flex gap-1">
             <Show when={props.chapter.isBookmarked}>
               <span class="icon-24">
                 <BookmarkedIcon />
               </span>
             </Show>
-            <Show when={props.chapter.isDownloaded}>
+            <Show when={isDownloaded()}>
               <span class="icon-24">
                 <DownloadedIcon />
               </span>

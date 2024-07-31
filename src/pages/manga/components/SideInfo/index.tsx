@@ -59,7 +59,7 @@ const SideInfo: Component<SideInfoProps> = props => {
                   <TagIcon />
                   {t('manga.label.tags')}
                 </span>
-                <div class="flex flex-wrap gap-1 overflow-y-auto lg:overflow-hidden max-h-32 lg:max-h-64 hover:overflow-y-auto">
+                <div class="flex flex-wrap gap-1 overflow-y-auto overflow-x-hiiden lg:overflow-hidden max-h-32 lg:max-h-64 hover:overflow-y-auto">
                   <For each={props.manga?.manga.genre}>
                     {tag => (
                       <Chip class="title__tag !border-0 bg-background-muted py-1">{tag}</Chip>

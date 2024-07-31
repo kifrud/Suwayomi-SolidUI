@@ -95,7 +95,6 @@ const Manga: Component = () => {
 
   let filtersRef!: HTMLDivElement
   const [btnRef, setBtnRef] = createSignal<HTMLButtonElement>()
-  createEffect(() => console.log(filtersRef))
 
   onMount(() => {
     headerCtx.setHeaderEnd(

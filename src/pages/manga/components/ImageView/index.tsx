@@ -12,7 +12,7 @@ interface ImageViewProps {
 const ImageView: Component<ImageViewProps> = props => {
   return (
     <Dialog>
-      <Dialog.Trigger>
+      <Dialog.Trigger class='max-w-[216px]'>
         <Image
           src={props.src}
           alt="Cover"
