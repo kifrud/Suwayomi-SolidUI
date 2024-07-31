@@ -1,7 +1,7 @@
-import { Accessor, Component, type JSX, Setter, createMemo } from 'solid-js'
-import './styles.scss'
-import Radio from '../Radio'
+import { Component, type JSX, Setter, createMemo } from 'solid-js'
 import { MaybeAccessor } from '@solid-primitives/utils'
+import Radio from '../Radio'
+import './styles.scss'
 
 interface AscRadioProps extends JSX.HTMLAttributes<HTMLInputElement> {
   ascending: MaybeAccessor<boolean>

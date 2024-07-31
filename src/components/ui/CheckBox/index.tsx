@@ -1,18 +1,10 @@
-import {
-  Accessor,
-  ParentComponent,
-  Show,
-  createEffect,
-  createMemo,
-  createSignal,
-  mergeProps,
-} from 'solid-js'
+import { ParentComponent, Show, createEffect, createMemo, createSignal, mergeProps } from 'solid-js'
+import { MaybeAccessor } from '@solid-primitives/utils'
 import { Dynamic } from 'solid-js/web'
 import { Checkbox as CheckBoxUi } from '@kobalte/core/checkbox'
 import CheckedIcon from '~icons/material-symbols/check-box-rounded'
 import BlankIcon from '~icons/material-symbols/check-box-outline-blank'
 import IndeterminateIcon from '~icons/material-symbols/indeterminate-check-box'
-import { MaybeAccessor } from '@solid-primitives/utils'
 
 interface Classes {
   /** Classes for label text wrapper */

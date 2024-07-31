@@ -1,4 +1,4 @@
-import { JSX, ParentComponent, Show, createMemo, splitProps } from 'solid-js'
+import { type JSX, ParentComponent, Show, createMemo, splitProps } from 'solid-js'
 import { TooltipRootProps, Tooltip as TooltipUi } from '@kobalte/core/tooltip'
 import './styles.scss'
 

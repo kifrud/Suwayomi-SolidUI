@@ -19,7 +19,7 @@ const MangaMenu: Component<MangaMenuProps> = props => {
   const itemClasses = createMemo(() =>
     ['flex hover:bg-foreground-muted-30 w-full items-start p-2'].join(' ')
   )
-  // TODO:
+
   return (
     <>
       <CategoryModal
