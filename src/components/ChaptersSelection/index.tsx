@@ -20,9 +20,10 @@ import ReadIcon from '~icons/material-symbols/done-all'
 import UnreadIcon from '~icons/material-symbols/remove-done'
 import AddBookmarkIcon from '~icons/material-symbols/bookmark-add-outline'
 import RemoveBookmarkIcon from '~icons/material-symbols/bookmark-remove-outline'
-import ReadLowerIcon from '~icons/material-symbols/swipe-down-alt-outline'
+import ReadLowerIcon from '~icons/material-symbols/arrow-cool-down'
 
 interface ChaptersActionsProps<T extends UpdateNode | TChapter> {
+  chapters?: T[]
   selected: T[]
   updateSelected: SetStoreFunction<T[]>
   disableReadBefore?: boolean
@@ -52,6 +53,7 @@ const ChaptersActions = <T extends UpdateNode | TChapter>(props: ChaptersActions
             })
             .toPromise()
           break
+
         case 'removeBookmark':
           await client
             .mutation(updateChapters, {
@@ -60,6 +62,7 @@ const ChaptersActions = <T extends UpdateNode | TChapter>(props: ChaptersActions
             })
             .toPromise()
           break
+
         case 'markAsRead':
           await client
             .mutation(updateChapters, {
@@ -68,9 +71,25 @@ const ChaptersActions = <T extends UpdateNode | TChapter>(props: ChaptersActions
             })
             .toPromise()
           break
-        // case 'markAsReadBefore': // TODO
 
-        //   break
+        case 'markAsReadBefore':
+          const index = props.chapters?.findIndex(ch => ch.id === props.selected[0].id)
+
+          await client
+            .mutation(updateChapters, {
+              ids: props.chapters
+                ?.slice(index, props.chapters?.length)
+                .map(item => item.id) as number[],
+              isRead: true,
+            })
+            .toPromise()
+
+          console.log(
+           index
+          )
+
+          break
+
         case 'markAsUnread':
           await client
             .mutation(updateChapters, {
@@ -79,11 +98,13 @@ const ChaptersActions = <T extends UpdateNode | TChapter>(props: ChaptersActions
             })
             .toPromise()
           break
+
         case 'download':
           await client
             .mutation(enqueueChapterDownloads, { ids: props.selected.map(item => item.id) })
             .toPromise()
           break
+
         case 'delete':
           await client
             .mutation(deleteDownloadedChapters, { ids: props.selected.map(item => item.id) })
@@ -160,11 +181,23 @@ const ChaptersActions = <T extends UpdateNode | TChapter>(props: ChaptersActions
           content={t('global.selection.markAsRead', { count: state().unreadChapters.length })}
         />
       </Show>
-      {/* <Show when={props.selected.length === 1}>
-        <Button onClick={() => handleClick('markAsReadBefore')}>
-          <ReadLowerIcon />
-        </Button>
-      </Show> */}
+      <Show
+        when={
+          !props.disableReadBefore &&
+          props.selected.length === 1 &&
+          props.selected[0].sourceOrder !== 1
+        }
+      >
+        <Tooltip
+          showArrow
+          label={
+            <Button onClick={() => handleClick('markAsReadBefore')}>
+              <ReadLowerIcon />
+            </Button>
+          }
+          content={t('global.selection.markAsReadBefore')}
+        />
+      </Show>
       <Show when={state().readChapters.length}>
         <Tooltip
           showArrow

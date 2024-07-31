@@ -18,7 +18,7 @@ import { Button, Transition, ChaptersSelection } from '@/components'
 import { useAppContext, useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { ResultOf } from '@/gql'
 import { getManga } from '@/gql/Queries'
-import { matches, useNotification, useOutside } from '@/helpers'
+import { filterChapters, matches, sortChapters, useNotification, useOutside } from '@/helpers'
 import { fetchMangaChapters, fetchMangaInfo } from '@/gql/Mutations'
 import { ChapterList, MangaActions, MangaFilter, MangaInfo, SideInfo } from './components'
 import { RoutePaths } from '@/enums'
@@ -89,6 +89,14 @@ const Manga: Component = () => {
     }
   }
 
+  const filteredChapters = createMemo(() =>
+    manga()?.manga.chapters.nodes.filter(ch => filterChapters(ch, mangaMeta))
+  )
+
+  const sortedChapters = createMemo(() =>
+    filteredChapters()?.toSorted((a, b) => sortChapters(a, b, mangaMeta))
+  )
+
   const headerTitle = (
     <h1 class="truncate text-lg max-w-64 hover:max-w-max">{manga()?.manga.title}</h1>
   )
@@ -146,7 +154,11 @@ const Manga: Component = () => {
         </>
       )
       headerCtx.setHeaderCenter(
-        <ChaptersSelection selected={selected} updateSelected={setSelected} />
+        <ChaptersSelection
+          chapters={sortedChapters()}
+          selected={selected}
+          updateSelected={setSelected}
+        />
       )
     } else {
       headerCtx.setHeaderTitle(headerTitle)
@@ -190,7 +202,8 @@ const Manga: Component = () => {
           <div class="flex flex-col w-full gap-2">
             <MangaInfo manga={manga()} isLoading={!manga()} />
             <ChapterList
-              manga={manga()}
+              chapters={sortedChapters()}
+              totalCount={manga()?.manga.chapters.totalCount}
               mangaMeta={mangaMeta}
               selectMode={selectMode}
               updateSelectMode={setSelectMode}

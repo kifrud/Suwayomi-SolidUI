@@ -2,13 +2,13 @@ import { Component, Show, createEffect, createMemo, createSignal } from 'solid-j
 import { A } from '@solidjs/router'
 import { Button, CategoryModal } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
+import { updateManga } from '@/gql/Mutations'
 import { useNotification } from '@/helpers'
 import { TManga } from '@/types'
 import Favorite from '~icons/material-symbols/favorite'
 import FavoriteOutline from '~icons/material-symbols/favorite-outline'
 import SourceIcon from '~icons/material-symbols/public'
 import TrackIcon from '~icons/material-symbols/sync'
-import { updateManga } from '@/gql/Mutations'
 
 interface MangaButtonsProps {
   manga: TManga | undefined
@@ -107,6 +107,7 @@ const MangaButtons: Component<MangaButtonsProps> = props => {
       </A>
       <Show when={!props.hideReadBtn}>
         <Button class="w-full py-3" scheme="fill">
+          {/* TODO: make progress bar */}
           <Show
             when={props.manga?.manga.unreadCount === props.manga?.manga.chapters.totalCount} // TODO: prefetch lastreadchapter
             fallback={t('manga.button.continue')}

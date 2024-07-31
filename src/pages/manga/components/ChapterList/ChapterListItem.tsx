@@ -12,13 +12,13 @@ import { SetStoreFunction } from 'solid-js/store'
 import { useGraphQLClient } from '@/contexts'
 import { Button, RadialProgress } from '@/components'
 import { ResultOf } from '@/gql'
+import { deleteDownloadedChapter, enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
 import { downloadsOnChapters } from '@/gql/Subscriptions'
 /* tslint:disable:no-unused-variable */
 import { useHover, useNotification, longPress } from '@/helpers'
 import { RoutePaths } from '@/enums'
-import { ChapterActions, TChapter, TManga } from '@/types'
-import { deleteDownloadedChapter, enqueueChapterDownloads, updateChapters } from '@/gql/Mutations'
-import ReadLowerIcon from '~icons/material-symbols/swipe-down-alt-outline'
+import { ChapterActions, TChapter } from '@/types'
+import ReadLowerIcon from '~icons/material-symbols/arrow-cool-down'
 import AddBookmarkIcon from '~icons/material-symbols/bookmark-add-outline'
 import RemoveBookmarkIcon from '~icons/material-symbols/bookmark-remove-outline'
 import DeleteIcon from '~icons/material-symbols/delete-forever'
@@ -30,7 +30,6 @@ import BookmarkedIcon from '~icons/material-symbols/bookmark'
 
 interface ChapterListItemProps {
   chapter: TChapter
-  manga: TManga | undefined
   chapters: TChapter[] | undefined
   refetch: () => Promise<void>
   selectMode: Accessor<boolean>
@@ -134,7 +133,7 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
   return (
     <a
       ref={setRef}
-      href={`${RoutePaths.manga}/${props.manga?.manga.id}${RoutePaths.chapter}/${props.chapter.id}`}
+      href={`${RoutePaths.manga}/${props.chapter.manga.id}${RoutePaths.chapter}/${props.chapter.id}`}
       class="flex justify-between transition-all p-2 hover:bg-background-muted rounded-lg"
       classList={{
         'border-2 border-bg-foreground': isSelected(),

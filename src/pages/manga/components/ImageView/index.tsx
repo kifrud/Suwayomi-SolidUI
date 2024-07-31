@@ -1,4 +1,4 @@
-import { Component, ParentComponent, Show, createSignal } from 'solid-js'
+import { Component } from 'solid-js'
 import { Dialog } from '@kobalte/core/dialog'
 import { Image } from '@/components'
 import CloseIcon from '~icons/material-symbols/close-rounded'
@@ -12,7 +12,7 @@ interface ImageViewProps {
 const ImageView: Component<ImageViewProps> = props => {
   return (
     <Dialog>
-      <Dialog.Trigger class='max-w-[216px]'>
+      <Dialog.Trigger class="max-w-[216px]">
         <Image
           src={props.src}
           alt="Cover"

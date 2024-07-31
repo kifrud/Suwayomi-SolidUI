@@ -34,6 +34,7 @@
     "download": "Download chapters",
     "markAsRead": "Mark as read {{ count }} items",
     "markAsUnread": "Mark as unread {{ count }} items",
+    "markAsReadBefore": "Mark as read before the chapter",
     "addBookmark": "Bookmark {{ count }} items",
     "removeBookmark": "Unbookmark {{ count }} items"
   }
