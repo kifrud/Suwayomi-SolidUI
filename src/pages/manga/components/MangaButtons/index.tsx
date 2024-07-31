@@ -1,4 +1,4 @@
-import { Component, Show, createEffect, createSignal } from 'solid-js'
+import { Component, Show, createEffect, createMemo, createSignal } from 'solid-js'
 import { A } from '@solidjs/router'
 import { Button, CategoryModal } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
@@ -13,6 +13,7 @@ import { updateManga } from '@/gql/Mutations'
 interface MangaButtonsProps {
   manga: TManga | undefined
   hideReadBtn?: boolean
+  class?: string
 }
 
 const MangaButtons: Component<MangaButtonsProps> = props => {
@@ -21,6 +22,18 @@ const MangaButtons: Component<MangaButtonsProps> = props => {
 
   const [openCategoryModal, setOpenCategoryModal] = createSignal(false)
   const [isInLibrary, setIsInLibrary] = createSignal(props.manga?.manga.inLibrary)
+
+  const btnClasses = createMemo(() =>
+    [
+      'w-full',
+      'hover:bg-transparent',
+      'flex',
+      'items-center',
+      'justify-center',
+      'gap-1',
+      ...(props.class ? [props.class] : []),
+    ].join(' ')
+  )
 
   createEffect(() => {
     if (props.manga) setIsInLibrary(props.manga.manga.inLibrary)
@@ -61,7 +74,7 @@ const MangaButtons: Component<MangaButtonsProps> = props => {
         onSubmit={selected => toggleLibraryState(true, selected)}
       />
       <Button
-        class="w-full hover:bg-transparent flex items-center justify-center gap-1"
+        class={btnClasses()}
         classList={{
           'opacity-50 hover:opacity-100': !isInLibrary(),
           'hover:opacity-80': isInLibrary(),
@@ -81,13 +94,13 @@ const MangaButtons: Component<MangaButtonsProps> = props => {
           {t('manga.button.inLibrary')}
         </Show>
       </Button>
-      <Button class="w-full hover:bg-transparent flex items-center justify-center gap-1" disabled>
+      <Button class={btnClasses()} disabled>
         <TrackIcon />
         {t('manga.button.track')}
       </Button>
       <A
         href={props.manga?.manga.realUrl!}
-        class="w-full hover:bg-transparent hover:opacity-80 flex items-center justify-center gap-1 p-1 transition-all"
+        class={`${btnClasses()} icon-24 hover:opacity-80 p-1 transition-all`}
       >
         <SourceIcon />
         {t('manga.button.openSource')}
