@@ -64,7 +64,6 @@ export const MangaActions: Component<MangaActionsProps> = props => {
       </Button>
       <Show when={matches.lg}>
         <MangaMenu refresh={props.refresh} manga={props.manga} />
-        {/* FIXME: due to virtual list items being absolute the dropdown can't be closed on screens narrower */}
       </Show>
     </>
   )

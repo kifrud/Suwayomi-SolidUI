@@ -1,0 +1,6 @@
+.mbuttons {
+  &__read-progress {
+    background-color: var(--stp-foreground);
+    width: var(--kb-progress-fill-width);
+  }
+}

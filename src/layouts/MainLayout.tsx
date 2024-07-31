@@ -23,7 +23,10 @@ const MainLayout: ParentComponent = props => {
       >
         <AppNavbar />
         <ErrorBoundary
-          fallback={(err, reset) => <div onClick={reset}>Error: {err.toString()}</div>}
+          fallback={(err, reset) => {
+            console.error(err)
+            return <div onClick={reset}>Error: {err.toString()}</div>
+          }}
         >
           {props.children}
         </ErrorBoundary>
