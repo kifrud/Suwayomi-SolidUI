@@ -1,4 +1,4 @@
-import { Accessor, Component, Setter, Show } from 'solid-js'
+import { Accessor, Component, Ref, Setter, Show } from 'solid-js'
 import { SetStoreFunction, unwrap } from 'solid-js/store'
 import { Button } from '@/components'
 import { matches, selectAll, selectFlip } from '@/helpers'
@@ -18,6 +18,7 @@ interface MangaActionsProps {
   updateSelectMode: Setter<boolean>
   updateShowFilter: Setter<boolean>
   manga: TManga | undefined
+  filtersButtonRef: Ref<HTMLButtonElement>
 }
 
 export const MangaActions: Component<MangaActionsProps> = props => {
@@ -58,7 +59,7 @@ export const MangaActions: Component<MangaActionsProps> = props => {
           <DownloadIcon />
         </Button>
       </Show>
-      <Button onClick={() => props.updateShowFilter(prev => !prev)}>
+      <Button onClick={() => props.updateShowFilter(prev => !prev)} ref={props.filtersButtonRef}>
         <FiltersIcon />
       </Button>
       <Show when={matches.lg}>

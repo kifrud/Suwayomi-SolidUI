@@ -111,8 +111,12 @@ const MangaInfo: Component<MangaInfoProps> = props => {
                     </span>
                   </div>
                 </div>
-                <div class="flex flex-wrap py-1 manga-info__buttons justify-evenly md:hidden">
-                  <MangaButtons manga={props.manga} hideReadBtn />
+                <div class="flex py-1 manga-info__buttons justify-evenly md:hidden">
+                  <MangaButtons
+                    manga={props.manga}
+                    class="text-sm flex-col md:flex-row md:text-base"
+                    hideReadBtn
+                  />
                 </div>
               </div>
             </div>

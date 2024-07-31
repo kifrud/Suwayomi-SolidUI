@@ -8,6 +8,7 @@ import {
   Accessor,
   onCleanup,
   Show,
+  untrack,
 } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { A, useParams } from '@solidjs/router'
@@ -17,7 +18,7 @@ import { Button, Transition, ChaptersSelection } from '@/components'
 import { useAppContext, useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { ResultOf } from '@/gql'
 import { getManga } from '@/gql/Queries'
-import { matches, useNotification } from '@/helpers'
+import { matches, useNotification, useOutside } from '@/helpers'
 import { fetchMangaChapters, fetchMangaInfo } from '@/gql/Mutations'
 import { ChapterList, MangaActions, MangaFilter, MangaInfo, SideInfo } from './components'
 import { RoutePaths } from '@/enums'
@@ -45,7 +46,7 @@ export const statusIcons: Accessor<Record<MangaStatus, JSX.Element>> = () => ({
   CANCELLED: <CancelledIcon />,
   ON_HIATUS: <HiatusIcon />,
 })
-// TODO: add selection for chapters
+
 const Manga: Component = () => {
   const { t } = useAppContext()
   const client = useGraphQLClient()
@@ -92,6 +93,10 @@ const Manga: Component = () => {
     <h1 class="truncate text-lg max-w-64 hover:max-w-max">{manga()?.manga.title}</h1>
   )
 
+  let filtersRef!: HTMLDivElement
+  const [btnRef, setBtnRef] = createSignal<HTMLButtonElement>()
+  createEffect(() => console.log(filtersRef))
+
   onMount(() => {
     headerCtx.setHeaderEnd(
       <MangaActions
@@ -102,8 +107,13 @@ const Manga: Component = () => {
         updateSelected={setSelected}
         updateShowFilter={setShowFilters}
         manga={manga()}
+        filtersButtonRef={setBtnRef}
       />
     )
+    useOutside(filtersRef, () => {
+      if (!showFilters()) return
+      setShowFilters(false)
+    }, [btnRef()!])
   })
 
   createEffect(() => {
@@ -152,7 +162,7 @@ const Manga: Component = () => {
 
   return (
     <div class="title">
-      {metaTitle() && <Title>{metaTitle()}</Title>} {/* TODO: kinda broken */}
+      {metaTitle() && <Title>{untrack(() => metaTitle())}</Title>}
       <div class="title__banner-wrp">
         <div
           class="title__banner"
@@ -203,7 +213,7 @@ const Manga: Component = () => {
             </Show>
           </div>
         </Show>
-        <div>
+        <div ref={filtersRef}>
           <Transition>
             <Show when={showFilters()}>
               <MangaFilter mangaMeta={mangaMeta} updateMangaMeta={set} />
