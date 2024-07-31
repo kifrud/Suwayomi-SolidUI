@@ -11,6 +11,10 @@ html {
   scrollbar-width: thin;
 }
 
+text {
+  color: var(--stp-foreground);
+}
+
 path {
   color: inherit;
 }
