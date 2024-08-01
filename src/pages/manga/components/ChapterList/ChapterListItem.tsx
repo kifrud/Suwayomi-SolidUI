@@ -149,11 +149,11 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
           'opacity-100': !props.chapter.isRead,
         }}
       >
-        <span>{props.chapter.name}</span>
+        <span class="line-clamp-1">{props.chapter.name}</span>
         <div class="flex items-center gap-1">
           <span>#{props.chapter.sourceOrder}</span>•
           <span>{new Date(+props.chapter.uploadDate).toLocaleDateString()}</span>•
-          <span>{props.chapter.scanlator}</span>
+          <span class="line-clamp-1">{props.chapter.scanlator}</span>
         </div>
       </div>
       <div class="hidden md:flex items-start">
@@ -183,7 +183,7 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
             </Button>
           </Show>
           <Show
-            when={!isDownloaded()}
+            when={!props.download}
             fallback={
               <Show when={(props.download?.progress ?? 0) > 0}>
                 <RadialProgress value={props.download?.progress! * 100} size="xs" />
