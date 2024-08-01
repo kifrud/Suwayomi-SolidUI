@@ -83,11 +83,6 @@ const ChaptersActions = <T extends UpdateNode | TChapter>(props: ChaptersActions
               isRead: true,
             })
             .toPromise()
-
-          console.log(
-           index
-          )
-
           break
 
         case 'markAsUnread':

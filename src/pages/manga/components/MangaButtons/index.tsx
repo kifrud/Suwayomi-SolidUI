@@ -117,7 +117,7 @@ const MangaButtons: Component<MangaButtonsProps> = props => {
             when={props.manga?.manga.unreadCount === props.manga?.manga.chapters.totalCount} // TODO: prefetch lastreadchapter
             fallback={
               <>
-                {t('manga.button.continue')}
+                {t('global.button.continue')}
                 <p class="text-background text-xs opacity-65 leading-0">
                   {props.manga?.manga.chapters.totalCount! - props.manga?.manga.unreadCount!} /{' '}
                   {/* FIXME: not updating when some chateprs marked as read */}
@@ -145,7 +145,7 @@ const MangaButtons: Component<MangaButtonsProps> = props => {
               </>
             }
           >
-            {t('manga.button.read')}
+            {t('global.button.read')}
           </Show>
         </A>
       </Show>

@@ -11,7 +11,9 @@
   "copied": "Copied",
   "button": {
     "ok": "Ok",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "read": "Read",
+    "continue": "Continue"
   },
   "notification": {
     "title": {

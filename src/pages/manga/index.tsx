@@ -14,7 +14,7 @@ import { createStore } from 'solid-js/store'
 import { A, useParams } from '@solidjs/router'
 import { Title } from '@solidjs/meta'
 import { useWindowScrollPosition } from '@solid-primitives/scroll'
-import { Button, Transition, ChaptersSelection } from '@/components'
+import { Button, Transition, ChaptersSelection, ReadButton } from '@/components'
 import { useAppContext, useGlobalMeta, useGraphQLClient, useHeaderContext } from '@/contexts'
 import { ResultOf } from '@/gql'
 import { getManga } from '@/gql/Queries'
@@ -210,6 +210,17 @@ const Manga: Component = () => {
               selected={selected}
               updateSelected={setSelected}
               refetch={fetchChapters}
+            />
+            <ReadButton
+              href={`${RoutePaths.manga}/${manga()?.manga.id!}${RoutePaths.chapter}/${manga()?.manga.lastReadChapter!.id!}`}
+              class="md:hidden !fixed bottom-20"
+              isRead={
+                manga()?.manga.unreadCount === 0
+                  ? true
+                  : manga()?.manga.chapters.totalCount === manga()?.manga.unreadCount
+                    ? false
+                    : undefined
+              }
             />
           </div>
         </div>
