@@ -77,7 +77,7 @@ const Manga: Component = () => {
 
   const [manga, setManga] = createSignal<ResultOf<typeof getManga> | undefined>()
   const { unsubscribe } = client
-    .query(getManga, { id: Number(params.id) }, { requestPolicy: 'cache-and-network' })
+    .query(getManga, { id: Number(params.id) })
     .subscribe(res => setManga(res.data))
 
   const fetchChapters = async () => {
