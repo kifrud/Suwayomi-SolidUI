@@ -1,4 +1,4 @@
-import { Accessor, Component, For, Setter, Show } from 'solid-js'
+import { Accessor, Component, For, Setter, Show, onMount } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
 import { WindowVirtualizer } from 'virtua/solid'
 import { Skeleton } from '@/components'
@@ -40,23 +40,25 @@ const ChapterList: Component<ChapterListProps> = props => {
               </span>
             }
           >
-            <WindowVirtualizer data={props.chapters!}>
-              {chapter => (
-                <ChapterListItem
-                  chapter={chapter}
-                  chapters={props.chapters}
-                  selectMode={props.selectMode}
-                  updateSelectMode={props.updateSelectMode}
-                  selected={props.selected}
-                  updateSelected={props.updateSelected}
-                  download={downloadStatus()?.downloadChanged.queue.find(
-                    q =>
-                      chapter.sourceOrder === q.chapter.sourceOrder && chapter.id === q.chapter.id
-                  )}
-                  refetch={props.refetch}
-                />
-              )}
-            </WindowVirtualizer>
+            <div class="vlist">
+              <WindowVirtualizer data={props.chapters!}>
+                {chapter => (
+                  <ChapterListItem
+                    chapter={chapter}
+                    chapters={props.chapters}
+                    selectMode={props.selectMode}
+                    updateSelectMode={props.updateSelectMode}
+                    selected={props.selected}
+                    updateSelected={props.updateSelected}
+                    download={downloadStatus()?.downloadChanged.queue.find(
+                      q =>
+                        chapter.sourceOrder === q.chapter.sourceOrder && chapter.id === q.chapter.id
+                    )}
+                    refetch={props.refetch}
+                  />
+                )}
+              </WindowVirtualizer>
+            </div>
           </Show>
         </Show>
       </div>

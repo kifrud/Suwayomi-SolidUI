@@ -62,9 +62,7 @@ export const MangaActions: Component<MangaActionsProps> = props => {
       <Button onClick={() => props.updateShowFilter(prev => !prev)} ref={props.filtersButtonRef}>
         <FiltersIcon />
       </Button>
-      <Show when={matches.lg}>
-        <MangaMenu refresh={props.refresh} manga={props.manga} />
-      </Show>
+      <MangaMenu refresh={props.refresh} manga={props.manga} />
     </>
   )
 }
