@@ -1,11 +1,12 @@
 import { Accessor, Component, type JSX, Setter, Show, createMemo, createSignal } from 'solid-js'
 import { SetStoreFunction } from 'solid-js/store'
-import { CheckBox, Chip, Image } from '@/components'
+import { CheckBox, Chip, Image, ReadButton } from '@/components'
 import { useGlobalMeta } from '@/contexts'
 import { Mangas, TLibraryManga } from '@/types'
 /* tslint:disable:no-unused-variable */
 import { longPress, useHover } from '@/helpers'
 import './styles.scss'
+import { RoutePaths } from '@/enums'
 
 interface TitleCardProps {
   manga: Accessor<TLibraryManga>
@@ -52,7 +53,7 @@ const TitleCard: Component<TitleCardProps> = props => {
     e.stopPropagation()
     return handleSelect()
   }
-  // TODO: add resume button
+
   return (
     <a
       ref={setCardRef}
@@ -112,6 +113,18 @@ const TitleCard: Component<TitleCardProps> = props => {
       </div>
       <div class="title-card__footer">
         <p class="text-ellipsis overflow-hidden line-clamp-2 max-h-[3rem]">{props.manga().title}</p>
+        <ReadButton
+          class="!p-1 relative bottom-auto right-auto"
+          hideLabel
+          href={`${RoutePaths.manga}/${props.manga()?.id!}${RoutePaths.chapter}/${props.manga()?.lastReadChapter!.id!}`}
+          isRead={
+            props.manga()?.unreadCount === 0
+              ? true
+              : props.manga()?.chapters.totalCount === props.manga()?.unreadCount
+                ? false
+                : undefined
+          }
+        />
       </div>
     </a>
   )

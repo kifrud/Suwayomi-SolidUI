@@ -2,8 +2,6 @@
   "button": {
     "addToLibrary": "Add to library",
     "inLibrary": "In library",
-    "read": "Read",
-    "continue": "Continue",
     "toLibrary": "To Library",
     "toDescription": "To Description",
     "track": "Track",
