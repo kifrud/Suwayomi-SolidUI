@@ -5,13 +5,13 @@ import { Button, CategoryModal } from '@/components'
 import { useAppContext, useGraphQLClient } from '@/contexts'
 import { updateManga } from '@/gql/Mutations'
 import { useNotification } from '@/helpers'
+import { RoutePaths } from '@/enums'
 import { TManga } from '@/types'
 import Favorite from '~icons/material-symbols/favorite'
 import FavoriteOutline from '~icons/material-symbols/favorite-outline'
 import SourceIcon from '~icons/material-symbols/public'
 import TrackIcon from '~icons/material-symbols/sync'
 import './styles.scss'
-import { RoutePaths } from '@/enums'
 
 interface MangaButtonsProps {
   manga: TManga | undefined
@@ -114,7 +114,7 @@ const MangaButtons: Component<MangaButtonsProps> = props => {
           class="flex flex-col items-center justify-center relative w-full py-1 hover:opacity-75 text-background px-0 transition-all"
         >
           <Show
-            when={props.manga?.manga.unreadCount === props.manga?.manga.chapters.totalCount} // TODO: prefetch lastreadchapter
+            when={props.manga?.manga.unreadCount === props.manga?.manga.chapters.totalCount}
             fallback={
               <>
                 {t('global.button.continue')}
