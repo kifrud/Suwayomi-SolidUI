@@ -3,7 +3,7 @@ import { Client, fetchExchange, subscriptionExchange } from '@urql/core'
 import { cacheExchange, type Cache } from '@urql/exchange-graphcache'
 import { createClient as createWSClient } from 'graphql-ws'
 import { ResultOf, VariablesOf } from './graphql'
-import { updateMangas, updateMangasCategories } from './Mutations'
+import { updateMangas, updateMangasCategories, fetchMangaChapters } from './Mutations'
 import { getCategories, getCategory, getManga } from './Queries'
 import { MangaTypeFragment } from './Fragments'
 
@@ -64,6 +64,11 @@ export const client = new Client({
             const res = result as ResultOf<typeof updateMangas>
             const variables = info.variables as VariablesOf<typeof updateMangas>
             updateMangasUpdater(res, variables, cache)
+          },
+          fetchChapters(result, _, cache, info) {
+            const res = result as ResultOf<typeof fetchMangaChapters>
+            const variables = info.variables as VariablesOf<typeof fetchMangaChapters>
+            fetchMangaChaptersUpdater(res, variables, cache)
           },
         },
       },
@@ -190,12 +195,32 @@ function updateMangasUpdater(
           categoryData.category.mangas.nodes = categoryData.category.mangas.nodes.filter(
             m => !vars.ids.includes(m.id)
           )
-          categoryData.category.mangas.nodes.push(
-            ...(data.updateMangas.mangas as any)
-          )
+          categoryData.category.mangas.nodes.push(...(data.updateMangas.mangas as any))
           return categoryData
         }
       )
     })
   })
+}
+
+function fetchMangaChaptersUpdater(
+  data: ResultOf<typeof fetchMangaChapters> | undefined,
+  vars: VariablesOf<typeof fetchMangaChapters>,
+  cache: Cache
+) {
+  if (!data) return
+  cache.updateQuery(
+    {
+      query: getManga,
+      variables: { id: vars.id },
+    },
+    manga => {
+      if (!manga) {
+        return manga
+      }
+      manga.manga.chapters.nodes = data.fetchChapters.chapters
+      manga.manga.chapters.totalCount = data.fetchChapters.chapters.length
+      return manga
+    }
+  )
 }
