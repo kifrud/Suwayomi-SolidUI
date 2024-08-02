@@ -30,12 +30,11 @@ const Library: Component = () => {
   const { globalMeta } = useGlobalMeta()
   const headerCtx = useHeaderContext()
   const client = useGraphQLClient()
-  // FIXME: Query data cannot be undefined. Please make sure to return a value other than undefined from your query function.
+
   const categories = createQuery(() => ({
     queryKey: ['categories'],
     queryFn: async () =>
-      (await client.query(getCategories, {}, { requestPolicy: 'cache-and-network' }).toPromise())
-        .data,
+      await client.query(getCategories, {}, { requestPolicy: 'cache-and-network' }).toPromise(),
   }))
 
   const [searchParams] = useSearchParams()
@@ -49,21 +48,19 @@ const Library: Component = () => {
   const category = createQuery(() => ({
     queryKey: ['category', currentTab(), categories.data],
     queryFn: async () =>
-      (
-        await client
-          .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
-          .toPromise()
-      ).data,
+      await client
+        .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
+        .toPromise(),
   }))
 
   const orderedCategories = createMemo(() =>
-    categories.data?.categories.nodes
+    categories.data?.data?.categories.nodes
       .toSorted((a, b) => (a.order > b.order ? 1 : -1))
       .filter(e => e.mangas.totalCount)
   )
 
   const mangas = createMemo(() =>
-    category.data?.category.mangas.nodes
+    category.data?.data?.category.mangas.nodes
       .filter(item => filterManga(item, globalMeta, searchParams.q))
       .toSorted((a, b) => sortManga(a, b, globalMeta))
   )
@@ -71,7 +68,9 @@ const Library: Component = () => {
   const totalMangaCount = createMemo(
     () =>
       new Set(
-        categories.data?.categories.nodes.flatMap(node => node.mangas.nodes.map(manga => manga.id))
+        categories.data?.data?.categories.nodes.flatMap(node =>
+          node.mangas.nodes.map(manga => manga.id)
+        )
       ).size
   )
 

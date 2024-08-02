@@ -46,7 +46,7 @@ export const statusIcons: Accessor<Record<MangaStatus, JSX.Element>> = () => ({
   CANCELLED: <CancelledIcon />,
   ON_HIATUS: <HiatusIcon />,
 })
-
+// TODO: missing chapters
 const Manga: Component = () => {
   const { t } = useAppContext()
   const client = useGraphQLClient()
