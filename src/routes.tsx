@@ -31,7 +31,10 @@ export const AppRoutes = () => {
           <Route path={RoutePaths.settings} component={Settings} />
           <Route path={`${RoutePaths.manga}/:id`} component={Manga} />
         </Route>
-        <Route path={`${RoutePaths.manga}/:id${RoutePaths.chapter}/:id`} component={ReaderLayout}>
+        <Route
+          path={`${RoutePaths.manga}/:id${RoutePaths.chapter}/:chapterId`}
+          component={ReaderLayout}
+        >
           <Route path="/" component={Chapter} />
         </Route>
       </ErrorBoundary>

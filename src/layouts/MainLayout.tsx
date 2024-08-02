@@ -13,7 +13,7 @@ const MainLayout: ParentComponent = props => {
 
   return (
     <div class="main-layout">
-      <div class="sticky top-0 z-40">
+      <div class="sticky top-0 z-50">
         <Header />
         <hr class="bg-[#3b3b3b] border-none h-[1px]" />
       </div>

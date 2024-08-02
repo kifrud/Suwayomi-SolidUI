@@ -49,7 +49,7 @@ const Library: Component = () => {
     queryKey: ['category', currentTab(), categories.data],
     queryFn: async () =>
       await client
-        .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-and-network' })
+        .query(getCategory, { id: Number(currentTab()) }, { requestPolicy: 'cache-first' })
         .toPromise(),
   }))
 
