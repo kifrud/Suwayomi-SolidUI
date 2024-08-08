@@ -184,3 +184,73 @@ export function getUnReadChapter(chapters: Chapters) {
 export function getReadChapter(chapters: Chapters) {
   return chapters.filter(chapter => chapter.isRead)
 }
+
+export enum ChapterOffset {
+  NEXT = 1,
+  PREV = -1,
+}
+
+export function removeDuplicates<T extends TChapter>(currentChapter: T, chapters: T[]): T[] {
+  const chapterNumberToChapters = Object.groupBy(chapters, ({ chapterNumber }) => chapterNumber)
+
+  const uniqueChapters = Object.values(chapterNumberToChapters).map(
+    groupedChapters =>
+      groupedChapters!.find(chapter => chapter.id === currentChapter.id) ??
+      groupedChapters!.findLast(chapter => chapter.scanlator === currentChapter.scanlator) ??
+      groupedChapters!.slice(-1)[0]
+  )
+
+  return chapters
+    .map(({ id }) => uniqueChapters.find(chapter => chapter.id === id))
+    .filter((chapter): chapter is T => !!chapter)
+}
+
+export function getNextChapter<C extends TChapter>(
+  currentChapter: C,
+  chapters: C[],
+  {
+    offset = ChapterOffset.NEXT,
+    ...options
+  }: {
+    offset?: ChapterOffset
+    onlyUnread?: boolean
+    skipDupe?: boolean
+    skipDupeChapter?: TChapter
+  } = {}
+): TChapter | undefined {
+  const nextChapters = getNextChapters(currentChapter, chapters, { offset, ...options })
+
+  const isNextChapterOffset = offset === ChapterOffset.NEXT
+  const sliceStartIndex = isNextChapterOffset ? -1 : 0
+  const sliceEndIndex = isNextChapterOffset ? undefined : 1
+
+  return nextChapters.slice(sliceStartIndex, sliceEndIndex)[0]
+}
+
+export function getNextChapters<C extends TChapter>(
+  fromChapter: C,
+  chapters: C[],
+  {
+    offset = ChapterOffset.NEXT,
+    skipDupe = false,
+    skipDupeChapter = fromChapter,
+  }: {
+    offset?: ChapterOffset
+    skipDupe?: boolean
+    skipDupeChapter?: TChapter
+  } = {}
+): C[] {
+  const fromChapterIndex = chapters.findIndex(chapter => chapter.id === fromChapter.id)
+
+  const isNextChapterOffset = offset === ChapterOffset.NEXT
+  const sliceStartIndex = isNextChapterOffset ? 0 : fromChapterIndex
+  const sliceEndIndex = isNextChapterOffset ? fromChapterIndex + 1 : undefined
+
+  const nextChaptersIncludingCurrent = chapters.slice(sliceStartIndex, sliceEndIndex)
+  const uniqueNextChapters = skipDupe
+    ? removeDuplicates(skipDupeChapter, nextChaptersIncludingCurrent)
+    : nextChaptersIncludingCurrent
+  const nextChapters = uniqueNextChapters.toSpliced(isNextChapterOffset ? -1 : 0, 1)
+
+  return nextChapters as C[]
+}

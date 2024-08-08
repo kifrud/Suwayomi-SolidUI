@@ -25,10 +25,9 @@ export enum ChapterSort {
 }
 
 export enum Mode {
-  Vertical = 'vertical',
-  Single = 'single',
-  RTL = 'rtl',
-  LTR = 'ltr',
+  // Vertical = 'vertical', // TODO
+  SingleRTL = 'singlertl',
+  SingleLTR = 'singleltr',
 }
 
 export enum Layout {
