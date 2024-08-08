@@ -12,11 +12,12 @@ export const mangaMetaDefaults = {
   Scale: false,
   Offset: false,
   // SmoothScroll: true,
-  ReaderMode: Mode.Single,
+  ReaderMode: Mode.SingleLTR,
   NavLayout: Layout.L,
   preLoadNextChapter: true,
   mobileFullScreenOnChapterPage: true,
   doPageIndicator: false,
+  skipDuplicate: false,
 }
 
 export type MangaMeta = typeof mangaMetaDefaults

@@ -868,7 +868,7 @@
   dependencies:
     "@solid-primitives/utils" "^6.2.3"
 
-"@solid-primitives/scheduled@^1.4.1":
+"@solid-primitives/scheduled@^1.4.1", "@solid-primitives/scheduled@^1.4.3":
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/@solid-primitives/scheduled/-/scheduled-1.4.3.tgz#379443e759c90275f7530c11c9df63ff63c8c9fd"
   integrity sha512-HfWN5w7b7FEc6VPLBKnnE302h90jsLMuR28Fcf7neRGGf8jBj6wm6/UFQ00VlKexHFMR6KQ2u4VBh5a1ZcqM8g==

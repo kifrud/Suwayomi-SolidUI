@@ -133,7 +133,7 @@ const ChapterListItem: Component<ChapterListItemProps> = props => {
   return (
     <a
       ref={setRef}
-      href={`${RoutePaths.manga}/${props.chapter.manga.id}${RoutePaths.chapter}/${props.chapter.id}`}
+      href={`${RoutePaths.manga}/${props.chapter.manga.id}${RoutePaths.chapter}/${props.chapter.id}`} // sourceOrder?
       class="flex justify-between transition-all p-2 hover:bg-background-muted rounded-lg"
       classList={{
         'border-2 border-bg-foreground': isSelected(),
