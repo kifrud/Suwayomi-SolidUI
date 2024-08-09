@@ -1,4 +1,4 @@
-import { Component, type JSX } from 'solid-js'
+import { Component, createEffect, type JSX } from 'solid-js'
 import { Image } from '@/components'
 import { Mode } from '@/enums'
 import { ReaderProps } from '@/types'
@@ -44,9 +44,11 @@ const PagedReader: Component<ReaderProps> = props => {
     }
   }
 
+  createEffect(() => console.log('reader', props.pages))
+
   return (
     <div on:click={handleClick}>
-      <Image src={props.pages[props.currentPage()]} alt=" " />
+      <Image src={props.pages[props.currentPage()]} alt=" " rounded="none" />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { ParentComponent } from 'solid-js'
 
 const ReaderLayout: ParentComponent = props => {
-  return <div>{props.children}</div>
+  return <div class='h-full w-full'>{props.children}</div>
 }
 
 export default ReaderLayout
