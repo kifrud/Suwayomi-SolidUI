@@ -1,4 +1,4 @@
-import { Component, createEffect, type JSX } from 'solid-js'
+import { Component, type JSX } from 'solid-js'
 import { Image } from '@/components'
 import { Mode } from '@/enums'
 import { ReaderProps } from '@/types'
@@ -43,8 +43,6 @@ const PagedReader: Component<ReaderProps> = props => {
       goLeft()
     }
   }
-
-  createEffect(() => console.log('reader', props.pages))
 
   return (
     <div on:click={handleClick}>

@@ -1,14 +1,18 @@
+import { Component, Setter, Show } from 'solid-js'
 import { ChapterOffset } from '@/helpers'
 import { TChapter } from '@/types'
-import { Component, Setter, Show } from 'solid-js'
+import { useAppContext } from '@/contexts'
 
 interface TransitionScreenProps {
+  direction: ChapterOffset | undefined
   chapter: TChapter
   followingChapter: TChapter | undefined
   updateDirection: Setter<ChapterOffset | undefined>
 }
 
 const TransitionScreen: Component<TransitionScreenProps> = props => {
+  const { t } = useAppContext()
+
   const handleClick = () => {
     props.updateDirection(undefined)
   }
@@ -18,11 +22,25 @@ const TransitionScreen: Component<TransitionScreenProps> = props => {
       class="flex flex-col justify-center items-center h-screen w-full gap-2"
       on:click={handleClick}
     >
-      <div>
+      <Show when={props.chapter}>
+        <h3>
+          <b>
+            <Show when={props.direction === ChapterOffset.NEXT} fallback={t('chapter.current')}>
+              {t('chapter.finished')}
+            </Show>
+          </b>
+        </h3>
         <span>{props.chapter.name}</span>
-      </div>
+      </Show>
       <Show when={props.followingChapter} fallback={<span></span>}>
-        <div>{props.followingChapter!.name}</div>
+        <h3>
+          <b>
+            <Show when={props.direction === ChapterOffset.NEXT} fallback={t('chapter.prev')}>
+              {t('chapter.next')}
+            </Show>
+          </b>
+        </h3>
+        <span>{props.followingChapter!.name}</span>
       </Show>
     </div>
   )

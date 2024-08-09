@@ -3,5 +3,9 @@
     "label": {
       "action": "Download"
     }
-  }
+  },
+  "next": "Next",
+  "prev": "Previous",
+  "finished": "Finished",
+  "current": "Current"
 }

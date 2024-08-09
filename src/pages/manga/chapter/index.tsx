@@ -7,6 +7,7 @@ import {
   createMemo,
   createSignal,
   onCleanup,
+  untrack,
 } from 'solid-js'
 import { useLocation, useNavigate, useParams } from '@solidjs/router'
 import { createQuery } from '@tanstack/solid-query'
@@ -44,12 +45,6 @@ const Chapter: Component = () => {
     .query(getManga, { id: Number(params.id) })
     .subscribe(res => setManga(res.data))
 
-  // const { unsubscribe: unsubscribeChapter } = client
-  //   .query(getSingleChapter, {
-  //     id: Number(params.chapterId),
-  //   })
-  //   .subscribe(res => setChapter(res.data))
-
   const fetchPages = async () => {
     if (chapter.data?.data && !loading() && !chapter.data?.data?.chapter.isDownloaded) {
       try {
@@ -59,7 +54,7 @@ const Chapter: Component = () => {
         setPages(res.data?.fetchChapterPages.pages)
         setLoading(false)
       } catch (err) {
-        console.log(err)
+        useNotification('error', { message: err })
       }
     } else {
       setLoading(false)
@@ -111,7 +106,7 @@ const Chapter: Component = () => {
       useNotification('error', { message: 'no chapter' })
     }
 
-    setCurrentPage(offset === ChapterOffset.NEXT ? 0 : chapterToOpen?.pageCount! + 1)
+    setCurrentPage(offset === ChapterOffset.NEXT ? 0 : chapterToOpen?.pageCount! - 1)
     setDirection(offset)
     setFollowingChapter(chapterToOpen)
 
@@ -166,7 +161,6 @@ const Chapter: Component = () => {
 
   onCleanup(() => {
     unsubscribe()
-    // unsubscribeChapter()
   })
 
   const readerProps = createMemo<ReaderProps>(() => ({
@@ -179,8 +173,6 @@ const Chapter: Component = () => {
     nextChapter: loadNextChapter,
     prevChapter: loadPrevChapter,
   }))
-
-  createEffect(() => console.log(currentPage(), nextChapter(), pages()))
 
   return (
     <>
@@ -199,8 +191,9 @@ const Chapter: Component = () => {
         }
       >
         <TransitionScreen
-          chapter={chapter.data?.data?.chapter!}
+          chapter={untrack(() => chapter.data?.data?.chapter!)}
           followingChapter={followingChapter()}
+          direction={direction()}
           updateDirection={setDirection}
         />
       </Show>
