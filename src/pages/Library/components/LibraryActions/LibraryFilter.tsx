@@ -1,47 +1,10 @@
-import {
-  Component,
-  ErrorBoundary,
-  For,
-  type JSX,
-  Show,
-  createMemo,
-  createSignal,
-  Ref,
-} from 'solid-js'
-import { Tabs } from '@kobalte/core/tabs'
+import { Component, type JSX, createMemo } from 'solid-js'
 import { GlobalMeta } from '@/contexts'
-import { Dictionary, useAppContext, useGlobalMeta } from '@/contexts'
-import { AscRadio, CheckBox, Radio, TriStateInput } from '@/components'
+import { useAppContext, useGlobalMeta } from '@/contexts'
+import { AscRadio, CheckBox, Filter, ITabs, Radio, TriStateInput } from '@/components'
 import { Display, Sort, TriState } from '@/enums'
 
-interface ITabs {
-  filters: {
-    unread: JSX.Element
-    downloaded: JSX.Element
-    bookmarked: JSX.Element
-    tracked: JSX.Element
-  }
-  sort: {
-    [k in Sort]: JSX.Element
-  }
-  display: {
-    modes: {
-      [k in Display]: JSX.Element
-    }
-    badges: {
-      downloads: JSX.Element
-      unreads: JSX.Element
-    }
-    tabs: {
-      showCount: JSX.Element
-    }
-    other: {
-      resumeButton: JSX.Element
-    }
-  }
-}
-
-export const LibraryFilter: Component<{ ref?: Ref<HTMLDivElement> }> = props => {
+export const LibraryFilter: Component = () => {
   const { t } = useAppContext()
   const metaCtx = useGlobalMeta()
 
@@ -123,13 +86,9 @@ export const LibraryFilter: Component<{ ref?: Ref<HTMLDivElement> }> = props => 
         />
       ),
     },
-    sort: sorts() as {
-      [k in Sort]: JSX.Element
-    },
+    sort: sorts(),
     display: {
-      modes: displayModes() as {
-        [k in Display]: JSX.Element
-      },
+      modes: displayModes(),
       badges: {
         downloads: (
           <CheckBox
@@ -167,57 +126,5 @@ export const LibraryFilter: Component<{ ref?: Ref<HTMLDivElement> }> = props => 
     },
   } satisfies ITabs
 
-  const [tab, setTab] = createSignal(Object.keys(tabs)[0])
-
-  return (
-    <div class="library-filters" ref={props.ref}>
-      <Tabs value={tab()} onChange={setTab} class="flex flex-col h-full gap-2">
-        <Tabs.List class="flex items-center relative justify-between">
-          <For each={Object.keys(tabs)}>
-            {tabName => (
-              <Tabs.Trigger value={tabName} class="px-4 py-2">
-                <span>{t(`library.filterTabs.${tabName as keyof ITabs}.name`)}</span>
-              </Tabs.Trigger>
-            )}
-          </For>
-          <Tabs.Indicator class="h-[2px] transition-all duration-[250ms] absolute bottom-0 left-0 bg-foreground" />
-        </Tabs.List>
-        <For each={Object.entries(tabs)}>
-          {([name, data]) => (
-            <ErrorBoundary
-              fallback={(err, reset) => <div onClick={reset}>Error: {err.toString()}</div>}
-            >
-              <Tabs.Content value={name} class="flex flex-col gap-2 px-2">
-                <For each={Object.entries(data)}>
-                  {([key, item]) => (
-                    <Show
-                      when={
-                        import.meta.env.MODE === 'development'
-                          ? typeof item !== 'function'
-                          : !(item instanceof Element)
-                      } // different types of check because in production every function becomes Element
-                      fallback={item as JSX.Element}
-                    >
-                      <div class="flex flex-col gap-1">
-                        <span class="opacity-50">
-                          {
-                            t(
-                              `library.filterTabs.${name as keyof typeof tabs}.${key}.name` as keyof Dictionary
-                            ) as JSX.Element
-                          }
-                        </span>
-                        <For each={Object.values(item as Object)}>
-                          {subItem => subItem as JSX.Element}
-                        </For>
-                      </div>
-                    </Show>
-                  )}
-                </For>
-              </Tabs.Content>
-            </ErrorBoundary>
-          )}
-        </For>
-      </Tabs>
-    </div>
-  )
+  return <Filter tabs={tabs} />
 }
